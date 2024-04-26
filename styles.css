@@ -1,0 +1,81 @@
+body {
+  background-image: url("sample-image.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: "Yeon Sung", system-ui;
+  padding: 0;
+  margin: 0;
+}
+
+header {
+  height: 11vh;
+  justify-content: space-between;
+  position: relative;
+  z-index: 3;
+}
+
+header h1 {
+  font-size: 40px;
+}
+
+header h1, header p, .white-color {
+  color: white;
+}
+
+header:hover, .lock-header {
+  transition: background-color 0.5s;
+  opacity: 70%;
+}
+
+header:hover, .lock-header{
+  background-color: white;
+}
+
+header:hover h1, header:hover p {
+  color: black;
+}
+
+header, #header-left, #header-right, #search section {
+  display: flex;
+}
+
+header, #search section {
+  align-items: center;
+}
+
+#header-left, #header-right {
+  gap: 10px;
+}
+
+#header-left {
+  margin-left: 20px;
+}
+
+#header-right {
+  margin-right: 20px;
+}
+
+#header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#header-left > p {
+  margin-right: 10px;
+}
+
+#header-right > p {
+  margin-left: 10px;
+}
+
+#search img {
+  width: 20px;
+  height: 20px;
+}
+
+#search section {
+  gap: 5px;
+}
