@@ -1,5 +1,5 @@
 body {
-  background-image: url("sample-image.jpeg");
+  background-image: url("img/sample-watch2.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -12,20 +12,23 @@ body {
 header {
   height: 11vh;
   justify-content: space-between;
-  position: relative;
   z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
 }
 
 header h1 {
   font-size: 40px;
 }
 
-header h1, header p, .white-color {
+header h1, header p, .white-color, header span {
   color: white;
 }
 
 header:hover, .lock-header {
-  transition: background-color 0.5s;
+  transition: background-color 1s;
   opacity: 70%;
 }
 
@@ -33,12 +36,13 @@ header:hover, .lock-header{
   background-color: white;
 }
 
-header:hover h1, header:hover p {
+header:hover h1, header:hover p, header:hover span{
   color: black;
 }
 
 header, #header-left, #header-right, #search section {
   display: flex;
+  align-items: center;
 }
 
 header, #search section {
@@ -78,4 +82,149 @@ header, #search section {
 
 #search section {
   gap: 5px;
+}
+
+
+#search-part{
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+}
+#search-part h2{
+  font-size: 60px;
+  text-transform: uppercase;
+  color: white;
+  font-family: "IM Fell English SC",sans-serif;
+  text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}
+
+::placeholder{
+  padding-top: 10px;
+
+}
+
+#textarea {
+  width: 60%;
+  height: 37px;
+  resize: none;
+  padding: 10px;
+  font-size: 18px;
+  border: 1px solid #ccc;
+}
+
+.change {
+  cursor: pointer;
+  display: none;
+  font-family: 'Yeon Sung', cursive;
+}
+
+#sidebar {
+  background-color: #f9f9f9;
+  width: 300px;
+  position: fixed;
+  top: 0vh;
+  left: -300px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  transition: 0.3s;
+  z-index: 1000;
+  /* be in a different layer */
+}
+
+#sidebar ul {
+  list-style-type: none;
+  padding: 30px 40px ;
+  margin-bottom: 0;
+}
+
+#sidebar ul li a {
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  transition: 0.3s;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+#sidebar ul li a:hover {
+  background-color: #e0e0e0;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 500;
+  pointer-events: none;
+}
+
+#close{
+  padding-top: 30px;
+  padding-left: 50px;
+  margin: 0;
+  font-size: 20px;
+}
+
+#close:hover{
+  cursor: pointer;
+}
+
+#menu span{
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.hidden{
+  display: none;
+}
+
+#displaywatch{
+  width: 100%;
+  height: 80vh;
+}
+
+#container{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 10px;
+  border-radius: 1%;
+
+}
+
+.box{
+  width: 30%;
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column; */
+  background-color: black;
+  border: 1px solid black;
+  border-radius: 3%;
+}
+
+.box h3, .box p{
+  color: white;
+}
+
+img{
+  width: 100%;
+  border-radius: 2%;
+}
+.box p:hover{
+  text-decoration: underline;
 }
