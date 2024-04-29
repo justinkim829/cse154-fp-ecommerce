@@ -1,0 +1,126 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Merienda", cursive;
+}
+
+header {
+  height: 11vh;
+  justify-content: space-between;
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+header h1 {
+  font-size: 40px;
+}
+
+header h1, header p, .white-color, header span {
+  color: black;
+}
+
+header:hover, .lock-header {
+  transition: background-color 1s;
+  opacity: 70%;
+}
+
+header:hover, .lock-header{
+  background-color: white;
+}
+
+header, #header-left, #header-right, #search section {
+  display: flex;
+  align-items: center;
+}
+
+header, #search section {
+  align-items: center;
+}
+
+#header-left, #header-right {
+  gap: 10px;
+}
+
+#header-left {
+  margin-left: 20px;
+}
+
+#header-right {
+  margin-right: 20px;
+}
+
+#header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#header-left > p {
+  margin-right: 10px;
+}
+
+#header-right > p {
+  margin-left: 10px;
+}
+
+
+/* _______________________________________________ */
+
+main {
+  width: 100vw;
+  display: flex;
+}
+
+#img-container {
+  background-color: lightgray;
+  width: 50vw;
+}
+
+img {
+  width: 50vw;
+}
+
+#right-side {
+  width: 50vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  position: relative;
+}
+
+#product-container {
+  position: fixed;
+  width: 25%;
+}
+
+#add-message {
+  position: fixed;
+  width: 25%;
+  top: 58%;
+  text-align: center;
+  font-size: 15px;
+}
+
+#number-and-wishlist {
+  display: flex;
+  justify-content: space-between;
+}
+
+#add-to-cart button {
+  width: 100%;
+  color: white;
+  background-color: black;
+  height: 50px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-family: "Merienda", cursive;
+}
+
+#product-details {
+  margin-top: 80px;
+
+}
