@@ -137,16 +137,16 @@ header, #search section {
   box-shadow: 3px 0 6px rgba(0,0,0,0.16);
   transition: 0.3s;
   z-index: 1000;
-  /* be in a different layer */
+
 }
 
-#sidebar ul {
+.sidebar2 ul {
   list-style-type: none;
   padding: 30px 40px ;
   margin-bottom: 0;
 }
 
-#sidebar ul li a {
+.sidebar2 ul li a {
   padding: 10px 15px;
   text-decoration: none;
   display: block;
@@ -155,8 +155,21 @@ header, #search section {
   margin-bottom: 20px;
 }
 
-#sidebar ul li a:hover {
+.sidebar2 ul li a:hover {
   background-color: #e0e0e0;
+}
+
+#type1sidebar, #type2sidebar, #type3sidebar{
+  display: none;
+  background-color: #f9f9f9;
+  width: 300px;
+  position: fixed;
+  top: 0vh;
+  left: -300px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  transition: 0.3s;
+  z-index: 500;
 }
 
 #overlay {
@@ -166,8 +179,9 @@ header, #search section {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 500;
+  background: rgb(1, 1, 1);
+  opacity: 85%;
+  z-index: 200;
   pointer-events: none;
 }
 
@@ -183,7 +197,7 @@ header, #search section {
 }
 
 #menu span{
-  font-size: 20px;
+  font-size: 22px;
   cursor: pointer;
 }
 
