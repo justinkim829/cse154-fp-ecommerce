@@ -4,7 +4,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  font-family: "Merienda", system-ui;
+  font-family: "Merienda", cursive;
   padding: 0;
   margin: 0;
 }
@@ -95,11 +95,12 @@ header, #search section {
   height: 100vh;
 
 }
+
 #search-part h2{
   font-size: 60px;
   text-transform: uppercase;
   color: white;
-  font-family: "IM Fell English SC",sans-serif;
+  font-family: "IM Fell English SC", serif;
   text-shadow:
         -1px -1px 0 #000,
         1px -1px 0 #000,
@@ -119,12 +120,13 @@ header, #search section {
   padding: 10px;
   font-size: 18px;
   border: 1px solid #ccc;
+  font-family: "Merienda", cursive;
 }
 
 .change {
   cursor: pointer;
   display: none;
-  font-family: 'Yeon Sung', cursive;
+  font-family: "Merienda", cursive;
 }
 
 #sidebar {

@@ -1,0 +1,70 @@
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Merienda", cursive;
+}
+
+header {
+  height: 11vh;
+  justify-content: space-between;
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+header h1 {
+  font-size: 40px;
+}
+
+header h1, header p, .white-color, header span {
+  color: black;
+}
+
+header:hover, .lock-header {
+  transition: background-color 1s;
+  opacity: 70%;
+}
+
+header:hover, .lock-header{
+  background-color: white;
+}
+
+header, #header-left, #header-right, #search section {
+  display: flex;
+  align-items: center;
+}
+
+header, #search section {
+  align-items: center;
+}
+
+#header-left, #header-right {
+  gap: 10px;
+}
+
+#header-left {
+  margin-left: 20px;
+}
+
+#header-right {
+  margin-right: 20px;
+}
+
+#header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#header-left > p {
+  margin-right: 10px;
+}
+
+#header-right > p {
+  margin-left: 10px;
+}
+
+
+/* _______________________________________________ */
