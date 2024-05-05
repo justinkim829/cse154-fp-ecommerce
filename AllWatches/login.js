@@ -1,13 +1,21 @@
-
-
 "use strict";
 
 (function () {
 
-  window.addEventListener("load", init);
+  window.addEventListener('load', init);
 
-  /** this function is used to initilizale the button with its functions. */
   function init() {
+
+    //lock header when window is scrolled down
+    window.onscroll = function() {
+      let header = qs("header");
+      console.log(header);
+      if (window.scrollY > 0) {
+        header.classList.add("lock-header");
+      } else {
+        header.classList.remove("lock-header");
+      }
+    }
     let menu = id('menu');
     let sidebar = id('sidebar');
     let close = id("close");
@@ -62,10 +70,7 @@
       hideExistSidebars(type1Sidebar, type2Sidebar);
       toggleSidebar(type3Sidebar);
     })
-
   }
-
-
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -84,7 +89,6 @@
       }
     });
   }
-
 
 
   //when click the place other than sidebar, the sidebar would be closed
@@ -152,4 +156,4 @@
     return document.querySelectorAll(selector);
   }
 
-})();
+  })();

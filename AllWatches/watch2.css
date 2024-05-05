@@ -19,30 +19,45 @@ header h1 {
   font-size: 40px;
 }
 
+<<<<<<< HEAD:watch2.css
 header h1, header p, .white-color, header span {
   color: white;
+=======
+header h1,
+header p,
+.white-color,
+header span {
+  color: black;
+>>>>>>> 6e874b6a905fceca1fbf542e2b8d731c54baf272:AllWatches/watch2.css
 }
 
-header:hover, .lock-header {
+header:hover,
+.lock-header {
   transition: background-color 1s;
   opacity: 70%;
 }
 
-header:hover, .lock-header{
+header:hover,
+.lock-header {
   background-color: white;
   color: black;
 }
 
-header, #header-left, #header-right, #search section {
+header,
+#header-left,
+#header-right,
+#search section {
   display: flex;
   align-items: center;
 }
 
-header, #search section {
+header,
+#search section {
   align-items: center;
 }
 
-#header-left, #header-right {
+#header-left,
+#header-right {
   gap: 10px;
 }
 
@@ -60,11 +75,11 @@ header, #search section {
   transform: translateX(-50%);
 }
 
-#header-left > p {
+#header-left>p {
   margin-right: 10px;
 }
 
-#header-right > p {
+#header-right>p {
   margin-left: 10px;
 }
 
@@ -184,4 +199,28 @@ main {
 .watch-box img {
   width: 196px;
   height: 196px;
+}
+
+
+
+#logo {
+  background-color: black;
+  width: 100%;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+
+}
+
+#logo p{
+  color: white;
+  font-size: 50px;
+  font-family: "Libre Baskerville", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 5px;
 }

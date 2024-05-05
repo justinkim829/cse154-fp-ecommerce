@@ -1,0 +1,309 @@
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: white;
+  margin:0;
+}
+
+header {
+  height: 11vh;
+  justify-content:flex-start;
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+header h1 {
+  font-size: 40px;
+}
+
+header h1, header p, .white-color, header span {
+  color: black;
+}
+
+header:hover, .lock-header {
+  transition: background-color 1s;
+  opacity: 70%;
+}
+
+header:hover, .lock-header{
+  background-color: white;
+}
+
+header, #header-left, #header-right, #search section {
+  display: flex;
+  align-items: center;
+}
+
+header, #search section {
+  align-items: center;
+}
+
+#header-left, #header-right {
+  gap: 10px;
+}
+
+#header-left {
+  margin-left: 20px;
+}
+
+#header-right {
+  margin-right: 20px;
+}
+
+#header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#header-left > p {
+  margin-right: 10px;
+}
+
+#header-right > p {
+  margin-left: 10px;
+}
+
+.change {
+  cursor: pointer;
+  display: none;
+  font-family: 'Yeon Sung', cursive;
+}
+
+#sidebar {
+  background-color: #f9f9f9;
+  width: 300px;
+  position: fixed;
+  top: 0vh;
+  left: -300px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  transition: 0.3s;
+  z-index: 1000;
+
+}
+
+.sidebar2 ul {
+  list-style-type: none;
+  padding: 30px 40px ;
+  margin-bottom: 0;
+}
+
+.sidebar2 ul li a {
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  transition: 0.3s;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.sidebar2 ul li a:hover {
+  background-color: #e0e0e0;
+}
+
+#type1sidebar, #type2sidebar, #type3sidebar{
+  display: none;
+  background-color: #f9f9f9;
+  width: 300px;
+  position: fixed;
+  top: 0vh;
+  left: -300px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  transition: 0.3s;
+  z-index: 999;
+
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(1, 1, 1);
+  opacity: 85%;
+  z-index: 200;
+  pointer-events: none;
+}
+
+#close{
+  padding-top: 30px;
+  padding-left: 50px;
+  margin: 0;
+  font-size: 20px;
+}
+
+#close:hover{
+  cursor: pointer;
+}
+
+#menu span{
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.hidden{
+  display: none;
+}
+
+
+/* ------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+#wholepage{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+#login-container {
+  margin-left: 10%;
+  margin-right: 4%;
+  background-color: white;
+  padding: 40px;
+  width: 700px;
+  box-sizing: border-box;
+  width: 50%;
+  padding-top: 0px;
+}
+
+#login-containe h2 {
+  margin-top: 0;
+}
+
+#login-containe p {
+  font-size: 16px;
+  color: #333;
+}
+
+.inputpart {
+  margin-top: 20px;
+}
+
+#input {
+  margin-top: 40px;
+}
+
+input[type="text"], input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* #forgetpassword {
+  display: block;
+  text-align: right;
+  margin-top: 10px;
+  color: #0066cc;
+  text-decoration: none;
+} */
+
+#signin-with-create{
+  display: flex;
+  flex-direction: column;
+  margin-left: 50%;
+  width: 55%;
+  margin-top: 15px;
+
+}
+
+#signin {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 20px;
+  height: 50px;
+  border: black 2px solid;
+  transition: all 0.2s ease;
+}
+
+#signin:hover{
+  color: black;
+  background-color: white;
+}
+
+#create{
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+  margin: 0 0 0 30px;
+}
+
+#create p{
+
+  margin: 10px 0 0 0;
+}
+
+#signup {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#signup a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+
+#account-info {
+  width: 300px;
+  height: 25%;
+  padding: 20px;
+  margin-right: 7%;
+  background-color: #f6f5f3;
+  border-radius: 2%;
+}
+
+#account-info h3{
+  font-size: 10px;
+  padding-left: 7px;
+}
+hr{
+  margin-left: 7px;
+}
+
+#account-info p{
+  font-size: 13px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 2px;
+  padding-left: 20px;
+}
+
+#sentences{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+hr{
+  height: 1px;
+    background-color: #ccc;
+    border: none;
+    margin: 10px 0;
+}
+
