@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Watch2</title>
-  <link href="watch2.css" rel="stylesheet">
+  <title>Shopping Cart</title>
+  <link href="shopping-cart.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <script src="watch2.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Nova+Mono&display=swap" rel="stylesheet">
+  <script src="shopping-cart.js"></script>
 </head>
 <body>
   <header>
@@ -17,12 +18,111 @@
       </section>
     </section>
     <section id="header-center">
-      <h1>BOW</h1>
+      <h1>RE:M</h1>
     </section>
     <section id="header-right">
       <p>Wishlist</p>
       <p>Account</p>
     </section>
   </header>
-  </body>
+  <main>
+    <section id="upper-image">
+      <p>SHOPPING CART</p>
+      <img src="img/watch-background.png" alt="watch-background">
+    </section>
+    <section id="shopping-cart">
+      <section id="left-side">
+        <section id="product-container">
+          <h2>Your Selections (1)</h2>
+          <hr>
+          <section id="product">
+            <img src="img/lvsample1.png" alt="lvsample1">
+            <section id="description">
+              <p>Tambour Horizon Light Up Connected Watch</p>
+              <p>QAD00C</p>
+              <p>Available</p>
+              <section id="remove">
+                <p>Edit</p>
+                <p>Remove</p>
+              </section>
+            </section>
+            <section id="cost">
+              <p>$1600</p>
+              <select>
+                <option value="1">QTY: 1</option>
+                <option value="2">QTY: 2</option>
+                <option value="3">QTY: 3</option>
+              </select>
+              <select>
+                <option value="blue">COLOR: BLUE</option>
+                <option value="white">COLOR: WHITE</option>
+                <option value="black">COLOR: BLACK</option>
+              </select>
+            </section>
+          </section>
+          <hr>
+        </section>
+        <!-- <section id="container">
+          <section id="container-left">
+            <section id="img-container">
+              <img src="img/lvsample1.png" alt="lvsample1">
+            </section>
+          </section id="container-right">
+            <section id="product-info">
+            </section>
+            <section id="blank-space">
+            </section>
+            <section id="remove-item">
+            </section>
+          <section>
+          </section>
+        </section> -->
+      </section>
+      <section id="right-side">
+        <section id="receipt-container">
+          <section id="order-summary">
+            <h2>ORDER SUMMARY</h2>
+            <p>1 item</p>
+            <hr>
+          </section>
+          <section class="receipt">
+            <section>
+              <p>subtotal</p>
+            </section>
+            <section>
+              <p>$3,405.00</p>
+            </section>
+          </section>
+          <section class="receipt">
+            <section>
+              <p>shipping</p>
+            </section>
+            <section>
+              <p>FREE</p>
+            </section>
+          </section>
+          <section class="receipt">
+            <section>
+              <p>estimated tax</p>
+            </section>
+            <section>
+              <p>$0.00</p>
+            </section>
+          </section>
+          <section class="receipt">
+            <section>
+              <p><strong>ESTIMATED TOTAL</strong></p>
+            </section>
+            <section>
+              <p><strong>$3,405.00</strong></p>
+            </section>
+          </section>
+          <section id="checkout">
+            <button>Proceed to checkout</button>
+          </section>
+          </section>
+        </section>
+      </section>
+  </main>
+ </body>
 </html>

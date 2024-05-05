@@ -12,6 +12,7 @@ header {
   top: 0;
   left: 0;
   width: 100%;
+  background-color: darkgray;
 }
 
 header h1 {
@@ -19,7 +20,7 @@ header h1 {
 }
 
 header h1, header p, .white-color, header span {
-  color: black;
+  color: white;
 }
 
 header:hover, .lock-header {
@@ -29,6 +30,7 @@ header:hover, .lock-header {
 
 header:hover, .lock-header{
   background-color: white;
+  color: black;
 }
 
 header, #header-left, #header-right, #search section {
@@ -78,17 +80,35 @@ main {
 #upper-side {
   width: 100vw;
   display: flex;
+  position: relative;
+}
+
+#left-arrow {
+  position: absolute;
+  font-size: 50px;
+  left: 1.4%;
+  top: 44.5%;
+}
+
+#right-arrow {
+  position: absolute;
+  font-size: 50px;
+  top: 44.5%;
+  left: 45%;
 }
 
 #img-container {
   margin-top: 11vh;
   background-color: lightgray;
   width: 50vw;
+  display: flex;
 }
 
 #img-container img {
   width: 50vw;
   top: 11vh;
+  justify-content: center;
+  align-items: center;
 }
 
 #right-side {
@@ -143,6 +163,7 @@ main {
 #down-side h2 {
   margin-top: 27vh;
   margin-bottom: 10vh;
+  font-family: "Comic Neue", cursive;
 }
 
 #recommendation-list {
@@ -155,6 +176,9 @@ main {
   height: 246px;
   width: 246px;
   background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .watch-box img {
