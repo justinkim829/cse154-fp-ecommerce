@@ -33,16 +33,13 @@ header h1 a {
   text-decoration: none;
 }
 
-header h1, header p, .white-color, header span {
+header h1, header a, header span {
   color: white;
 }
 
 header:hover, .lock-header {
   transition: background-color 1s;
   opacity: 70%;
-}
-
-header:hover, .lock-header{
   background-color: black;
 }
 
@@ -77,8 +74,9 @@ header, #search section {
   margin-right: 10px;
 }
 
-#header-right > p {
+#header-right > a {
   margin-left: 10px;
+  text-decoration: none;
 }
 
 .change {
@@ -94,15 +92,14 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.16);
   transition: 0.3s;
   z-index: 1000;
-
 }
 
 .sidebar2 ul {
   list-style-type: none;
-  padding: 30px 40px ;
+  padding: 30px 40px;
   margin-bottom: 0;
 }
 
@@ -119,7 +116,7 @@ header, #search section {
   background-color: #e0e0e0;
 }
 
-#type1sidebar, #type2sidebar, #type3sidebar{
+#type1sidebar, #type2sidebar, #type3sidebar {
   display: none;
   background-color: #f9f9f9;
   width: 300px;
@@ -127,13 +124,12 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.16);
   transition: 0.3s;
   z-index: 999;
-
 }
 
-#type1sidebar ul, #type2sidebar ul, #type3sidebar ul{
+#type1sidebar ul, #type2sidebar ul, #type3sidebar ul {
   margin-top: 25%;
 }
 
@@ -156,20 +152,21 @@ header, #search section {
   font-size: 20px;
 }
 
-#close:hover{
+#close:hover {
   cursor: pointer;
 }
 
-#menu span{
+#menu span {
   font-size: 22px;
   cursor: pointer;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-/* _______ asfjalskgjalsgjals;gjasl;gjasl;gjaslpg*/
+/* _______ SEPERATING HEADER */
+
 main {
   width: 100vw;
   display: flex;

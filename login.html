@@ -7,6 +7,9 @@
   <title>Login</title>
   <link href="login.css" rel="stylesheet">
   <script src="login.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Nova+Mono&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -18,46 +21,47 @@
       </section>
     </section>
     <section id="header-center">
-      <h1>Re:M</h1>
+      <h1><a href="mainpage.html">RE:M</a></h1>
+    </section>
+    <section id="header-right">
+      <a href="shopping-cart.html">Shopping Cart</a>
+      <a href="login.html">Login</a>
     </section>
   </header>
+
 
   <section id="sidebar" class="sidebar2">
     <div id="close">✕ Close</div>
     <ul>
-      <li id="type1"><a href="#">watch1</a></li>
-      <li id="type2"><a href="#">watch2</a></li>
-      <li id="type3"><a href="#">watch3</a></li>
+      <li id="type1"><a href="#">MECHANICAL WATCH</a></li>
+      <li id="type2"><a href="#">DIGITAL WATCH</a></li>
+      <li id="type3"><a href="#">POCKET WATCH</a></li>
     </ul>
   </section>
 
   <section id="type1sidebar" class="sidebar2">
     <ul>
-      <li><a href="#">1watch1</a></li>
-      <li><a href="#">1watch2</a></li>
-      <li><a href="#">1watch3</a></li>
+      <li><a href="watch1.html">M1</a></li>
+      <li><a href="watch2.html">M2</a></li>
+      <li><a href="watch3.html">M3</a></li>
     </ul>
   </section>
 
   <section id="type2sidebar" class="sidebar2">
     <ul>
-      <li><a href="#">2watch1</a></li>
-      <li><a href="#">2watch2</a></li>
-      <li><a href="#">2watch3</a></li>
+      <li><a href="watch4.html">D1</a></li>
+      <li><a href="watch5.html">D2</a></li>
+      <li><a href="watch6.html">D3</a></li>
     </ul>
   </section>
 
   <section id="type3sidebar" class="sidebar2">
     <ul>
-      <li><a href="#">3watch1</a></li>
-      <li><a href="#">3watch2</a></li>
-      <li><a href="#">3watch3</a></li>
+      <li><a href="watch7.html">P1</a></li>
+      <li><a href="watch8.html">P2</a></li>
+      <li><a href="watch9.html">P3</a></li>
     </ul>
   </section>
-
-
-
-
 
   <section id="wholepage">
     <section id="login-container">
@@ -67,11 +71,11 @@
       <form id="input">
         <section class="inputpart">
           <label for="login">Login*</label>
-          <input type="text" id="login" id="login" required>
+          <input type="text" id="login" required>
         </section>
         <section class="inputpart">
           <label for="password">Password*</label>
-          <input type="text" id="password" id="password" required>
+          <input type="text" id="password" required>
         </section>
       </form>
 
@@ -79,7 +83,7 @@
       <section id="signin-with-create">
         <button id="signin" type="submit">Sign in</button>
         <section id="create">
-          <p>Don't have an Re:M account?</p> <a href="#" id="signup">Create yours now</a>
+          <p>Don't have an Re:M account?</p> <a href="newaccount.html" id="signup">Create yours now</a>
         </section>
       </section>
 

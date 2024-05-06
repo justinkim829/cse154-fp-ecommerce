@@ -12,25 +12,32 @@ header {
   top: 0;
   left: 0;
   width: 100%;
-  /*ADDED*/
-  border-bottom: 1px darkgray solid;
+}
+
+header, #number-and-wishlist {
+  justify-content: space-between;
 }
 
 header h1 {
   font-size: 40px;
 }
 
-header h1, header p, .white-color, header span {
+header h1 a {
+  text-decoration: none;
+}
+
+header h1, header a, header span {
   color: black;
 }
 
 header:hover, .lock-header {
   transition: background-color 1s;
   opacity: 70%;
-}
+  background-color: black;
 
-header:hover, .lock-header{
-  background-color: white;
+  h1, a, span {
+    color: white;
+  }
 }
 
 header, #header-left, #header-right, #search section {
@@ -64,15 +71,101 @@ header, #search section {
   margin-right: 10px;
 }
 
-#header-right > p {
+#header-right > a {
   margin-left: 10px;
+  text-decoration: none;
+}
+
+.change {
+  cursor: pointer;
+  display: none;
+  font-family: 'Yeon Sung', cursive;
+}
+
+#sidebar {
+  background-color: #f9f9f9;
+  width: 300px;
+  position: fixed;
+  top: 0vh;
+  left: -300px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.16);
+  transition: 0.3s;
+  z-index: 1000;
+}
+
+.sidebar2 ul {
+  list-style-type: none;
+  padding: 30px 40px;
+  margin-bottom: 0;
+}
+
+.sidebar2 ul li a {
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  transition: 0.3s;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.sidebar2 ul li a:hover {
+  background-color: #e0e0e0;
+}
+
+#type1sidebar, #type2sidebar, #type3sidebar {
+  display: none;
+  background-color: #f9f9f9;
+  width: 300px;
+  position: fixed;
+  top: 0vh;
+  left: -300px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.16);
+  transition: 0.3s;
+  z-index: 999;
+}
+
+#type1sidebar ul, #type2sidebar ul, #type3sidebar ul {
+  margin-top: 25%;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(1, 1, 1);
+  opacity: 85%;
+  z-index: 200;
+  pointer-events: none;
+}
+
+#close {
+  padding-top: 30px;
+  padding-left: 50px;
+  font-size: 20px;
+}
+
+#close:hover {
+  cursor: pointer;
+}
+
+#menu span {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
 }
 
 /* _______________________________________________ */
 
 main {
   width: 100vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -101,55 +194,85 @@ main {
 
 #shopping-cart {
   display: flex;
+  justify-content: center;
+  gap: 30px;
   margin-top: 10vh;
   margin-bottom: 10vh;
-}
-
-#left-side {
-  width: 70vw;
-  background-color: rgb(236, 236, 236);
-}
-
-#product-container {
   margin-left: 8%;
   margin-right: 8%;
 }
 
-#product {
+#left-side {
+  width: 50vw;
+}
+
+.product {
   display: flex;
   justify-content: space-between;
 }
 
-#product img {
+.product img {
   width: 208px;
   height: 208px;
 }
 
-#product #description {
+.product .description {
   display: flex;
   flex-direction: column;
 }
 
-#product #description #remove {
+.description-name, .cost > p, .cost .remove {
+  font-weight: bold;
+}
+
+.description-id {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+.description-status {
+  margin-bottom: 5px;
+  margin-top: 40px;
+}
+
+.description-status-msg {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+.cost .remove {
   display: flex;
   text-decoration: underline;
   gap: 10px;
 }
 
-#product #cost {
+.cost select {
+  font-family: "Merienda", cursive;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.product .cost {
   display: flex;
   flex-direction: column;
 }
 
 #right-side {
-  width: 30vw;
+  margin-top: 4vh;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+  width: 25vw;
+  height: 60vh;
   display: flex;
   justify-content: center;
   border: 1px gray solid;
 }
 
 #receipt-container {
-  width: 50%;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 #order-summary {
@@ -177,4 +300,27 @@ main {
   border-radius: 30px;
   font-size: 15px;
   font-family: "Merienda", cursive;
+}
+
+/* ____________________________ footer */
+
+footer {
+  background-color: black;
+  width: 100%;
+  height: 15vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+footer p {
+  color: white;
+  font-size: 50px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 5px;
 }

@@ -1,31 +1,18 @@
 "use strict";
 
-(function() {
+(function () {
 
   window.addEventListener('load', init);
 
-  /**
-   * initialize the document by adding sidebars when menu clicked
-   * lock header when scrolled down
-   * adds other functionalities to operate website
-   */
   function init() {
 
-    window.onscroll = function() {
-      let header = qs("header");
-      if (window.scrollY > 0) {
-        header.classList.add("lock-header");
-      } else {
-        header.classList.remove("lock-header");
-      }
-    }
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
     id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
-    // click and close the side bar
+    //click and close the side bar
     id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
@@ -35,13 +22,22 @@
       id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
-      });
+      })
+    }
+
+    window.onscroll = function() {
+      let header = qs("header");
+      if (window.scrollY > 0) {
+        header.classList.add("lock-header");
+      } else {
+        header.classList.remove("lock-header");
+      }
     }
   }
 
- /** this function is used to open the sidebar
-  *  @param {object} evt - the sidebar that user is clicked
-  */
+  /** this function is used to open the sidebar
+    *  @param {object} evt - the sidebar that user is clicked
+    */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -85,7 +81,8 @@
     });
   }
 
-  // when click the place other than sidebar, the sidebar would be closed
+
+  //when click the place other than sidebar, the sidebar would be closed
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let type1Sidebar = id('type1sidebar');
@@ -103,6 +100,7 @@
 
       document.removeEventListener('click', closeSidebar);
     }
+
   }
 
   /**
@@ -118,22 +116,23 @@
     });
   }
 
+
   /**
    * This function is used to get that element by its ID
    * @param {string} id - the ID that wants to get
    * @return {Node} return the node that ID corespond to .
    */
-  function id(id) {
-    return document.getElementById(id);
-  }
+    function id(id) {
+      return document.getElementById(id);
+    }
 
-  /**
-   * This function is used to get that element by its name
-   * @param {string} selector - the element wants to be find in the HTML page
-   * @return {Node} return the node that selector corespond to .
-   */
-  function qs(selector) {
-    return document.querySelector(selector);
-  }
+    /**
+     * This function is used to get that element by its name
+     * @param {string} selector - the element wants to be find in the HTML page
+     * @return {Node} return the node that selector corespond to .
+     */
+    function qs(selector) {
+      return document.querySelector(selector);
+    }
 
-  })();
+})();
