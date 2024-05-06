@@ -37,11 +37,11 @@ header:hover, .lock-header {
   background-color: black;
 }
 
-.lock-header h1, .lock-header a, .lock-header span,
-header:hover h1, header:hover a, header:hover span {
-  color: white;
+.lock-header, header:hover {
+  h1, a, span {
+    color: white;
+  }
 }
-
 
 header, #header-left, #header-right, #search section {
   display: flex;
@@ -92,15 +92,14 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  box-shadow: 3px, 0, 6px, rgba(0,0,0,0.16);
   transition: 0.3s;
   z-index: 1000;
-
 }
 
 .sidebar2 ul {
   list-style-type: none;
-  padding: 30px 40px ;
+  padding: 30px 40px;
   margin-bottom: 0;
 }
 
@@ -117,7 +116,7 @@ header, #search section {
   background-color: #e0e0e0;
 }
 
-#type1sidebar, #type2sidebar, #type3sidebar{
+#type1sidebar, #type2sidebar, #type3sidebar {
   display: none;
   background-color: #f9f9f9;
   width: 300px;
@@ -125,13 +124,12 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  box-shadow: 3px, 0, 6px, rgba(0,0,0,0.16);
   transition: 0.3s;
   z-index: 999;
-
 }
 
-#type1sidebar ul, #type2sidebar ul, #type3sidebar ul{
+#type1sidebar ul, #type2sidebar ul, #type3sidebar ul {
   margin-top: 25%;
 }
 
@@ -154,33 +152,20 @@ header, #search section {
   font-size: 20px;
 }
 
-#close:hover{
+#close:hover {
   cursor: pointer;
 }
 
-#menu span{
+#menu span {
   font-size: 22px;
   cursor: pointer;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-
-
 /* ------------------------------------------- */
-
-
-
-
-
-
-
-
-
-
-
 
 #wholepage{
   margin-top: 25vh;
@@ -196,7 +181,6 @@ header, #search section {
   padding: 40px;
   width: 700px;
   box-sizing: border-box;
-  width: 50%;
   padding-top: 0px;
 }
 
@@ -225,27 +209,17 @@ input[type="text"], input[type="password"] {
   border-radius: 4px;
 }
 
-/* #forgetpassword {
-  display: block;
-  text-align: right;
-  margin-top: 10px;
-  color: #0066cc;
-  text-decoration: none;
-} */
-
-#signin-with-create{
+#signin-with-create {
   display: flex;
   flex-direction: column;
   margin-left: 50%;
   width: 55%;
   margin-top: 15px;
-
 }
 
 #signin {
   background-color: black;
   color: white;
-  border: none;
   padding: 10px 20px;
   border-radius: 30px;
   cursor: pointer;
@@ -255,20 +229,19 @@ input[type="text"], input[type="password"] {
   transition: all 0.2s ease;
 }
 
-#signin:hover{
+#signin:hover {
   color: black;
   background-color: white;
 }
 
-#create{
+#create {
   display: flex;
   flex-direction: column;
   align-items:flex-start;
   margin: 0 0 0 30px;
 }
 
-#create p{
-
+#create p {
   margin: 10px 0 0 0;
 }
 
@@ -282,7 +255,6 @@ input[type="text"], input[type="password"] {
   text-decoration: none;
 }
 
-
 #account-info {
   width: 300px;
   height: 25%;
@@ -292,15 +264,12 @@ input[type="text"], input[type="password"] {
   border-radius: 2%;
 }
 
-#account-info h3{
+#account-info h3 {
   font-size: 10px;
   padding-left: 7px;
 }
-hr{
-  margin-left: 7px;
-}
 
-#account-info p{
+#account-info p {
   font-size: 13px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -308,16 +277,16 @@ hr{
   padding-left: 20px;
 }
 
-#sentences{
+#sentences {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
-hr{
+hr {
   height: 1px;
-    background-color: #ccc;
-    border: none;
-    margin: 10px 0;
+  margin-left: 7px;
+  background-color: #ccc;
+  border: none;
+  margin: 10px 0;
 }
-

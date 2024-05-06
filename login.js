@@ -16,6 +16,7 @@
         header.classList.remove("lock-header");
       }
     }
+
     let menu = id('menu');
     let sidebar = id('sidebar');
     let close = id("close");
@@ -71,6 +72,7 @@
       toggleSidebar(type3Sidebar);
     })
   }
+
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";

@@ -1,4 +1,3 @@
-
 #logo {
   background-color: black;
   width: 100%;
@@ -9,10 +8,9 @@
   justify-content: center;
   box-sizing: border-box;
   padding: 0;
-
 }
 
-#logo p{
+#logo p {
   color: white;
   font-size: 50px;
   font-family: "Libre Baskerville", sans-serif;

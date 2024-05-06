@@ -73,10 +73,9 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  box-shadow: 3px, 0, 6px, rgba(0,0,0,0.16);
   transition: 0.3s;
   z-index: 1000;
-
 }
 
 .sidebar2 ul {
@@ -98,7 +97,7 @@ header, #search section {
   background-color: #e0e0e0;
 }
 
-#type1sidebar, #type2sidebar, #type3sidebar{
+#type1sidebar, #type2sidebar, #type3sidebar {
   display: none;
   background-color: #f9f9f9;
   width: 300px;
@@ -106,13 +105,12 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  box-shadow: 3px, 0, 6px, rgba(0,0,0,0.16);
   transition: 0.3s;
   z-index: 999;
-
 }
 
-#type1sidebar ul, #type2sidebar ul, #type3sidebar ul{
+#type1sidebar ul, #type2sidebar ul, #type3sidebar ul {
   margin-top: 25%;
 }
 
@@ -136,15 +134,15 @@ header, #search section {
   font-size: 20px;
 }
 
-#close:hover{
+#close:hover {
   cursor: pointer;
 }
 
-#menu span{
+#menu span {
   font-size: 22px;
   cursor: pointer;
 }
 
-.hidden{
+.hidden {
   display: none;
 }

@@ -39,10 +39,6 @@ header h1, header a, header span {
 
 header:hover, .lock-header {
   transition: background-color 1s;
-
-}
-
-header:hover, .lock-header{
   background-color: black;
 }
 
@@ -95,10 +91,9 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  box-shadow: 3px, 0, 6px, rgba(0,0,0,0.16);
   transition: 0.3s;
   z-index: 1000;
-
 }
 
 .sidebar2 ul {
@@ -120,7 +115,7 @@ header, #search section {
   background-color: #e0e0e0;
 }
 
-#type1sidebar, #type2sidebar, #type3sidebar{
+#type1sidebar, #type2sidebar, #type3sidebar {
   display: none;
   background-color: #f9f9f9;
   width: 300px;
@@ -134,7 +129,7 @@ header, #search section {
 
 }
 
-#type1sidebar ul, #type2sidebar ul, #type3sidebar ul{
+#type1sidebar ul, #type2sidebar ul, #type3sidebar ul {
   margin-top: 25%;
 }
 
@@ -157,28 +152,20 @@ header, #search section {
   font-size: 20px;
 }
 
-#close:hover{
+#close:hover {
   cursor: pointer;
 }
 
-#menu span{
+#menu span {
   font-size: 22px;
   cursor: pointer;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-
 /* ------------------------------------------- */
-
-
-
-
-
-
-
 
 #wholepage {
   margin-top: 25%;
@@ -199,19 +186,16 @@ header, #search section {
 }
 
 
-section.inputpart,
-#name-dateofbirth>section {
+section.inputpart, #name-dateofbirth > section {
   margin-top: 20px;
-
   display: flex;
   flex-direction: column;
   width: 100%;
 }
 
-#dropdownpart{
+#dropdownpart {
   margin-top: 30px;
   margin-bottom: 20px;
-
 }
 
 label {
@@ -220,9 +204,7 @@ label {
   font-size: 16px;
 }
 
-
-input[type="text"],
-select {
+input[type="text"], select {
   width: 100%;
   height: 40px;
   padding: 0 10px;
@@ -232,16 +214,16 @@ select {
   box-sizing: border-box;
 }
 
-#name-dateofbirth{
+#name-dateofbirth {
   display: flex;
   flex-direction: row;
 }
 
-#password{
+#password {
   margin: 0;
 }
 
-#requirement{
+#requirement {
   font-size: 10px;
   margin-left: 10px;
 }
@@ -253,7 +235,7 @@ select {
   margin-left: 10px;
 }
 
-#year{
+#year {
   margin-right: 0px;
 }
 
@@ -269,7 +251,6 @@ button {
   transition: background-color 0.3s;
   border: solid black 2px;
 }
-
 
 button:hover {
   color: black;
