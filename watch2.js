@@ -214,15 +214,4 @@
     function qsa(selector) {
       return document.querySelectorAll(selector);
     }
-    // _______________________ header start
-    function closeSidebar(event){
-      if (!sidebar.contains(event.target) && event.target !== menu) {
-        sidebar.style.left = "-300px";
-        overlay.style.display = "none";
-        overlay.style.pointerEvents = 'none';
-        document.removeEventListener('click', closeSidebar);
-      }
-
-    }
-    // _______________________ header end
 })();
