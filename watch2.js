@@ -61,6 +61,7 @@
       hideExistSidebars(type1Sidebar, type2Sidebar);
       toggleSidebar(type3Sidebar);
     })
+
   //THE HEADER END
 
     //change wishlisticon when wishlist icon("â™¡") clicked
@@ -122,11 +123,11 @@
     let wishlistIcon = qs("#add-to-wishlist p");
     let message = gen("p");
     if (id("add-message").children.length === 0) {
-      if (wishlistIcon.textContent === "â™¡") {
-        wishlistIcon.textContent = "â™¥ï¸Ž"
+      if (wishlistIcon.textContent === "♡") {
+        wishlistIcon.textContent = "♥︎"
         message.textContent = "Added to wishlist";
       } else {
-        wishlistIcon.textContent = "â™¡";
+        wishlistIcon.textContent = "♡";
         message.textContent = "Removed from Wishlist";
       }
       setTimeout(() => {
