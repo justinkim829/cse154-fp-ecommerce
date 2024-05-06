@@ -23,7 +23,7 @@ header h1 {
   font-size: 40px;
 }
 
-header h1, header p, header span {
+header h1, header a, header span {
   color: white;
 }
 
@@ -31,10 +31,6 @@ header:hover, .lock-header {
   transition: background-color 1s;
   opacity: 70%;
   background-color: white;
-}
-
-.lock-header h1, .lock-header p, .lock-header span {
-  color: black;
 }
 
 .lock-header h1, .lock-header a, .lock-header span {
