@@ -1,13 +1,10 @@
 "use strict";
 
-(function () {
-
+(function() {
   window.addEventListener('load', init);
-
 
   /** initilize all the buttons in the menu */
   function init() {
-
     window.onscroll = function () {
       harderFix();
     }
@@ -21,9 +18,8 @@
     let type1 = id("type1");
     let type2 = id("type2");
     let type3 = id("type3");
-
     menu.classList.add(".change");
-    menu.addEventListener('click', function (event) {
+    menu.addEventListener('click', function(event) {
       sidebar.style.left = '0px';
       overlay.style.display = "block";
       overlay.style.pointerEvents = 'auto';
@@ -35,45 +31,44 @@
     });
 
     //click and close the side bar
-    close.addEventListener('click', function () {
-      closeSidebar(sidebar,type1Sidebar,type2Sidebar,type3Sidebar);
+    close.addEventListener('click', function() {
+      closeSidebar(sidebar, type1Sidebar, type2Sidebar, type3Sidebar);
     });
 
-    type1.addEventListener("click", function () {
-
+    type1.addEventListener("click", function() {
       hideExistSidebars(type2Sidebar, type3Sidebar);
       toggleSidebar(type1Sidebar);
-    })
+    });
 
-    type2.addEventListener("click", function () {
+    type2.addEventListener("click", function() {
       hideExistSidebars(type1Sidebar, type3Sidebar);
       toggleSidebar(type2Sidebar);
-    })
+    });
 
-    type3.addEventListener("click", function () {
+    type3.addEventListener("click", function() {
       hideExistSidebars(type1Sidebar, type2Sidebar);
       toggleSidebar(type3Sidebar);
-    })
+    });
   }
 
-  function harderFix(){
+    /** lock the header when it's moved */
+  function harderFix() {
     let header = qs("header");
-      console.log(header);
-      if (window.scrollY > 0) {
-        header.classList.add("lock-header");
-      } else {
-        header.classList.remove("lock-header");
-      }
+    console.log(header);
+    if (window.scrollY > 0) {
+      header.classList.add("lock-header");
+    } else {
+      header.classList.remove("lock-header");
+    }
   }
 
-  function closeSidebar(sidebar,type1Sidebar,type2Sidebar,type3Sidebar){
+  function closeSidebar(sidebar, type1Sidebar, type2Sidebar, type3Sidebar) {
     sidebar.style.left = '-300px';
-      type1Sidebar.style.left = '-300px';
-      type2Sidebar.style.left = '-300px';
-      type3Sidebar.style.left = '-300px';
-      overlay.style.display = "none";
+    type1Sidebar.style.left = '-300px';
+    type2Sidebar.style.left = '-300px';
+    type3Sidebar.style.left = '-300px';
+    overlay.style.display = "none";
   }
-
 
   /**
    * make the sidebar appear and disappear
@@ -102,8 +97,6 @@
       }
     });
   }
-
-
 
   /**
    * when click the place other than sidebar, the sidebar would be closed
@@ -140,8 +133,6 @@
       sidebar.style.display = "none";
     });
   }
-
-
 
   /**
    * This function is used to generate a new Node
