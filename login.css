@@ -1,39 +1,47 @@
 body {
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: white;
-  margin:0;
+  padding: 0;
+  margin: 0;
+  font-family: "Merienda", cursive;
 }
 
 header {
   height: 11vh;
-  justify-content:flex-start;
+  justify-content: space-between;
   z-index: 3;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  background-color: lightgray;
+}
+
+header, #number-and-wishlist {
+  justify-content: space-between;
 }
 
 header h1 {
   font-size: 40px;
 }
 
-header h1, header p, .white-color, header span {
+header h1 a {
+  text-decoration: none;
+}
+
+header h1, header a, header span {
   color: black;
 }
 
 header:hover, .lock-header {
   transition: background-color 1s;
   opacity: 70%;
+  background-color: black;
 }
 
-header:hover, .lock-header{
-  background-color: white;
+.lock-header h1, .lock-header a, .lock-header span,
+header:hover h1, header:hover a, header:hover span {
+  color: white;
 }
+
 
 header, #header-left, #header-right, #search section {
   display: flex;
@@ -66,8 +74,9 @@ header, #search section {
   margin-right: 10px;
 }
 
-#header-right > p {
+#header-right > a {
   margin-left: 10px;
+  text-decoration: none;
 }
 
 .change {
@@ -100,7 +109,7 @@ header, #search section {
   text-decoration: none;
   display: block;
   transition: 0.3s;
-  font-size: 20px;
+  font-size: 18px;
   margin-bottom: 20px;
 }
 
@@ -122,6 +131,10 @@ header, #search section {
 
 }
 
+#type1sidebar ul, #type2sidebar ul, #type3sidebar ul{
+  margin-top: 25%;
+}
+
 #overlay {
   display: none;
   position: fixed;
@@ -135,10 +148,9 @@ header, #search section {
   pointer-events: none;
 }
 
-#close{
+#close {
   padding-top: 30px;
   padding-left: 50px;
-  margin: 0;
   font-size: 20px;
 }
 
@@ -156,6 +168,7 @@ header, #search section {
 }
 
 
+
 /* ------------------------------------------- */
 
 
@@ -170,6 +183,7 @@ header, #search section {
 
 
 #wholepage{
+  margin-top: 25vh;
   width: 100%;
   display: flex;
   flex-direction: row;
