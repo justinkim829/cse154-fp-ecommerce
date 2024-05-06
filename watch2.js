@@ -5,8 +5,9 @@
   window.addEventListener('load', init);
 
   /**
-   * initialize the document by adding sidebars when menu licked
+   * initialize the document by adding sidebars when menu clicked
    * lock header when scrolled down
+   * adds other functionalities to operate website
    */
   function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
@@ -110,7 +111,10 @@
       }
     }
 
-  // HEADER FUNCTION START
+  /**
+   * control sidebar to appear / disappear
+   * @param {Object} subSidebar - sidebar
+   */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -121,6 +125,11 @@
     }
   }
 
+  /**
+   * hide existing sidebars
+   * @param {Object} subSidebar1 - sidebar 1 to hide
+   * @param {Object} subSidebar2  - sidebar 2 to hide
+   */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -152,6 +161,12 @@
 
   }
 
+  /**
+   * sidebars to hide
+   * @param {Object} subSidebar1 - sidebar to hide
+   * @param {Object} subSidebar2 - sidebar to hide
+   * @param {Object} subSidebar3 - sidebar to hide
+   */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
@@ -159,7 +174,11 @@
     });
   }
 
-  //HEADER FUNCTION END
+  /**
+   * genereates element
+   * @param {Element} element
+   * @returns {Object} - created element
+   */
   function gen(element) {
     return document.createElement(element);
   }

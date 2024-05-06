@@ -1,14 +1,18 @@
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener('load', init);
 
+  /**
+   * initialize the document by adding sidebars when menu clicked
+   * lock header when scrolled down
+   * adds other functionalities to operate website
+   */
   function init() {
 
     window.onscroll = function() {
       let header = qs("header");
-      console.log(header);
       if (window.scrollY > 0) {
         header.classList.add("lock-header");
       } else {
@@ -21,7 +25,7 @@
       openSidebar(evt);
     });
 
-    //click and close the side bar
+    // click and close the side bar
     id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
@@ -31,10 +35,13 @@
       id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
-      })
+      });
     }
   }
 
+ /** this function is used to open the sidebar
+  *  @param {object} evt - the sidebar that user is clicked
+  */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -50,6 +57,10 @@
     document.addEventListener('click', closeSidebar);
   }
 
+  /**
+   * control sidebar to appear / disappear
+   * @param {Object} subSidebar - sidebar
+   */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -60,6 +71,11 @@
     }
   }
 
+  /**
+   * hide existing sidebars
+   * @param {Object} subSidebar1 - sidebar 1 to hide
+   * @param {Object} subSidebar2  - sidebar 2 to hide
+   */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -69,24 +85,32 @@
     });
   }
 
-  //when click the place other than sidebar, the sidebar would be closed
+  // when click the place other than sidebar, the sidebar would be closed
   function closeSidebar(event) {
     let sidebar = id('sidebar');
-    let overlay = id("overlay");
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
     let type3Sidebar = id('type3sidebar');
-    if (!sidebar.contains(event.target) && !type1Sidebar.contains(event.target) &&
-    !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
+    let overlay = id("overlay");
+
+    if (!sidebar.contains(event.target) && event.target !== menu
+      && !type1Sidebar.contains(event.target) && !type2Sidebar.contains(event.target)
+      && !type3Sidebar.contains(event.target)) {
       sidebar.style.left = "-300px";
       hideAllSidebars(type1Sidebar, type2Sidebar, type3Sidebar);
       overlay.style.display = "none";
       overlay.style.pointerEvents = 'none';
+
       document.removeEventListener('click', closeSidebar);
     }
-
   }
 
+  /**
+   * sidebars to hide
+   * @param {Object} subSidebar1 - sidebar to hide
+   * @param {Object} subSidebar2 - sidebar to hide
+   * @param {Object} subSidebar3 - sidebar to hide
+   */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
