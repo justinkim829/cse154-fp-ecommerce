@@ -23,7 +23,7 @@ header h1 {
   font-size: 40px;
 }
 
-header h1, header p, header span {
+header h1, header a, header span {
   color: white;
 }
 
@@ -33,11 +33,11 @@ header:hover, .lock-header {
   background-color: white;
 }
 
-.lock-header h1, .lock-header p, .lock-header span {
+.lock-header h1, .lock-header a, .lock-header span {
   color: black;
 }
 
-header:hover h1, header:hover p, header:hover span{
+header:hover h1, header:hover a, header:hover span{
   color: black;
 }
 
@@ -72,8 +72,9 @@ header, #search section {
   margin-right: 10px;
 }
 
-#header-right > p {
+#header-right > a {
   margin-left: 10px;
+  text-decoration: none;
 }
 
 #search img {

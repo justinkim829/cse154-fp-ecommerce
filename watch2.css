@@ -33,7 +33,7 @@ header h1 a {
   text-decoration: none;
 }
 
-header h1, header p, .white-color, header span {
+header h1, header a, header span {
   color: white;
 }
 
@@ -77,8 +77,9 @@ header, #search section {
   margin-right: 10px;
 }
 
-#header-right > p {
+#header-right > a {
   margin-left: 10px;
+  text-decoration: none;
 }
 
 .change {
