@@ -8,6 +8,17 @@
 
   /** this function is used to initilizale the button with its functions. */
   function init() {
+
+    //lock header when window is scrolled down
+    window.onscroll = function() {
+      let header = qs("header");
+      if (window.scrollY > 0) {
+        header.classList.add("lock-header");
+      } else {
+        header.classList.remove("lock-header");
+      }
+    }
+
     let menu = id('menu');
     let sidebar = id('sidebar');
     let close = id("close");
@@ -48,7 +59,6 @@
 
 
     type1.addEventListener("click", function () {
-
       hideExistSidebars(type2Sidebar, type3Sidebar);
       toggleSidebar(type1Sidebar);
     })
@@ -61,6 +71,17 @@
     type3.addEventListener("click", function () {
       hideExistSidebars(type1Sidebar, type2Sidebar);
       toggleSidebar(type3Sidebar);
+    })
+
+    //THIS IS THE ADDED PART: SEARCH BAR
+    let input = qs("#search-part input")
+    input.addEventListener('keypress', (evt) => {
+      if (evt.key === "Enter") {
+        let inputValue = input.value.trim().toLowerCase();
+        if (inputValue === '' || "watch".includes(inputValue)) {
+          window.location.href = 'watch2.html';
+        }
+      }
     })
 
   }
