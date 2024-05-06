@@ -46,14 +46,11 @@
       type2Sidebar.style.left = '-300px';
       type3Sidebar.style.left = '-300px';
       overlay.style.display = "none";
-
     });
 
     let type1 = id("type1");
     let type2 = id("type2");
     let type3 = id("type3");
-
-
 
     type1.addEventListener("click", function() {
       hideExistSidebars(type2Sidebar, type3Sidebar);
@@ -107,11 +104,12 @@
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
     let type3Sidebar = id('type3sidebar');
+    let overlay = id("overlay");
 
     if (!sidebar.contains(event.target) && !type1Sidebar.contains(event.target) &&
     !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
       sidebar.style.left = "-300px";
-      hideAllSidebars(type1Sidebar,type2Sidebar,type3Sidebar);
+      hideAllSidebars(type1Sidebar, type2Sidebar, type3Sidebar);
       overlay.style.display = "none";
       overlay.style.pointerEvents = 'none';
 
