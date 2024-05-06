@@ -283,8 +283,8 @@ input[type="text"], input[type="password"] {
 
 hr {
   height: 1px;
-  margin-left: 7px;
   background-color: #ccc;
   border: none;
   margin: 10px;
+  margin-left: 7px;
 }
