@@ -176,6 +176,9 @@ header, #search section {
   z-index: 999;
 
 }
+#type1sidebar ul, #type2sidebar ul, #type3sidebar ul{
+  margin-top: 25%;
+}
 
 
 
@@ -230,6 +233,7 @@ header, #search section {
   border: 1px solid black;
   border-radius: 3%;
   font-family: "Merienda",serif;
+  text-align: center;
 }
 
 .box h3, .box p{
