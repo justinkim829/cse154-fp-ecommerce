@@ -4,6 +4,8 @@ body {
   font-family: "Merienda", cursive;
 }
 
+
+
 header {
   height: 11vh;
   justify-content: space-between;
@@ -19,45 +21,34 @@ header h1 {
   font-size: 40px;
 }
 
-<<<<<<< HEAD:watch2.css
-header h1, header p, .white-color, header span {
+header h1 a {
   color: white;
-=======
-header h1,
-header p,
-.white-color,
-header span {
-  color: black;
->>>>>>> 6e874b6a905fceca1fbf542e2b8d731c54baf272:AllWatches/watch2.css
+  text-decoration: none;
 }
 
-header:hover,
-.lock-header {
+header h1, header p, .white-color, header span {
+  color: white;
+}
+
+header:hover, .lock-header {
   transition: background-color 1s;
   opacity: 70%;
 }
 
-header:hover,
-.lock-header {
-  background-color: white;
-  color: black;
+header:hover, .lock-header{
+  background-color: black;
 }
 
-header,
-#header-left,
-#header-right,
-#search section {
+header, #header-left, #header-right, #search section {
   display: flex;
   align-items: center;
 }
 
-header,
-#search section {
+header, #search section {
   align-items: center;
 }
 
-#header-left,
-#header-right {
+#header-left, #header-right {
   gap: 10px;
 }
 
@@ -75,17 +66,104 @@ header,
   transform: translateX(-50%);
 }
 
-#header-left>p {
+#header-left > p {
   margin-right: 10px;
 }
 
-#header-right>p {
+#header-right > p {
   margin-left: 10px;
 }
 
+.change {
+  cursor: pointer;
+  display: none;
+  font-family: 'Yeon Sung', cursive;
+}
 
-/* _______________________________________________ */
+#sidebar {
+  background-color: #f9f9f9;
+  width: 300px;
+  position: fixed;
+  top: 0vh;
+  left: -300px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  transition: 0.3s;
+  z-index: 1000;
 
+}
+
+.sidebar2 ul {
+  list-style-type: none;
+  padding: 30px 40px ;
+  margin-bottom: 0;
+}
+
+.sidebar2 ul li a {
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  transition: 0.3s;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.sidebar2 ul li a:hover {
+  background-color: #e0e0e0;
+}
+
+#type1sidebar, #type2sidebar, #type3sidebar{
+  display: none;
+  background-color: #f9f9f9;
+  width: 300px;
+  position: fixed;
+  top: 0vh;
+  left: -300px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0,0,0,0.16);
+  transition: 0.3s;
+  z-index: 999;
+
+}
+
+#type1sidebar ul, #type2sidebar ul, #type3sidebar ul{
+  margin-top: 25%;
+}
+
+#overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgb(1, 1, 1);
+  opacity: 85%;
+  z-index: 200;
+  pointer-events: none;
+}
+
+#close{
+  padding-top: 30px;
+  padding-left: 50px;
+  margin: 0;
+  font-size: 20px;
+}
+
+#close:hover{
+  cursor: pointer;
+}
+
+#menu span{
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.hidden{
+  display: none;
+}
+
+/* _______ asfjalskgjalsgjals;gjasl;gjasl;gjaslpg*/
 main {
   width: 100vw;
   display: flex;
@@ -103,6 +181,28 @@ main {
   font-size: 50px;
   left: 1.4%;
   top: 44.5%;
+}
+
+#image-number {
+  position: absolute;
+  width: 50vw;
+  display: flex;
+  justify-content: space-around;
+  top: 95%;
+}
+
+#image-number hr {
+  width: 15%;
+  margin: 0;
+  padding: 0;
+}
+
+.to-black-border {
+  border: 1px black solid;
+}
+
+.to-white-border {
+  border: 1px white solid;
 }
 
 #right-arrow {
@@ -199,28 +299,4 @@ main {
 .watch-box img {
   width: 196px;
   height: 196px;
-}
-
-
-
-#logo {
-  background-color: black;
-  width: 100%;
-  height: 15vh;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  box-sizing: border-box;
-  padding: 0;
-
-}
-
-#logo p{
-  color: white;
-  font-size: 50px;
-  font-family: "Libre Baskerville", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  letter-spacing: 5px;
 }
