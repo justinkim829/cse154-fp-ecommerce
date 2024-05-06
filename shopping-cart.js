@@ -6,56 +6,24 @@
 
   function init() {
 
-    //THE HEADER START
-    let menu = id('menu');
-    let sidebar = id('sidebar');
-    let close = id("close");
-    let overlay = id("overlay");
-    let type1Sidebar = id('type1sidebar');
-    let type2Sidebar = id('type2sidebar');
-    let type3Sidebar = id('type3sidebar');
-
-    menu.classList.add(".change");
-
-    menu.addEventListener('click', function(event) {
-      sidebar.style.left = '0px';
-      overlay.style.display = "block";
-      overlay.style.pointerEvents = 'auto';
-      [type1Sidebar, type2Sidebar, type3Sidebar].forEach(sidebar => {
-        sidebar.style.left = '0px';
-      });
-      event.stopPropagation();
-      document.addEventListener('click', closeSidebar);
+    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
+    id("menu").classList.add(".change");
+    id("menu").addEventListener('click', function(evt) {
+      openSidebar(evt);
     });
 
     //click and close the side bar
-    close.addEventListener('click', function() {
-      sidebar.style.left = '-300px';
-      type1Sidebar.style.left = '-300px';
-      type2Sidebar.style.left = '-300px';
-      type3Sidebar.style.left = '-300px';
-      overlay.style.display = "none";
-
+    id("close").addEventListener('click', function() {
+      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
-    let type1 = id("type1");
-    let type2 = id("type2");
-    let type3 = id("type3");
-
-    type1.addEventListener("click", function() {
-      hideExistSidebars(type2Sidebar, type3Sidebar);
-      toggleSidebar(type1Sidebar);
-    });
-
-    type2.addEventListener("click", function() {
-      hideExistSidebars(type1Sidebar, type3Sidebar);
-      toggleSidebar(type2Sidebar);
-    });
-
-    type3.addEventListener("click", function() {
-      hideExistSidebars(type1Sidebar, type2Sidebar);
-      toggleSidebar(type3Sidebar);
-    });
+    for (let i = 0; i < SIDEBARS.length; i++) {
+      let idText = "type" + String(i + 1);
+      id(idText).addEventListener("click", function() {
+        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
+        toggleSidebar(SIDEBARS[i]);
+      })
+    }
 
     window.onscroll = function() {
       let header = qs("header");
@@ -66,6 +34,7 @@
       }
     }
   }
+
   // HEADER FUNCTION START
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
@@ -75,6 +44,21 @@
       subSidebar.style.left = "0px";
       subSidebar.style.display = "none";
     }
+  }
+
+  function openSidebar(evt) {
+    let type1Sidebar = id('type1sidebar');
+    let type2Sidebar = id('type2sidebar');
+    let type3Sidebar = id('type3sidebar');
+
+    id("sidebar").style.left = '0px';
+    id("overlay").style.display = "block";
+    id("overlay").style.pointerEvents = 'auto';
+    [type1Sidebar, type2Sidebar, type3Sidebar].forEach(sidebar => {
+      sidebar.style.left = '0px';
+    });
+    evt.stopPropagation();
+    document.addEventListener('click', closeSidebar);
   }
 
   function hideExistSidebars(subSidebar1, subSidebar2) {
