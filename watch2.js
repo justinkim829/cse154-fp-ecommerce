@@ -16,10 +16,7 @@
     let type3Sidebar = id('type3sidebar');
 
     menu.classList.add(".change");
-    // change the style when putting the cursor on the menu
-
-    //click menu and open the side bar
-    menu.addEventListener('click', function (event) {
+    menu.addEventListener('click', function(event) {
       sidebar.style.left = '0px';
       overlay.style.display = "block";
       overlay.style.pointerEvents = 'auto';
@@ -31,7 +28,7 @@
     });
 
     //click and close the side bar
-    close.addEventListener('click', function () {
+    close.addEventListener('click', function() {
       sidebar.style.left = '-300px';
       type1Sidebar.style.left = '-300px';
       type2Sidebar.style.left = '-300px';
@@ -46,29 +43,25 @@
 
 
 
-    type1.addEventListener("click", function () {
+    type1.addEventListener("click", function() {
 
       hideExistSidebars(type2Sidebar, type3Sidebar);
       toggleSidebar(type1Sidebar);
     })
 
-    type2.addEventListener("click", function () {
+    type2.addEventListener("click", function() {
       hideExistSidebars(type1Sidebar, type3Sidebar);
       toggleSidebar(type2Sidebar);
     })
 
-    type3.addEventListener("click", function () {
+    type3.addEventListener("click", function() {
       hideExistSidebars(type1Sidebar, type2Sidebar);
       toggleSidebar(type3Sidebar);
     })
 
-  //THE HEADER END
-
-    //change wishlisticon when wishlist icon("â™¡") clicked
     let wishlistIcon = qs("#add-to-wishlist p");
     wishlistIcon.addEventListener('click', addToWishlist);
 
-    //change picture when right and left arrow clicked
     let rightArrow = qs("#right-arrow p");
     rightArrow.addEventListener('click', () => {
       nextPicture(true);
@@ -90,6 +83,10 @@
     }
   }
 
+  /**
+   * this function is used to change into the next picture when we clicked the arrow
+   * @param {boolean} isRightArrow - whether user chicked the arrow
+   */
   function nextPicture(isRightArrow) {
     let currentImage = qs("#img-container img");
 
@@ -119,6 +116,7 @@
     currentImage.src = newSrc;
   }
 
+  /** this function is used to add this product into the wishlist when click the love icon*/
   function addToWishlist() {
     let wishlistIcon = qs("#add-to-wishlist p");
     let message = gen("p");
