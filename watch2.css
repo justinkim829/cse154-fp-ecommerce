@@ -40,9 +40,6 @@ header h1, header a, header span {
 header:hover, .lock-header {
   transition: background-color 1s;
   opacity: 70%;
-}
-
-header:hover, .lock-header {
   background-color: black;
 }
 
@@ -95,14 +92,14 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px, 0, 6px, rgba(0,0,0,0.16);
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.16);
   transition: 0.3s;
   z-index: 1000;
 }
 
 .sidebar2 ul {
   list-style-type: none;
-  padding: 30px 40px ;
+  padding: 30px 40px;
   margin-bottom: 0;
 }
 
@@ -127,7 +124,7 @@ header, #search section {
   top: 0vh;
   left: -300px;
   height: 100%;
-  box-shadow: 3px, 0, 6px, rgba(0,0,0,0.16);
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.16);
   transition: 0.3s;
   z-index: 999;
 }
@@ -168,7 +165,7 @@ header, #search section {
   display: none;
 }
 
-/* _______ SEPERATING HEADER*/
+/* _______ SEPERATING HEADER */
 
 main {
   width: 100vw;

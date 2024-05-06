@@ -35,6 +35,7 @@ header:hover, .lock-header {
   transition: background-color 1s;
   opacity: 70%;
   background-color: black;
+
   h1, a, span {
     color: white;
   }
