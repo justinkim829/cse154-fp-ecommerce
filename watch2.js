@@ -6,16 +6,6 @@
 
   function init() {
 
-    //lock header when window is scrolled down
-    window.onscroll = function() {
-      let header = qs("header");
-      if (window.scrollY > 0) {
-        header.classList.add("lock-header");
-      } else {
-        header.classList.remove("lock-header");
-      }
-    }
-
     //THE HEADER START
     let menu = id('menu');
     let sidebar = id('sidebar');
@@ -87,6 +77,16 @@
     leftArrow.addEventListener('click', () => {
       nextPicture(false);
     });
+
+    //lock header when window is scrolled down
+    window.onscroll = function() {
+      let header = qs("header");
+      if (window.scrollY > 0) {
+        header.classList.add("lock-header");
+      } else {
+        header.classList.remove("lock-header");
+      }
+    }
   }
 
   function nextPicture(isRightArrow) {
@@ -164,6 +164,7 @@
     let type2Sidebar = id('type2sidebar');
     let type3Sidebar = id('type3sidebar');
 
+
     if (!sidebar.contains(event.target) && event.target !== menu
       && !type1Sidebar.contains(event.target) && !type2Sidebar.contains(event.target)
       && !type3Sidebar.contains(event.target)) {
@@ -183,6 +184,7 @@
       sidebar.style.display = "none";
     });
   }
+
   //HEADER FUNCTION END
   function gen(element) {
     return document.createElement(element);
@@ -214,15 +216,4 @@
     function qsa(selector) {
       return document.querySelectorAll(selector);
     }
-    // _______________________ header start
-    function closeSidebar(event){
-      if (!sidebar.contains(event.target) && event.target !== menu) {
-        sidebar.style.left = "-300px";
-        overlay.style.display = "none";
-        overlay.style.pointerEvents = 'none';
-        document.removeEventListener('click', closeSidebar);
-      }
-
-    }
-    // _______________________ header end
 })();

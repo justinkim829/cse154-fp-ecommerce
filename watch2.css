@@ -1,20 +1,27 @@
-body {
-  padding: 0;
-  margin: 0;
+body, #add-to-cart button {
   font-family: "Merienda", cursive;
 }
 
+body, #image-number hr {
+  padding: 0;
+}
 
+body, #image-number hr, #close {
+  margin: 0;
+}
 
 header {
   height: 11vh;
-  justify-content: space-between;
   z-index: 3;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   background-color: darkgray;
+}
+
+header, #number-and-wishlist {
+  justify-content: space-between;
 }
 
 header h1 {
@@ -143,10 +150,9 @@ header, #search section {
   pointer-events: none;
 }
 
-#close{
+#close {
   padding-top: 30px;
   padding-left: 50px;
-  margin: 0;
   font-size: 20px;
 }
 
@@ -193,8 +199,6 @@ main {
 
 #image-number hr {
   width: 15%;
-  margin: 0;
-  padding: 0;
 }
 
 .to-black-border {
@@ -250,7 +254,6 @@ main {
 
 #number-and-wishlist {
   display: flex;
-  justify-content: space-between;
 }
 
 #add-to-cart button {
@@ -260,7 +263,6 @@ main {
   height: 50px;
   border-radius: 30px;
   font-size: 15px;
-  font-family: "Merienda", cursive;
 }
 
 #product-details {
@@ -278,7 +280,6 @@ main {
 #down-side h2 {
   margin-top: 27vh;
   margin-bottom: 10vh;
-  font-family: "Comic Neue", cursive;
 }
 
 #recommendation-list {
