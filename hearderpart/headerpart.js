@@ -9,13 +9,7 @@
   function init() {
 
     window.onscroll = function () {
-      let header = qs("header");
-      console.log(header);
-      if (window.scrollY > 0) {
-        header.classList.add("lock-header");
-      } else {
-        header.classList.remove("lock-header");
-      }
+      harderFix();
     }
     let menu = id('menu');
     let sidebar = id('sidebar');
@@ -24,6 +18,10 @@
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
     let type3Sidebar = id('type3sidebar');
+    let type1 = id("type1");
+    let type2 = id("type2");
+    let type3 = id("type3");
+
     menu.classList.add(".change");
     menu.addEventListener('click', function (event) {
       sidebar.style.left = '0px';
@@ -38,16 +36,8 @@
 
     //click and close the side bar
     close.addEventListener('click', function () {
-      sidebar.style.left = '-300px';
-      type1Sidebar.style.left = '-300px';
-      type2Sidebar.style.left = '-300px';
-      type3Sidebar.style.left = '-300px';
-      overlay.style.display = "none";
+      closeSidebar(sidebar,type1Sidebar,type2Sidebar,type3Sidebar);
     });
-
-    let type1 = id("type1");
-    let type2 = id("type2");
-    let type3 = id("type3");
 
     type1.addEventListener("click", function () {
 
@@ -64,6 +54,24 @@
       hideExistSidebars(type1Sidebar, type2Sidebar);
       toggleSidebar(type3Sidebar);
     })
+  }
+
+  function harderFix(){
+    let header = qs("header");
+      console.log(header);
+      if (window.scrollY > 0) {
+        header.classList.add("lock-header");
+      } else {
+        header.classList.remove("lock-header");
+      }
+  }
+
+  function closeSidebar(sidebar,type1Sidebar,type2Sidebar,type3Sidebar){
+    sidebar.style.left = '-300px';
+      type1Sidebar.style.left = '-300px';
+      type2Sidebar.style.left = '-300px';
+      type3Sidebar.style.left = '-300px';
+      overlay.style.display = "none";
   }
 
 
