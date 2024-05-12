@@ -2,6 +2,8 @@ body {
   padding: 0;
   margin: 0;
   font-family: "Merienda", cursive;
+  width: 100%;
+  background-color: #f9f9f9;
 }
 
 header {
@@ -159,63 +161,65 @@ header, #search section {
   cursor: pointer;
 }
 
-.hidden {
-  display: none;
-}
 
-/* ------------------------------------------- */
 
-#wholepage {
-  margin-top: 25vh;
-  width: 100%;
+
+
+#whole-page{
   display: flex;
   flex-direction: row;
-}
-
-#login-container {
-  margin-left: 10%;
-  margin-right: 4%;
-  background-color: white;
-  padding: 40px;
-  width: 700px;
-  box-sizing: border-box;
-  padding-top: 0px;
-}
-
-#login-container h2 {
-  margin-top: 0;
-}
-
-#login-container p {
-  font-size: 16px;
-  color: #333;
-}
-
-.inputpart {
-  margin-top: 20px;
-}
-
-#input {
-  margin-top: 40px;
-}
-
-input[type="text"], input[type="password"] {
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  justify-content: space-between;
+
 }
 
-#signin-with-create {
+#info-display{
+  width: 30%;
+  margin-right: 5%;
+  margin-top: 2%;
+}
+
+.item{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.receipt{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+form{
   display: flex;
   flex-direction: column;
-  margin-left: 50%;
   width: 55%;
-  margin-top: 15px;
+  height: 150vh;
+  justify-content: space-between;
+  margin-top: 2%;
+  margin-left: 5%;
+
+
+}
+label {
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 16px;
+
 }
 
-#signin {
+input[type="text"], select {
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+#submit{
   background-color: black;
   color: white;
   padding: 10px 20px;
@@ -225,66 +229,29 @@ input[type="text"], input[type="password"] {
   height: 50px;
   border: black 2px solid;
   transition: all 0.2s ease;
+  text-align: center;
+  width: 90%;
+  margin-left: 5%;
 }
 
-#signin:hover {
+#submit:hover {
   color: black;
   background-color: white;
 }
 
-#create {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin: 0 0 0 30px;
+.info{
+  background-color: white;
+  border-radius: 4%;
+  margin-bottom: 30px;
+  padding: 15px;
 }
 
-#create p {
-  margin: 10px 0 0 0;
+.item img{
+  width: 30%;
 }
 
-#signup {
+h1{
   text-align: center;
-  margin-top: 20px;
-}
-
-#signup a {
-  color: #0066cc;
-  text-decoration: none;
-}
-
-#account-info {
-  width: 300px;
-  height: 25%;
-  padding: 20px;
-  margin-right: 7%;
-  background-color: #f6f5f3;
-  border-radius: 2%;
-}
-
-#account-info h3 {
-  font-size: 10px;
-  padding-left: 7px;
-}
-
-#account-info p {
-  font-size: 13px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  padding: 2px;
-  padding-left: 20px;
-}
-
-#sentences {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-}
-
-hr {
-  height: 1px;
-  background-color: #ccc;
-  border: none;
-  margin: 10px;
-  margin-left: 7px;
+  font-size: 60px;
+  margin-top: 10%;
 }
