@@ -6,7 +6,7 @@ body, #image-number hr {
   padding: 0;
 }
 
-body, #image-number hr, #close {
+body, #image-number hr, .close {
   margin: 0;
 }
 
@@ -146,13 +146,13 @@ header, #search section {
   pointer-events: none;
 }
 
-#close {
+.close {
   padding-top: 30px;
   padding-left: 50px;
   font-size: 20px;
 }
 
-#close:hover {
+.close:hover {
   cursor: pointer;
 }
 
@@ -297,4 +297,26 @@ main {
 .watch-box img {
   width: 196px;
   height: 196px;
+}
+
+#sidebarfordetail {
+  background-color: #f9f9f9;
+  width: 400px;
+  position: fixed;
+  top: 0vh;
+  right: -400px;
+  height: 100%;
+  box-shadow: 3px 0 6px rgba(0, 0, 0, 0.16);
+  transition: 0.3s;
+  z-index: 1000;
+}
+
+#sidebarfordetail p{
+  color: black;
+  font-size: 15px;
+  margin-left: 35px;
+}
+
+#product-details:hover{
+  cursor: pointer;
 }

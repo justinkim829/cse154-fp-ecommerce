@@ -4,84 +4,85 @@
 
   window.addEventListener('load', init);
 
+
   function init() {
 
-    //THE HEADER START
-    let menu = id('menu');
-    let sidebar = id('sidebar');
-    let close = id("close");
-    let overlay = id("overlay");
+    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
+    id("menu").classList.add(".change");
+    id("menu").addEventListener('click', function (evt) {
+      openSidebar(evt);
+    });
+
+    //click and close the side bar
+    qs(".close").addEventListener('click', function () {
+      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
+    });
+
+    for (let i = 0; i < SIDEBARS.length; i++) {
+      let idText = "type" + String(i + 1);
+      id(idText).addEventListener("click", function () {
+        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
+        toggleSidebar(SIDEBARS[i]);
+      })
+    }
+    qs("#product-details p").addEventListener("click", displayDetailSidebar)
+    qs("#sidebarfordetail .close").addEventListener("click", closeTheDetailSidebar)
+
+  }
+
+
+  function displayDetailSidebar(event) {
+    let productDetails = id("sidebarfordetail");
+    productDetails.style.right = "0px";
+    id("overlay").style.display = "block";
+    id("overlay").style.pointerEvents = 'auto';
+    event.stopPropagation();
+    document.addEventListener('click', closeDetailSidebarAuto);
+
+  }
+
+  function closeTheDetailSidebar() {
+    let productDetails = id("sidebarfordetail");
+    productDetails.style.right = "-400px";
+    id("overlay").style.display = "none";
+  }
+
+  function closeDetailSidebarAuto(event) {
+    let sidebarfordetail = id("sidebarfordetail");
+
+    if (!sidebarfordetail.contains(event.target)) {
+      sidebarfordetail.style.right = "-400px";
+      overlay.style.display = "none";
+      overlay.style.pointerEvents = 'none';
+      document.removeEventListener('click', closeSidebar);
+    }
+
+  }
+
+
+
+
+  function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
     let type3Sidebar = id('type3sidebar');
 
-    menu.classList.add(".change");
-    menu.addEventListener('click', function(event) {
+    id("sidebar").style.left = '0px';
+    id("overlay").style.display = "block";
+    id("overlay").style.pointerEvents = 'auto';
+    [type1Sidebar, type2Sidebar, type3Sidebar].forEach(sidebar => {
       sidebar.style.left = '0px';
-      overlay.style.display = "block";
-      overlay.style.pointerEvents = 'auto';
-      [type1Sidebar, type2Sidebar, type3Sidebar].forEach(sidebar => {
-        sidebar.style.left = '0px';
-      });
-      event.stopPropagation();
-      document.addEventListener('click', closeSidebar);
     });
-
-    //click and close the side bar
-    close.addEventListener('click', function() {
-      sidebar.style.left = '-300px';
-      type1Sidebar.style.left = '-300px';
-      type2Sidebar.style.left = '-300px';
-      type3Sidebar.style.left = '-300px';
-      overlay.style.display = "none";
-
-    });
-
-    let type1 = id("type1");
-    let type2 = id("type2");
-    let type3 = id("type3");
-
-
-
-    type1.addEventListener("click", function() {
-
-      hideExistSidebars(type2Sidebar, type3Sidebar);
-      toggleSidebar(type1Sidebar);
-    })
-
-    type2.addEventListener("click", function() {
-      hideExistSidebars(type1Sidebar, type3Sidebar);
-      toggleSidebar(type2Sidebar);
-    })
-
-    type3.addEventListener("click", function() {
-      hideExistSidebars(type1Sidebar, type2Sidebar);
-      toggleSidebar(type3Sidebar);
-    })
-
-    let wishlistIcon = qs("#add-to-wishlist p");
-    wishlistIcon.addEventListener('click', addToWishlist);
-
-    let rightArrow = qs("#right-arrow p");
-    rightArrow.addEventListener('click', () => {
-      nextPicture(true);
-    });
-
-    let leftArrow = qs("#left-arrow p");
-    leftArrow.addEventListener('click', () => {
-      nextPicture(false);
-    });
-
-    //lock header when window is scrolled down
-    window.onscroll = function() {
-      let header = qs("header");
-      if (window.scrollY > 0) {
-        header.classList.add("lock-header");
-      } else {
-        header.classList.remove("lock-header");
-      }
-    }
+    evt.stopPropagation();
+    document.addEventListener('click', closeSidebar);
   }
+
+
+
+
+
+
+
 
   /**
    * this function is used to change into the next picture when we clicked the arrow
@@ -103,11 +104,11 @@
     } else {
       nextNumber = (currentNumber - 1) % 5;
       nextNumber = (nextNumber % 5 === 0) ? 4 : nextNumber;
-      allHR[(currentNumber+2) % 4].classList.toggle("to-black-border");
-      allHR[(currentNumber+2) % 4].classList.toggle("to-white-border");
+      allHR[(currentNumber + 2) % 4].classList.toggle("to-black-border");
+      allHR[(currentNumber + 2) % 4].classList.toggle("to-white-border");
     }
-    allHR[currentNumber-1].classList.toggle("to-black-border");
-    allHR[currentNumber-1].classList.toggle("to-white-border");
+    allHR[currentNumber - 1].classList.toggle("to-black-border");
+    allHR[currentNumber - 1].classList.toggle("to-white-border");
 
     let startIndex = currentImage.src.indexOf("img/");
     let path = currentImage.src.substring(startIndex, currentNumberIndex);
@@ -132,8 +133,8 @@
         id("add-message").removeChild(message);
       }, 1500);
       id("add-message").appendChild(message);
-      }
     }
+  }
 
   // HEADER FUNCTION START
   function toggleSidebar(subSidebar) {
@@ -194,25 +195,25 @@
    * @param {string} id - the ID that wants to get
    * @return {Node} return the node that ID corespond to .
    */
-    function id(id) {
-      return document.getElementById(id);
-    }
+  function id(id) {
+    return document.getElementById(id);
+  }
 
-    /**
-     * This function is used to get that element by its name
-     * @param {string} selector - the element wants to be find in the HTML page
-     * @return {Node} return the node that selector corespond to .
-     */
-    function qs(selector) {
-      return document.querySelector(selector);
-    }
+  /**
+   * This function is used to get that element by its name
+   * @param {string} selector - the element wants to be find in the HTML page
+   * @return {Node} return the node that selector corespond to .
+   */
+  function qs(selector) {
+    return document.querySelector(selector);
+  }
 
-    /**
-     * This function is used to get all the elements by its name
-     * @param {string} selector - the elements wants to be find in the HTML page
-     * @return {Node} return the all the node that selector corespond to .
-     */
-    function qsa(selector) {
-      return document.querySelectorAll(selector);
-    }
+  /**
+   * This function is used to get all the elements by its name
+   * @param {string} selector - the elements wants to be find in the HTML page
+   * @return {Node} return the all the node that selector corespond to .
+   */
+  function qsa(selector) {
+    return document.querySelectorAll(selector);
+  }
 })();
