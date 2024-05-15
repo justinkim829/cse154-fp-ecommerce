@@ -3,27 +3,29 @@
 (function () {
 
   window.addEventListener('load', init);
+  const CREATE_URL = "/REM/createAccount";
 
   function init() {
 
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
+    id("menu").addEventListener('click', function (evt) {
       openSidebar(evt);
     });
 
     //click and close the side bar
-    id("close").addEventListener('click', function() {
+    id("close").addEventListener('click', function () {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
+      id(idText).addEventListener("click", function () {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       })
     }
+    id("form1").addEventListener("submit", createAccount);
   }
 
   function openSidebar(evt) {
@@ -69,7 +71,7 @@
     let overlay = id("overlay");
 
     if (!sidebar.contains(event.target) && !type1Sidebar.contains(event.target) &&
-    !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
+      !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
       sidebar.style.left = "-300px";
       hideAllSidebars(type1Sidebar, type2Sidebar, type3Sidebar);
       overlay.style.display = "none";
@@ -85,6 +87,62 @@
       sidebar.style.left = "-300px";
       sidebar.style.display = "none";
     });
+  }
+
+  async function createAccount(event) {
+    event.preventDefault();
+    let email = id('emailaddress').value;
+    let password = id('password').value;
+    let gender = id('title').value;
+    let firstName = id('firstname').value;
+    let lastName = id('lastname').value;
+    let month = id('month').value;
+    let day = id('day').value;
+    let year = id('year').value;
+
+    let data = {
+      "email": email,
+      "password": password,
+      "gender": gender,
+      "firstname": firstName,
+      "lastname": lastName,
+      "month": month,
+      "day": day,
+      "year": year
+    }
+    try {
+      let response = await fetch(CREATE_URL, {
+        method: "POST",
+        body: JSON.stringify(data)
+      });
+      response = statusCheck(response);
+      let result = response.json();
+      if (result === true) {
+
+      }
+    } catch (err) {
+      console.error(err);
+
+    }
+
+
+
+  }
+
+
+
+  /**
+   * Helper function to return the response's result text if successful, otherwise
+   * returns the rejected Promise result with an error status and corresponding text
+   * @param {object} res - response to check for success/error
+   * @return {object} - valid response if response was successful, otherwise rejected
+   *                    Promise result
+   */
+  async function statusCheck(res) {
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+    return res;
   }
 
   /**
@@ -105,4 +163,4 @@
     return document.querySelector(selector);
   }
 
-  })();
+})();

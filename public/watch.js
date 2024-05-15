@@ -48,7 +48,7 @@
     });
 
     //lock header when window is scrolled down
-    window.onscroll = function() {
+    window.onscroll = function () {
       let header = qs("header");
       if (window.scrollY > 0) {
         header.classList.add("lock-header");
@@ -78,11 +78,11 @@
     } else {
       nextNumber = (currentNumber - 1) % 5;
       nextNumber = (nextNumber % 5 === 0) ? 4 : nextNumber;
-      allHR[(currentNumber+2) % 4].classList.toggle("to-black-border");
-      allHR[(currentNumber+2) % 4].classList.toggle("to-white-border");
+      allHR[(currentNumber + 2) % 4].classList.toggle("to-black-border");
+      allHR[(currentNumber + 2) % 4].classList.toggle("to-white-border");
     }
-    allHR[currentNumber-1].classList.toggle("to-black-border");
-    allHR[currentNumber-1].classList.toggle("to-white-border");
+    allHR[currentNumber - 1].classList.toggle("to-black-border");
+    allHR[currentNumber - 1].classList.toggle("to-white-border");
 
     let startIndex = currentImage.src.indexOf("img/");
     let path = currentImage.src.substring(startIndex, currentNumberIndex);
@@ -107,8 +107,8 @@
         id("add-message").removeChild(message);
       }, 1500);
       id("add-message").appendChild(message);
-      }
     }
+  }
 
   function displayDetailSidebar(event) {
     let productDetails = id("sidebarfordetail");
@@ -159,7 +159,18 @@
     }
   }
 
+  function resetAllSidebar() {
+    let overlay = id("overlay");
+    let arraySidebars = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar'), id("sidebar")];
+    for (let sidebar of arraySidebars) {
+      sidebar.style.left = "-300px";
+      overlay.style.display = "none";
+      overlay.style.pointerEvents = 'none';
+    }
+  }
+
   function changeWatchImages(productID) {
+    resetAllSidebar();
     let productType = productID[0];
     let productNum = parseInt(productID[1]);
 
@@ -196,7 +207,7 @@
 
       recommendedWatches[i].clickHandler = () => reloadPage(recommendedWatches[i].alt);
       console.log(recommendedWatches[i].clickHandler);
-      recommendedWatches[i].addEventListener('click', recommendedWatches[i].clickHandler, { once: true} );
+      recommendedWatches[i].addEventListener('click', recommendedWatches[i].clickHandler, { once: true });
     }
   }
 
