@@ -12,24 +12,8 @@
 
   function init() {
 
-    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
-    id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
-      openSidebar(evt);
-    });
+    sidebarStart();
 
-    //click and close the side bar
-    qs(".close").addEventListener('click', function () {
-      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
-    });
-
-    for (let i = 0; i < SIDEBARS.length; i++) {
-      let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
-        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
-        toggleSidebar(SIDEBARS[i]);
-      })
-    }
     qs("#product-details p").addEventListener("click", displayDetailSidebar)
     qs("#sidebarfordetail .close").addEventListener("click", closeTheDetailSidebar)
     checkClickedWatch();
@@ -55,6 +39,39 @@
       } else {
         header.classList.remove("lock-header");
       }
+    }
+
+    receiveSidebarToWatch();
+  }
+
+  function receiveSidebarToWatch() {
+    const checkProductID = setInterval(() => {
+      const productID = sessionStorage.getItem('productID');
+      if (productID) {
+        reloadPage(productID);
+        clearInterval(checkProductID);
+      }
+    }, 100);
+  }
+
+  function sidebarStart() {
+    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
+    id("menu").classList.add(".change");
+    id("menu").addEventListener('click', function(evt) {
+      openSidebar(evt);
+    });
+
+    //click and close the side bar
+    qs(".close").addEventListener('click', function() {
+      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
+    });
+
+    for (let i = 0; i < SIDEBARS.length; i++) {
+      let idText = "type" + String(i + 1);
+      id(idText).addEventListener("click", function() {
+        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
+        toggleSidebar(SIDEBARS[i]);
+      })
     }
   }
 
@@ -153,7 +170,7 @@
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
-        let productID = qsa(".double-sidebar ul li")[i].querySelector("p").textContent;
+        let productID = options[i].querySelector("p").textContent;
         reloadPage(productID);
       });
     }
@@ -206,7 +223,6 @@
       recommendedWatches[i].removeEventListener('click', recommendedWatches[i].clickHandler);
 
       recommendedWatches[i].clickHandler = () => reloadPage(recommendedWatches[i].alt);
-      console.log(recommendedWatches[i].clickHandler);
       recommendedWatches[i].addEventListener('click', recommendedWatches[i].clickHandler, { once: true });
     }
   }

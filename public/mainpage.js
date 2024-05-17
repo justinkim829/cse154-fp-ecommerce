@@ -1,5 +1,3 @@
-
-
 "use strict";
 
 (function () {
@@ -7,35 +5,22 @@
   window.addEventListener("load", init);
 
   function init() {
+    sidebarStart();
+    setDefaultInput();
+    sendSidebarToWatch();
+  }
 
-    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
-    id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
-      openSidebar(evt);
-    });
+  function sendSidebarToWatch() {
+    let options = qsa(".double-sidebar ul li");
+    for (let i = 0; i < options.length; i++) {
+      options[i].addEventListener('click', () => {
+        let productID = options[i].querySelector("p").textContent;
+        console.log(productID);
 
-    //click and close the side bar
-    id("close").addEventListener('click', function() {
-      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
-    });
-
-    for (let i = 0; i < SIDEBARS.length; i++) {
-      let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
-        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
-        toggleSidebar(SIDEBARS[i]);
-      })
+      sessionStorage.setItem('productID', productID);
+      window.location.href = "watch.html";
+      });
     }
-    //THIS IS THE ADDED PART: SEARCH BAR
-    let input = qs("#search-part input")
-    input.addEventListener('keypress', (evt) => {
-      if (evt.key === "Enter") {
-        let inputValue = input.value.trim().toLowerCase();
-        if (inputValue === '' || "watch".includes(inputValue)) {
-          window.location.href = 'watch2.html';
-        }
-      }
-    });
   }
 
   function openSidebar(evt) {
@@ -53,8 +38,38 @@
     document.addEventListener('click', closeSidebar);
   }
 
+  function setDefaultInput() {
+    let input = qs("#search-part input")
+    input.addEventListener('keypress', (evt) => {
+      if (evt.key === "Enter") {
+        let inputValue = input.value.trim().toLowerCase();
+        if (inputValue === '' || "watch".includes(inputValue)) {
+          window.location.href = 'watch.html';
+        }
+      }
+    });
+  }
 
+  function sidebarStart() {
+    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
+    id("menu").classList.add(".change");
+    id("menu").addEventListener('click', function(evt) {
+      openSidebar(evt);
+    });
 
+    //click and close the side bar
+    qs(".close").addEventListener('click', function() {
+      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
+    });
+
+    for (let i = 0; i < SIDEBARS.length; i++) {
+      let idText = "type" + String(i + 1);
+      id(idText).addEventListener("click", function() {
+        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
+        toggleSidebar(SIDEBARS[i]);
+      })
+    }
+  }
 
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
@@ -119,4 +134,12 @@
     return document.querySelector(selector);
   }
 
+  /**
+   * This function is used to get all the elements by its name
+   * @param {string} selector - the elements wants to be find in the HTML page
+   * @return {Node} return the all the node that selector corespond to .
+   */
+  function qsa(selector) {
+    return document.querySelectorAll(selector);
+  }
 })();
