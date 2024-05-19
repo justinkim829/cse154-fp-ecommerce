@@ -6,21 +6,23 @@ const app = express();
 const sqlite3 = require('sqlite3');
 const sqlite = require('sqlite');
 
-// other required modules ...
-const multer = require("multer"); // import multer into your project
+const multer = require("multer");
 const cors = require('cors');
 
 app.use(cors());
 
-// For data sent as form-urlencoded
-app.use(express.urlencoded({ extended: true }));
-// For data sent as json
+app.use(express.urlencoded({extended: true}));
+
 app.use(express.json());
-// For data sent as a form
-app.use(multer().none()); // requires the "multer" module
+
+app.use(multer().none());
 
 let currentUserID = 0;
 
+/**
+ * This function is used to check the userInfo and show the hint message that whether
+ * user login successfully or not
+ * */
 app.post("/REM/login", async (req, res) => {
   let db = await getDBConnection();
   let email = req.body.Email;
@@ -41,16 +43,17 @@ app.post("/REM/login", async (req, res) => {
   } catch (error) {
     res.status(500).send("An error occurred");
   }
+});
 
-})
-
-app.get("/watchdetails/:ID", async function (req, res) {
+/**
+ * This function is used to get certian watch that user wants to
+ */
+app.get("/watchdetails/:ID", async function(req, res) {
   try {
     let watchID = req.params.ID;
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
     let db = await getDBConnection();
     let result = await db.get(qry);
-    console.log(result);
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
@@ -58,6 +61,10 @@ app.get("/watchdetails/:ID", async function (req, res) {
   }
 });
 
+/**
+ * This function is used to create the new Account and put the user info into the
+ * database, show the hint message if the create account part is failed
+ */
 app.post("/REM/createAccount", async (req, res) => {
   let db = await getDBConnection();
   let email = req.body.Email;
@@ -74,7 +81,9 @@ app.post("/REM/createAccount", async (req, res) => {
     if (row) {
       res.type("text").send("Email Already Exists");
     } else {
-      let sql = 'INSERT INTO User (Email, Password, Gender, FirstName, LastName, DayOfBirth, MonthOfBirth, YearOfBirth) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+      let sql = 'INSERT INTO User (Email, Password, Gender, FirstName, ' +
+                'LastName, DayOfBirth, MonthOfBirth, YearOfBirth) ' +
+                'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
       await db.run(sql, [email, password, gender, firstName, lastName, day, month, year]);
       res.send("Create Account Successful");
     }
@@ -83,7 +92,10 @@ app.post("/REM/createAccount", async (req, res) => {
   }
 });
 
-
+/**
+ * This function is used to get all the watches from the database that
+ * this user put in his or her shopping cart
+ */
 app.get("/REM/getwatchesinfo", async (req, res) => {
   try {
     let db = await getDBConnection();
@@ -94,8 +106,6 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
     res.type("json").send({ "errMessage": err })
   }
 });
-
-
 
 /**
  * Establishes a database connection to the database and returns the database object.
@@ -109,7 +119,6 @@ async function getDBConnection() {
   });
   return db;
 }
-
 
 app.use(express.static('public'));
 const PORT = process.env.PORT || 8080;

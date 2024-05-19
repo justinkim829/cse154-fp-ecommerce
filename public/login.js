@@ -1,30 +1,28 @@
 "use strict";
 
-(function () {
+(function() {
   const LOGIN_URL = "/REM/login";
 
   window.addEventListener('load', init);
 
+  /** This function is used to initiallize all the functions */
   function init() {
-
-
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
+    id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
-    //click and close the side bar
     id("close").addEventListener('click', function () {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
+      id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
-      })
+      });
     }
     id("input").addEventListener("submit", (event) => {
       login(event);
@@ -32,19 +30,22 @@
     sendSidebarToWatch();
   }
 
+  /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
         sessionStorage.setItem('productID', productID);
-        console.log(productID);
-
-      window.location.href = "watch.html";
+        window.location.href = "watch.html";
       });
     }
   }
 
+  /**
+   * This function is used to open the sidebar
+   * @param {object} - evt refers to which specific sidebar is being clicked
+   */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -60,6 +61,7 @@
     document.addEventListener('click', closeSidebar);
   }
 
+  /** This function is used to open and close the sidebar */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -69,7 +71,7 @@
       subSidebar.style.display = "none";
     }
   }
-
+  /** This function is used to hide all the appeared sidebars */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -79,7 +81,7 @@
     });
   }
 
-  //when click the place other than sidebar, the sidebar would be closed
+  // when click the place other than sidebar, the sidebar would be closed
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let overlay = id("overlay");
@@ -94,9 +96,9 @@
       overlay.style.pointerEvents = 'none';
       document.removeEventListener('click', closeSidebar);
     }
-
   }
 
+  /** This function is used to close all the sidebars */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
@@ -104,20 +106,18 @@
     });
   }
 
+  /**
+   * This function is used to log in the user account and display the message if
+   * user log in successfully or not
+   * @param{event} - the action of clicking the button
+   */
   async function login(event) {
     event.preventDefault();
-
     let formData = new FormData();
     formData.append("Email", id("email").value);
-    formData.append("Password", id("password").value)
-
+    formData.append("Password", id("password").value);
     try {
-      let response = await fetch(LOGIN_URL, {
-        method: "POST",
-        body: formData
-      });
-      response = await statusCheck(response);
-      let result = await response.text();
+      let result = await postRequest(formData);
       if (result === "Login successful!") {
         let para = gen("p");
         para.textContent = result;
@@ -128,24 +128,34 @@
       } else {
         id("password").value = "";
         id("email").value = "";
-
         let para = gen("p");
         para.textContent = result;
         id("messagedisplay").appendChild(para);
-
         setInterval(() => {
           if (id("messagedisplay").lastChild) {
             id("messagedisplay").removeChild(id("messagedisplay").lastChild);
           }
         }, 2000);
       }
-
     } catch (err) {
       console.error(err);
     }
   }
 
-
+  /** This function is used to post the email and password in to back end  */
+  async function postRequest(formData) {
+    try {
+      let response = await fetch(LOGIN_URL, {
+        method: "POST",
+        body: formData
+      });
+      response = await statusCheck(response);
+      let result = await response.text();
+      return result;
+    } catch (err) {
+      console.error(err);
+    }
+  }
 
   /**
    * Helper function to return the response's result text if successful, otherwise
@@ -170,10 +180,13 @@
     return document.getElementById(id);
   }
 
-
-  function gen(selector) {
-    return document.createElement(selector);
-
+  /**
+   * This function is used to get all the elements by its name
+   * @param {string} selector - the elements wants to be find in the HTML page
+   * @return {Node} return the all the node that selector corespond to .
+   */
+  function qsa(selector) {
+    return document.querySelectorAll(selector);
   }
 
   /**
@@ -181,8 +194,7 @@
    * @param {string} selector - the element wants to be find in the HTML page
    * @return {Node} return the node that selector corespond to .
    */
-  function qs(selector) {
-    return document.querySelector(selector);
+  function gen(selector) {
+    return document.createElement(selector);
   }
-
 })();

@@ -1,52 +1,55 @@
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener('load', init);
   const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
   const COLOR = ["blue", "white", "black"];
 
+  /** This function is used to initiallize all the functions */
   function init() {
-
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
+    id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
     //click and close the side bar
-    id("close").addEventListener('click', function () {
+    id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
+      id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
-      })
+      });
     }
     let checkoutButton = id("checkout");
     checkoutButton.addEventListener("click", () => {
       window.location.href = "payment.html";
-    })
+    });
     getAllWatches();
     sendSidebarToWatch();
   }
 
+  /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
         sessionStorage.setItem('productID', productID);
-        console.log(productID);
-
-      window.location.href = "watch.html";
+        window.location.href = "watch.html";
       });
     }
   }
 
+  /**
+   * This function is used to open the sidebar
+   * @param {object} - evt refers to which specific sidebar is being clicked
+   */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -61,7 +64,11 @@
     evt.stopPropagation();
     document.addEventListener('click', closeSidebar);
   }
-  // HEADER FUNCTION START
+
+  /**
+   * This function is used to open and close the sidebar
+   * @param {object} - subSidebar the sidebar that poll out
+   */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -72,6 +79,11 @@
     }
   }
 
+  /**
+   * This function is used to hide all the appeared sidebars
+   * @param {object} - subSidebar1 the subsidebar that already poll out
+   * @param {object} - subSidebar2 the subsidebar that already poll out
+   */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -81,7 +93,10 @@
     });
   }
 
-  //when click the place other than sidebar, the sidebar would be closed
+  /**
+   * when click the place other than sidebar, the sidebar would be closed
+   * @param {object} - the action of click the page
+   */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let type1Sidebar = id('type1sidebar');
@@ -98,9 +113,14 @@
 
       document.removeEventListener('click', closeSidebar);
     }
-
   }
 
+  /**
+   * This function is used to close all the sidebars
+   * @param {object} - subSidebar1 the sidebar that poll out
+   * @param {object} - subSidebar2 the sidebar that poll out
+   * @param {object} - subSidebar3 the sidebar that poll out
+   */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
@@ -108,7 +128,7 @@
     });
   }
 
-
+  /** This function is used get all the watches info form the backend */
   async function getAllWatches() {
     try {
       let response = await fetch(GET_WATCH_INFO_URL);
@@ -128,71 +148,13 @@
     }
   }
 
-  //for each watch
+  /**
+   * This function is used to put each watch info into the display board
+   * @param {object} product - the object of each watch
+   */
   function updateWebView(product) {
-
-    let productContainer = gen('section');
-    productContainer.classList.add('product-container');
-
-    // Create product section
-    let productSection = gen('section');
-    productSection.classList.add('product');
-    productContainer.appendChild(productSection);
-
-    // Add image
-    let img = gen('img');
-    img.src = product.Img1; //!!!!!!!!
-    productSection.appendChild(img);
-
-    // Add description section
-    let descriptionSection = gen('section');
-    descriptionSection.classList.add('description');
-    productSection.appendChild(descriptionSection);
-
-    // Product name
-    let productName = gen('p');
-    productName.classList.add('description-name');
-    productName.textContent = product.Name; //!!!!!!!!!
-    descriptionSection.appendChild(productName);
-
-    // Product ID
-    let productId = gen('p');
-    productId.classList.add('description-id');
-    productId.textContent = 'ID: ' + product.Type; //!!!!!! type
-    descriptionSection.appendChild(productId);
-
-    // Product availability
-    let productStatus = gen('p');
-    productStatus.classList.add('description-status');
-    productStatus.textContent = "Available";
-    descriptionSection.appendChild(productStatus);
-
-    // Product status message
-    let productStatusMsg = gen('p');
-    productStatusMsg.classList.add('description-status-msg');
-    productStatusMsg.textContent = "Your selection is available to purchase online.";
-    descriptionSection.appendChild(productStatusMsg);
-
-    // Cost section
-    let costSection = gen('section');
-    costSection.classList.add('cost');
-    productSection.appendChild(costSection);
-
-    // Price
-    let price = gen('p');
-    price.textContent = '$' + product.Price;//!!!!!!!!
-    costSection.appendChild(price);
-
-    // Quantity selector
-    let quantitySelector = gen('select');
-    for (let i = 1; i <= 3; i++) {
-      let option = gen('option');
-      option.value = i;
-      option.textContent = 'QTY: ' + i;
-      quantitySelector.appendChild(option);
-      if (i === product.Quantity) option.selected = true;
-    }
-    costSection.appendChild(quantitySelector);
+    updateProductInfo(product);
+    updateCostInfo(product);
 
     // Color selector
     let colorSelector = gen('select');
@@ -224,28 +186,87 @@
     return productContainer;
   }
 
+  /**
+   * This function is used to change all the info in the summary board
+   * @param {object} product - all the detail info of this watch
+   */
+  function updateCostInfo(product) {
+    let productSection = gen('section');
+
+    // Cost section
+    let costSection = gen('section');
+    costSection.classList.add('cost');
+    productSection.appendChild(costSection);
+
+    // Price
+    let price = gen('p');
+    price.textContent = '$' + product.Price;
+    costSection.appendChild(price);
+
+    // Quantity selector
+    let quantitySelector = gen('select');
+    for (let i = 1; i <= 3; i++) {
+      let option = gen('option');
+      option.value = i;
+      option.textContent = 'QTY: ' + i;
+      quantitySelector.appendChild(option);
+      if (i === product.Quantity) {
+        option.selected = true;
+      }
+    costSection.appendChild(quantitySelector);
+    }
+  }
+
+  /**
+   *
+   */
+  function updateProductInfo(product) {
+    let productContainer = gen('section');
+    productContainer.classList.add('product-container');
+    let productSection = gen('section');
+    productSection.classList.add('product');
+    productContainer.appendChild(productSection);
+    let img = gen('img');
+    img.src = product.Img1;
+    productSection.appendChild(img);
+    let descriptionSection = gen('section');
+    descriptionSection.classList.add('description');
+    productSection.appendChild(descriptionSection);
+    let productName = gen('p');
+    productName.classList.add('description-name');
+    productName.textContent = product.Name;
+    descriptionSection.appendChild(productName);
+    let productId = gen('p');
+    productId.classList.add('description-id');
+    productId.textContent = 'ID: ' + product.Type;
+    descriptionSection.appendChild(productId);
+    let productStatus = gen('p');
+    productStatus.classList.add('description-status');
+    productStatus.textContent = "Available";
+    descriptionSection.appendChild(productStatus);
+    let productStatusMsg = gen('p');
+    productStatusMsg.classList.add('description-status-msg');
+    productStatusMsg.textContent = "Your selection is available to purchase online.";
+    descriptionSection.appendChild(productStatusMsg);
+  }
+
   function changeSummary(result) {
     qs("#order-summary p").textContent = result.length + " item";
-    let subtotal=0;
+    let subtotal = 0;
     for (let product of result) {
-      subtotal = subtotal + (product.Price)*(product.Quantity);
+      subtotal = subtotal + (product.Price) * (product.Quantity);
     }
     let tax = subtotal * 0.1025;
     let total = subtotal + tax;
 
-    qs("#subtotal p").textContent = "$"+subtotal;
-    qs("#tax p").textContent = "$"+tax;
-    qs("#total p").textContent = "$"+total;
+    qs("#subtotal p").textContent = "$" + subtotal;
+    qs("#tax p").textContent = "$" + tax;
+    qs("#total p").textContent = "$" + total;
   }
-
-
-
-
 
   function gen(selector) {
     return document.createElement(selector);
   }
-
 
   /**
    * Helper function to return the response's result text if successful, otherwise
@@ -260,7 +281,6 @@
     }
     return res;
   }
-
 
   /**
    * This function is used to get that element by its ID
@@ -280,4 +300,12 @@
     return document.querySelector(selector);
   }
 
+  /**
+   * This function is used to get all the elements by its name
+   * @param {string} selector - the elements wants to be find in the HTML page
+   * @return {Node} return the all the node that selector corespond to .
+   */
+  function qsa(selector) {
+    return document.querySelectorAll(selector);
+  }
 })();

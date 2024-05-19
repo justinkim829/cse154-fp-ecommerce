@@ -31,6 +31,7 @@
     getAllWatches();
   }
 
+  /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
@@ -44,6 +45,10 @@
     }
   }
 
+  /**
+   * This function is used to open the sidebar
+   * @param {object} - evt refers to which specific sidebar is being clicked
+   */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -59,6 +64,10 @@
     document.addEventListener('click', closeSidebar);
   }
 
+  /**
+   * This function is used to open and close the sidebar
+   * @param {object} - subSidebar the sidebar that poll out
+   */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -69,6 +78,11 @@
     }
   }
 
+  /**
+   * This function is used to hide all the appeared sidebars
+   * @param {object} - subSidebar1 the subsidebar that already poll out
+   * @param {object} - subSidebar2 the subsidebar that already poll out
+   */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -78,7 +92,10 @@
     });
   }
 
-  //when click the place other than sidebar, the sidebar would be closed
+  /**
+   * when click the place other than sidebar, the sidebar would be closed
+   * @param {object} - the action of click the page
+   */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let type1Sidebar = id('type1sidebar');
@@ -92,11 +109,16 @@
       hideAllSidebars(type1Sidebar, type2Sidebar, type3Sidebar);
       overlay.style.display = "none";
       overlay.style.pointerEvents = 'none';
-
       document.removeEventListener('click', closeSidebar);
     }
   }
 
+  /**
+   * This function is used to close all the sidebars
+   * @param {object} - subSidebar1 the sidebar that poll out
+   * @param {object} - subSidebar2 the sidebar that poll out
+   * @param {object} - subSidebar3 the sidebar that poll out
+   */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
@@ -104,7 +126,7 @@
     });
   }
 
-
+  /** This function is used get all the watches info form the backend */
   async function getAllWatches() {
     try {
       let response = await fetch(GET_WATCH_INFO_URL);
@@ -123,8 +145,11 @@
     }
   }
 
+  /**
+   * This function is used to diaplay all the watch info into the board
+   *@param {object} - product each watch get from the database
+   */
   function updatedisplayboard(product) {
-
     let itemSection = gen('section');
     itemSection.classList.add('item');
     let img = gen('img');
@@ -141,10 +166,13 @@
     itemSection.appendChild(innerSection);
     document.body.appendChild(itemSection);
     return itemSection;
-
   }
 
 
+  /**
+   * This function is used to change all the summury info
+   * @param {object} - an Array that contain all the watches object
+   */
   function changeSummary(result) {
     let subtotal = 0;
     for (let product of result) {
@@ -174,7 +202,10 @@
   }
 
 
-
+  /**
+   * Helper function user to generate certain node
+   * @param {object} selector - the node user wants to create
+   */
   function gen(selector) {
     return document.createElement(selector);
   }

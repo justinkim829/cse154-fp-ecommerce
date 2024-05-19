@@ -1,28 +1,32 @@
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener("load", init);
 
+  /** This function is used to initialize all the functions */
   function init() {
     sidebarStart();
     setDefaultInput();
     sendSidebarToWatch();
   }
 
+  /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
         sessionStorage.setItem('productID', productID);
-        console.log(productID);
-
-      window.location.href = "watch.html";
+        window.location.href = "watch.html";
       });
     }
   }
 
+  /**
+   * This function is used to open the sidebar
+   * @param {object} - evt refers to which specific sidebar is being clicked
+   */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -38,8 +42,12 @@
     document.addEventListener('click', closeSidebar);
   }
 
+  /**
+   * This function is used to make sure when there is nothing input into the search bar,
+   * When we hit return on the search bar, we would go to certian watch page
+   */
   function setDefaultInput() {
-    let input = qs("#search-part input")
+    let input = qs("#search-part input");
     input.addEventListener('keypress', (evt) => {
       if (evt.key === "Enter") {
         let inputValue = input.value.trim().toLowerCase();
@@ -50,6 +58,7 @@
     });
   }
 
+  /** This function is used to control all the small sidebars and open it when clicked */
   function sidebarStart() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
@@ -57,7 +66,6 @@
       openSidebar(evt);
     });
 
-    //click and close the side bar
     qs(".close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
@@ -71,6 +79,10 @@
     }
   }
 
+  /**
+   * This function is used to open and close the sidebar
+   * @param {object} - subSidebar the sidebar that poll out
+   */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -81,6 +93,11 @@
     }
   }
 
+  /**
+   * This function is used to hide all the appeared sidebars
+   * @param {object} - subSidebar1 the subsidebar that already poll out
+   * @param {object} - subSidebar2 the subsidebar that already poll out
+   */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -90,7 +107,10 @@
     });
   }
 
-  //when click the place other than sidebar, the sidebar would be closed
+  /**
+   * when click the place other than sidebar, the sidebar would be closed
+   * @param {object} - the action of click the page
+   */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let type1Sidebar = id('type1sidebar');
@@ -109,6 +129,12 @@
     }
   }
 
+  /**
+   * This function is used to close all the sidebars
+   * @param {object} - subSidebar1 the sidebar that poll out
+   * @param {object} - subSidebar2 the sidebar that poll out
+   * @param {object} - subSidebar3 the sidebar that poll out
+   */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";

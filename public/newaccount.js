@@ -1,12 +1,12 @@
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener('load', init);
   const CREATE_URL = "/REM/createAccount";
 
+  /** This function is used to initiallize all the functions */
   function init() {
-
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
     id("menu").addEventListener('click', function (evt) {
@@ -14,37 +14,39 @@
     });
 
     //click and close the side bar
-    id("close").addEventListener('click', function () {
+    id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
+      id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
-      })
+      });
     }
     id("form1").addEventListener("submit", (evt) => {
       createAccount(evt);
     });
-
     sendSidebarToWatch();
   }
 
+  /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
         sessionStorage.setItem('productID', productID);
-        console.log(productID);
-
-      window.location.href = "watch.html";
+        window.location.href = "watch.html";
       });
     }
   }
 
+ /**
+  * This function is used to open the sidebar
+  * @param{object} - evt refers to which specific sidebar is being clicked
+  */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -59,6 +61,7 @@
     evt.stopPropagation();
     document.addEventListener('click', closeSidebar);
   }
+  /** This function is used to open and close the sidebar */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -68,7 +71,7 @@
       subSidebar.style.display = "none";
     }
   }
-
+  /** This function is used to hide all the appeared sidebars */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -78,8 +81,7 @@
     });
   }
 
-
-  //when click the place other than sidebar, the sidebar would be closed
+  /** when click the place other than sidebar, the sidebar would be closed */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let type1Sidebar = id('type1sidebar');
@@ -96,9 +98,9 @@
 
       document.removeEventListener('click', closeSidebar);
     }
-
   }
 
+  /** This function is used to close all the sidebars */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
@@ -106,9 +108,12 @@
     });
   }
 
+  /**
+   * This function is used to send all the info of user into the database
+   *@param{event} -The action of click the button
+   */
   async function createAccount(event) {
     event.preventDefault();
-
     let formData = new FormData();
     formData.append("Email", id('emailaddress').value);
     formData.append("Password", id('password').value);
@@ -118,7 +123,6 @@
     formData.append("Month", id('month').value);
     formData.append("Day", id('day').value);
     formData.append("Year", id('year').value);
-
     try {
       let response = await fetch(CREATE_URL, {
         method: "POST",
@@ -134,8 +138,6 @@
       console.error(err);
     }
   }
-
-
 
   /**
    * Helper function to return the response's result text if successful, otherwise
@@ -161,16 +163,15 @@
   }
 
   /**
-   * This function is used to get that element by its name
-   * @param {string} selector - the element wants to be find in the HTML page
-   * @return {Node} return the node that selector corespond to .
+   * This function is used to get all the elements by its name
+   * @param {string} selector - the elements wants to be find in the HTML page
+   * @return {Node} return the all the node that selector corespond to .
    */
-  function qs(selector) {
-    return document.querySelector(selector);
+  function qsa(selector) {
+    return document.querySelectorAll(selector);
   }
 
   function gen(selector) {
     return document.createElement(selector);
   }
-
 })();
