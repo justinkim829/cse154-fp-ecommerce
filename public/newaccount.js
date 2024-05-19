@@ -44,7 +44,7 @@
 
   /**
    * This function is used to open the sidebar
-   * @param{object} - evt refers to which specific sidebar is being clicked
+   * @param {object} evt refers to which specific sidebar is being clicked
    */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
@@ -61,7 +61,10 @@
     document.addEventListener('click', closeSidebar);
   }
 
-  /** This function is used to open and close the sidebar */
+  /**
+   * This function is used to open and close the sidebar
+   * @param {object} subSidebar - the sidebar to open/close
+   */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -72,7 +75,11 @@
     }
   }
 
-  /** This function is used to hide all the appeared sidebars */
+  /**
+   * This function is used to hide all the appeared sidebars
+   * @param {object} subSidebar1 - First other sidebar that should be hidden
+   * @param {object} subSidebar2 - Second other sidebar that should be hidden
+   */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -82,7 +89,10 @@
     });
   }
 
-  /** when click the place other than sidebar, the sidebar would be closed */
+  /**
+   * when click the place other than sidebar, the sidebar would be closed
+   * @param {object} event - the event that triggered
+   */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let type1Sidebar = id('type1sidebar');
@@ -101,7 +111,12 @@
     }
   }
 
-  /** This function is used to close all the sidebars */
+  /**
+   * This function is used to close all the sidebars
+   * @param {object} subSidebar1 - First sidebar that should be hidden
+   * @param {object} subSidebar2 - Second sidebar that should be hidden
+   * @param {object} subSidebar3 - Third sidebar that should be hidden
+   */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
@@ -111,7 +126,7 @@
 
   /**
    * This function is used to send all the info of user into the database
-   *@param{event} -The action of click the button
+   * @param {event} event The action of click the button
    */
   async function createAccount(event) {
     event.preventDefault();
@@ -172,6 +187,11 @@
     return document.querySelectorAll(selector);
   }
 
+  /**
+   * This function is used to get that element by its name
+   * @param {string} selector - the element wants to be find in the HTML page
+   * @return {Node} return the node that selector corespond to .
+   */
   function gen(selector) {
     return document.createElement(selector);
   }

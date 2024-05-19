@@ -243,8 +243,7 @@
 
       recommendedWatches[i].clickHandler = () => reloadPage(recommendedWatches[i].alt);
       recommendedWatches[i].addEventListener(
-      'click',
-      recommendedWatches[i].clickHandler,
+      'click', recommendedWatches[i].clickHandler,
       {once: true}
       );
     }

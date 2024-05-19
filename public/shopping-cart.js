@@ -156,7 +156,7 @@
     updateProductInfo(product);
     updateCostInfo(product);
     let costSection = gen('section');
-    let productSection = gen('section');
+    let productContainer = gen('section');
 
     // Color selector
     let colorSelector = gen('select');

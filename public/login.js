@@ -44,7 +44,7 @@
 
   /**
    * This function is used to open the sidebar
-   * @param {object} - evt refers to which specific sidebar is being clicked
+   * @param {object} evt - refers to which specific sidebar is being clicked
    */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
@@ -61,7 +61,10 @@
     document.addEventListener('click', closeSidebar);
   }
 
-  /** This function is used to open and close the sidebar */
+  /**
+   * This function is used to open and close the sidebar
+   * @param {object} subSidebar - all the sidebars when menu is clicked
+   */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -72,7 +75,11 @@
     }
   }
 
-  /** This function is used to hide all the appeared sidebars */
+  /**
+   * This function is used to hide all the appeared sidebars
+   * @param {object} subSidebar1 - First other sidebar that should be hidden
+   * @param {object} subSidebar2 - Second other sidebar that should be hidden
+   */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -82,7 +89,10 @@
     });
   }
 
-  // when click the place other than sidebar, the sidebar would be closed
+  /**
+   * When click the place other than sidebar, the sidebar would be closed
+   * @param {object} event - event that triggered
+   */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let overlay = id("overlay");
@@ -99,7 +109,12 @@
     }
   }
 
-  /** This function is used to close all the sidebars */
+  /**
+   * This function is used to close all the sidebars
+   * @param {object} subSidebar1 - First sidebar that should be hidden
+   * @param {object} subSidebar2 - Second sidebar that should be hidden
+   * @param {object} subSidebar3 - Third sidebar that should be hidden
+   */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
@@ -110,7 +125,7 @@
   /**
    * This function is used to log in the user account and display the message if
    * user log in successfully or not
-   * @param{event} - the action of clicking the button
+   * @param {event} event - the action of clicking the button
    */
   async function login(event) {
     event.preventDefault();
@@ -143,7 +158,10 @@
     }
   }
 
-  /** This function is used to post the email and password in to back end  */
+  /**
+   * This function is used to post the email and password in to back end
+   * @param {object} formData - FormData that would be sent to the post request
+   */
   async function postRequest(formData) {
     try {
       let response = await fetch(LOGIN_URL, {
