@@ -242,9 +242,11 @@
       recommendedWatches[i].removeEventListener('click', recommendedWatches[i].clickHandler);
 
       recommendedWatches[i].clickHandler = () => reloadPage(recommendedWatches[i].alt);
-      recommendedWatches[i].addEventListener('click',
+      recommendedWatches[i].addEventListener(
+      'click',
       recommendedWatches[i].clickHandler,
-      {once: true});
+      {once: true}
+      );
     }
   }
 
@@ -279,7 +281,6 @@
     document.addEventListener('click', closeSidebar);
   }
 
-  // HEADER FUNCTION START
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -299,8 +300,6 @@
     });
   }
 
-
-  //when click the place other than sidebar, the sidebar would be closed
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let type1Sidebar = id('type1sidebar');
