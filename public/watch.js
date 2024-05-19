@@ -10,10 +10,9 @@
     ['P', 3]
   ]);
 
+  /** this function is used to initilizale the button with its functions. */
   function init() {
-
     sidebarStart();
-
     qs("#product-details p").addEventListener("click", displayDetailSidebar);
     qs("#sidebarfordetail .close").addEventListener("click", closeTheDetailSidebar);
     checkClickedWatch();
@@ -33,6 +32,7 @@
     receiveSidebarToWatch();
   }
 
+  /** This function is used change into the next image */
   function arrowsToNextImage() {
     let rightArrow = qs("#right-arrow p");
     rightArrow.addEventListener('click', () => {
@@ -45,6 +45,10 @@
     });
   }
 
+  /**
+   * This function checks and stores the type of the watch
+   * that was clicked from the sidebar from a page excluding the watch page.
+   */
   function receiveSidebarToWatch() {
     const checkProductID = setInterval(() => {
       const productID = sessionStorage.getItem('productID');
@@ -56,6 +60,7 @@
     }, 100);
   }
 
+  /** This function is used to open the sidebar */
   function sidebarStart() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
@@ -63,7 +68,6 @@
       openSidebar(evt);
     });
 
-    //click and close the side bar
     qs(".close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
@@ -110,7 +114,7 @@
     currentImage.src = newSrc;
   }
 
-  /** this function is used to add this product into the wishlist when click the love icon*/
+  /** this function is used to add this product into the wishlist when click the love icon */
   function addToWishlist() {
     let wishlistIcon = qs("#add-to-wishlist p");
     let message = gen("p");
@@ -129,6 +133,7 @@
     }
   }
 
+  /** This function is */
   function displayDetailSidebar(event) {
     let productDetails = id("sidebarfordetail");
     productDetails.style.right = "0px";
@@ -147,7 +152,7 @@
 
   function closeDetailSidebarAuto(event) {
     let sidebarfordetail = id("sidebarfordetail");
-    overlay = id("overlay");
+    let overlay = id("overlay");
 
     if (!sidebarfordetail.contains(event.target)) {
       sidebarfordetail.style.right = "-400px";
@@ -341,7 +346,7 @@
       }
       return data;
     } catch (err) {
-      console.error(err);33
+      console.error(err);
     }
   }
 

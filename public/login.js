@@ -13,7 +13,7 @@
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function () {
+    id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
@@ -71,6 +71,7 @@
       subSidebar.style.display = "none";
     }
   }
+
   /** This function is used to hide all the appeared sidebars */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
@@ -124,7 +125,7 @@
         id("messagedisplay").appendChild(para);
         setInterval(() => {
           window.location.href = "mainpage.html";
-        }, 2000)
+        }, 2000);
       } else {
         id("password").value = "";
         id("email").value = "";

@@ -14,7 +14,6 @@
       openSidebar(evt);
     });
 
-    //click and close the side bar
     id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
@@ -136,7 +135,7 @@
       let result = await response.json();
       let head = gen("h2");
       head.textContent = "Your Selections (" + result.length + ")";
-      id("left-side").appendChild(head)
+      id("left-side").appendChild(head);
       for (let product of result) {
         let eachProduct = updateWebView(product);
         id("left-side").appendChild(eachProduct);
@@ -144,17 +143,20 @@
       changeSummary(result);
 
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   }
 
   /**
    * This function is used to put each watch info into the display board
    * @param {object} product - the object of each watch
+   * @return {object} productContainer -the creted block consisit of all the nodes
    */
   function updateWebView(product) {
     updateProductInfo(product);
     updateCostInfo(product);
+    let costSection = gen('section');
+    let productSection = gen('section');
 
     // Color selector
     let colorSelector = gen('select');
@@ -182,7 +184,6 @@
     // Insert a divider
     let hr = gen('hr');
     productContainer.appendChild(hr);
-
     return productContainer;
   }
 
@@ -213,12 +214,13 @@
       if (i === product.Quantity) {
         option.selected = true;
       }
-    costSection.appendChild(quantitySelector);
+      costSection.appendChild(quantitySelector);
     }
   }
 
   /**
-   *
+   * This function is used to create a block of the watch and add it into the board
+   * @param {object} product - all the detail info of this watch
    */
   function updateProductInfo(product) {
     let productContainer = gen('section');
@@ -250,6 +252,10 @@
     descriptionSection.appendChild(productStatusMsg);
   }
 
+  /**
+   * This function is used to change all the summury info
+   * @param {object} - an Array that contain all the watches object
+   */
   function changeSummary(result) {
     qs("#order-summary p").textContent = result.length + " item";
     let subtotal = 0;
@@ -264,6 +270,11 @@
     qs("#total p").textContent = "$" + total;
   }
 
+  /**
+   * Helper function user to generate certain node
+   * @param {object} selector - the node user wants to create
+   * @return {object} return the created node
+   */
   function gen(selector) {
     return document.createElement(selector);
   }

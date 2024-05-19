@@ -22,7 +22,7 @@ let currentUserID = 0;
 /**
  * This function is used to check the userInfo and show the hint message that whether
  * user login successfully or not
- * */
+ */
 app.post("/REM/login", async (req, res) => {
   let db = await getDBConnection();
   let email = req.body.Email;
@@ -99,11 +99,12 @@ app.post("/REM/createAccount", async (req, res) => {
 app.get("/REM/getwatchesinfo", async (req, res) => {
   try {
     let db = await getDBConnection();
-    let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
+    let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = ' +
+    'Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
     let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
     res.type("json").send(arrayOfWatches);
   } catch (err) {
-    res.type("json").send({ "errMessage": err })
+    res.type("json").send({"errMessage": err});
   }
 });
 

@@ -1,7 +1,7 @@
 
 "use strict";
 
-(function () {
+(function (){
 
   window.addEventListener("load", init);
   const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
@@ -11,21 +11,20 @@
 
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
+    id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
-    //click and close the side bar
-    id("close").addEventListener('click', function () {
+    id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
+      id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
-      })
+      });
     }
     sendSidebarToWatch();
     getAllWatches();
@@ -38,16 +37,14 @@
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
         sessionStorage.setItem('productID', productID);
-        console.log(productID);
-
-      window.location.href = "watch.html";
+        window.location.href = "watch.html";
       });
     }
   }
 
   /**
    * This function is used to open the sidebar
-   * @param {object} - evt refers to which specific sidebar is being clicked
+   * @param {object} evt - refers to which specific sidebar is being clicked
    */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
@@ -66,7 +63,7 @@
 
   /**
    * This function is used to open and close the sidebar
-   * @param {object} - subSidebar the sidebar that poll out
+   * @param {object} subSidebar - the sidebar that poll out
    */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
@@ -141,13 +138,14 @@
       changeSummary(result);
 
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
   }
 
   /**
    * This function is used to diaplay all the watch info into the board
-   *@param {object} - product each watch get from the database
+   * @param {object} - product each watch get from the database
+   * @return {object} productContainer -the creted block consisit of all the nodes
    */
   function updatedisplayboard(product) {
     let itemSection = gen('section');
@@ -168,7 +166,6 @@
     return itemSection;
   }
 
-
   /**
    * This function is used to change all the summury info
    * @param {object} - an Array that contain all the watches object
@@ -186,7 +183,6 @@
     qs("#total p").textContent = "$" + total;
   }
 
-
   /**
    * Helper function to return the response's result text if successful, otherwise
    * returns the rejected Promise result with an error status and corresponding text
@@ -200,7 +196,6 @@
     }
     return res;
   }
-
 
   /**
    * Helper function user to generate certain node
@@ -228,4 +223,12 @@
     return document.querySelector(selector);
   }
 
+  /**
+   * This function is used to get all the elements by its name
+   * @param {string} selector - the elements wants to be find in the HTML page
+   * @return {Node} return the all the node that selector corespond to .
+   */
+  function qsa(selector) {
+    return document.querySelectorAll(selector);
+  }
 })();

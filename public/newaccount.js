@@ -9,11 +9,10 @@
   function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
+    id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
-    //click and close the side bar
     id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
@@ -43,10 +42,10 @@
     }
   }
 
- /**
-  * This function is used to open the sidebar
-  * @param{object} - evt refers to which specific sidebar is being clicked
-  */
+  /**
+   * This function is used to open the sidebar
+   * @param{object} - evt refers to which specific sidebar is being clicked
+   */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -61,6 +60,7 @@
     evt.stopPropagation();
     document.addEventListener('click', closeSidebar);
   }
+
   /** This function is used to open and close the sidebar */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
@@ -71,6 +71,7 @@
       subSidebar.style.display = "none";
     }
   }
+
   /** This function is used to hide all the appeared sidebars */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
