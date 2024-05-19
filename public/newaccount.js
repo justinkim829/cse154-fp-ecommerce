@@ -25,7 +25,9 @@
         toggleSidebar(SIDEBARS[i]);
       })
     }
-    id("form1").addEventListener("submit", createAccount);
+    id("form1").addEventListener("submit", (evt) => {
+      createAccount(evt);
+    });
   }
 
   function openSidebar(evt) {
@@ -91,42 +93,31 @@
 
   async function createAccount(event) {
     event.preventDefault();
-    let email = id('emailaddress').value;
-    let password = id('password').value;
-    let gender = id('title').value;
-    let firstName = id('firstname').value;
-    let lastName = id('lastname').value;
-    let month = id('month').value;
-    let day = id('day').value;
-    let year = id('year').value;
 
-    let data = {
-      "email": email,
-      "password": password,
-      "gender": gender,
-      "firstname": firstName,
-      "lastname": lastName,
-      "month": month,
-      "day": day,
-      "year": year
-    }
+    let formData = new FormData();
+    formData.append("Email", id('emailaddress').value);
+    formData.append("Password", id('password').value);
+    formData.append("Gender", id('title').value);
+    formData.append("FirstName", id('firstname').value);
+    formData.append("LastName", id('lastname').value);
+    formData.append("Month", id('month').value);
+    formData.append("Day", id('day').value);
+    formData.append("Year", id('year').value);
+
     try {
       let response = await fetch(CREATE_URL, {
         method: "POST",
-        body: JSON.stringify(data)
+        body: formData
       });
-      response = statusCheck(response);
-      let result = response.json();
-      if (result === true) {
+      response = await statusCheck(response);
+      let result = await response.text();
+      let message = gen("p");
+      message.textContent = result;
+      id("showstatus").appendChild(message);
 
-      }
     } catch (err) {
       console.error(err);
-
     }
-
-
-
   }
 
 
@@ -161,6 +152,10 @@
    */
   function qs(selector) {
     return document.querySelector(selector);
+  }
+
+  function gen(selector) {
+    return document.createElement(selector);
   }
 
 })();

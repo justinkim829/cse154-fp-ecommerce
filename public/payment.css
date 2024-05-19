@@ -183,7 +183,9 @@ header, #search section {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
+  margin-bottom: 30px;
 }
+
 .receipt{
   display: flex;
   flex-direction: row;
@@ -254,4 +256,11 @@ h1{
   text-align: center;
   font-size: 60px;
   margin-top: 10%;
+}
+
+#itemsdisplayboard{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
 }

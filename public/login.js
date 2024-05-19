@@ -1,9 +1,7 @@
 "use strict";
 
-const { json } = require("body-parser");
-
 (function () {
-  const LOGIN_URL = "8080/REM/login";
+  const LOGIN_URL = "/REM/login";
 
   window.addEventListener('load', init);
 
@@ -28,7 +26,9 @@ const { json } = require("body-parser");
         toggleSidebar(SIDEBARS[i]);
       })
     }
-    id("input").addEventListener("submit", login);
+    id("input").addEventListener("submit", (event) => {
+      login(event);
+    });
   }
 
   function openSidebar(evt) {
@@ -92,24 +92,40 @@ const { json } = require("body-parser");
 
   async function login(event) {
     event.preventDefault();
-    let email = id("email").value;
-    let password = id("password").value;
-    let personalInfo = {
-      "Email": email,
-      "Password": password
-    }
+
+    let formData = new FormData();
+    formData.append("Email", id("email").value);
+    formData.append("Password", id("password").value)
+
     try {
       let response = await fetch(LOGIN_URL, {
         method: "POST",
-        body: JSON.stringify(personalInfo)
+        body: formData
       });
-      response = statusCheck(response);
-      let result = await response.json();
-      if (result === false) {
+      response = await statusCheck(response);
+      let result = await response.text();
+      if (result === "Login successful!") {
         let para = gen("p");
-        para.textContent = "Wrong Password/Email Address";
-        id("errdisplay").appendChild(para);
+        para.textContent = result;
+        id("messagedisplay").appendChild(para);
+        setInterval(() => {
+          window.location.href = "mainpage.html";
+        }, 2000)
+      } else {
+        id("password").value = "";
+        id("email").value = "";
+
+        let para = gen("p");
+        para.textContent = result;
+        id("messagedisplay").appendChild(para);
+
+        setInterval(() => {
+          if (id("messagedisplay").lastChild) {
+            id("messagedisplay").removeChild(id("messagedisplay").lastChild);
+          }
+        }, 2000);
       }
+
     } catch (err) {
       console.error(err);
     }
@@ -138,6 +154,12 @@ const { json } = require("body-parser");
    */
   function id(id) {
     return document.getElementById(id);
+  }
+
+
+  function gen(selector) {
+    return document.createElement(selector);
+
   }
 
   /**

@@ -3,6 +3,9 @@
 const express = require('express');
 const app = express();
 
+const sqlite3 = require('sqlite3');
+const sqlite = require('sqlite');
+
 // other required modules ...
 const multer = require("multer"); // import multer into your project
 
@@ -13,28 +16,84 @@ app.use(express.json());
 // For data sent as a form
 app.use(multer().none()); // requires the "multer" module
 
+let currentUserID = 11;
 
-app.post("REM/login",(req,res)=>{
-  let username=req.body.username;
-  let password=req.body.password;
 
-  //connnect with database
+app.post("/REM/login", async (req, res) => {
+  let db = await getDBConnection();
+  let email = req.body.Email;
+  let password = req.body.Password;
+
+  try {
+    let user = await db.get("SELECT * FROM User WHERE Email = ?", [email]);
+    if (user) {
+      currentUserID = user.ID;
+      if (password === user.Password) {
+        res.type("text").send("Login successful!");
+      } else {
+        res.type("text").send("Invalid password");
+      }
+    } else {
+      res.type("text").send("Email not found");
+    }
+  } catch (error) {
+    res.status(500).send("An error occurred");
+  }
 
 })
 
-app.post("/REM/createAccount",(req,res)=>{
-  let email = req.body.email;
-    let password = req.body.password;
-    let gender = req.body.gender;
-    let firstName = req.body.firstName;
-    let lastName = req.body.lastName;
-    let month = req.body.month;
-    let day = req.body.day;
-    let year = req.body.year;
-})
+
+app.post("/REM/createAccount", async (req, res) => {
+  let db = await getDBConnection();
+  let email = req.body.Email;
+  let password = req.body.Password;
+  let gender = req.body.Gender;
+  let firstName = req.body.FirstName;
+  let lastName = req.body.LastName;
+  let month = req.body.Month;
+  let day = req.body.Day;
+  let year = req.body.Year;
+  let checkEmailSql = 'SELECT Email FROM User WHERE Email = ?';
+  try {
+    let row = await db.get(checkEmailSql, [email]);
+    if (row) {
+      res.type("text").send("Email Already Exists");
+    } else {
+      let sql = 'INSERT INTO User (Email, Password, Gender, FirstName, LastName, DayOfBirth, MonthOfBirth, YearOfBirth) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+      await db.run(sql, [email, password, gender, firstName, lastName, day, month, year]);
+      res.send("Create Account Successful");
+    }
+  } catch (err) {
+    res.type("text").send("Failed To Create Account");
+  }
+});
+
+
+app.get("/REM/getwatchesinfo", async (req, res) => {
+  try {
+    let db = await getDBConnection();
+    let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
+    let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
+    res.type("json").send(arrayOfWatches);
+  } catch (err) {
+    res.type("json").send({ "errMessage": err })
+  }
+});
 
 
 
+/**
+ * Establishes a database connection to the database and returns the database object.
+ * Any errors that occur should be caught in the function that calls this one.
+ * @returns {sqlite3.Database} - The database object for the connection.
+ */
+async function getDBConnection() {
+  const db = await sqlite.open({
+    filename: 'watch.db',
+    driver: sqlite3.Database
+  });
+  return db;
+}
 
 
 app.use(express.static('public'));

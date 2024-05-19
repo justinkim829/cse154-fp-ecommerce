@@ -4,28 +4,30 @@
 (function () {
 
   window.addEventListener("load", init);
+  const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
 
   /** this function is used to initilizale the button with its functions. */
   function init() {
 
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
+    id("menu").addEventListener('click', function (evt) {
       openSidebar(evt);
     });
 
     //click and close the side bar
-    id("close").addEventListener('click', function() {
+    id("close").addEventListener('click', function () {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
+      id(idText).addEventListener("click", function () {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       })
     }
+    getAllWatches();
   }
 
   function openSidebar(evt) {
@@ -71,7 +73,7 @@
     let overlay = id("overlay");
 
     if (!sidebar.contains(event.target) && !type1Sidebar.contains(event.target) &&
-    !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
+      !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
       sidebar.style.left = "-300px";
       hideAllSidebars(type1Sidebar, type2Sidebar, type3Sidebar);
       overlay.style.display = "none";
@@ -86,6 +88,81 @@
       sidebar.style.left = "-300px";
       sidebar.style.display = "none";
     });
+  }
+
+
+  async function getAllWatches() {
+    try {
+      let response = await fetch(GET_WATCH_INFO_URL);
+      response = await statusCheck(response);
+      let result = await response.json();
+      for (let product of result) {
+        let item = updatedisplayboard(product);
+        id("itemsdisplayboard").appendChild(item);
+        let hr = gen('hr');
+        id("itemsdisplayboard").appendChild(hr);
+      }
+      changeSummary(result);
+
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  function updatedisplayboard(product) {
+
+    let itemSection = gen('section');
+    itemSection.classList.add('item');
+    let img = gen('img');
+    img.src = product.Img1;
+    img.alt = 'pictureOfWatch';
+    itemSection.appendChild(img);
+    let innerSection = gen('section');
+    let nameP = gen('p');
+    nameP.textContent = product.Name;
+    innerSection.appendChild(nameP);
+    let priceP = gen('p');
+    priceP.textContent = product.Price;
+    innerSection.appendChild(priceP);
+    itemSection.appendChild(innerSection);
+    document.body.appendChild(itemSection);
+    return itemSection;
+
+  }
+
+
+  function changeSummary(result) {
+    let subtotal = 0;
+    for (let product of result) {
+      subtotal = subtotal + (product.Price) * (product.Quantity);
+    }
+    let tax = subtotal * 0.1025;
+    let total = subtotal + tax;
+
+    qs("#subtotal p").textContent = "$" + subtotal;
+    qs("#tax p").textContent = "$" + tax;
+    qs("#total p").textContent = "$" + total;
+  }
+
+
+  /**
+   * Helper function to return the response's result text if successful, otherwise
+   * returns the rejected Promise result with an error status and corresponding text
+   * @param {object} res - response to check for success/error
+   * @return {object} - valid response if response was successful, otherwise rejected
+   *                    Promise result
+   */
+  async function statusCheck(res) {
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
+    return res;
+  }
+
+
+
+  function gen(selector) {
+    return document.createElement(selector);
   }
 
   /**
