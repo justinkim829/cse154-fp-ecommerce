@@ -149,7 +149,7 @@
 
   /**
    * close the sidebar to show details
-   *
+   */
   function closeTheDetailSidebar() {
     let productDetails = id("sidebarfordetail");
     productDetails.style.right = "-400px";
@@ -216,7 +216,7 @@
 
   /**
    * update watch info (imgs, name, price, etc.) for the watch page
-   * @param {String} productID
+   * @param {String} productID the productID of to watch
    */
   async function changeWatchImages(productID) {
     try {
@@ -243,7 +243,7 @@
   /**
    * change recommendations that show up in the bottom of the page
    * to match the watch type that is being viewed
-   * @param {String} productID
+   * @param {String} productID the productID of to watch
    */
   function changeRecommendations(productID) {
     let productType = productID[0];
@@ -264,6 +264,15 @@
         recommendations.push([diffCatPath, key + productNum]);
       }
     }
+    changeRecommendedWatches(recommendations);
+  }
+
+  /**
+   * change recommended watch images based on the recommendations given
+   * @param {Array} recommendations - array of arrays which contain
+   * the path of image and type of watch
+   */
+  function changeRecommendedWatches(recommendations) {
     let recommendedWatches = qsa("#recommendation-list .watch-box img");
     for (let i = 0; i < recommendedWatches.length; i++) {
       recommendedWatches[i].src = recommendations[i][0];
@@ -273,12 +282,12 @@
 
       recommendedWatches[i].clickHandler = () => reloadPage(recommendedWatches[i].alt);
       recommendedWatches[i].addEventListener(
-      'click', recommendedWatches[i].clickHandler,
+      'click',
+      recommendedWatches[i].clickHandler,
       {once: true}
       );
     }
   }
-
   /**
    * reload all contents
    * used when page is being reloaded
@@ -294,7 +303,7 @@
 
   /**
    * reload page (reset sidebars, horizontal lines, and image information)
-   * @param {String} productID
+   * @param {String} productID product ID of the watch
    */
   function reloadPage(productID) {
     reloadContents();
@@ -423,7 +432,7 @@
 
   /**
    * Helper function user to generate certain node
-   * @param {object} selector - the node user wants to create
+   * @param {object} element - the node user wants to create
    * @return {Node} the node that was created.
    */
   function gen(element) {
