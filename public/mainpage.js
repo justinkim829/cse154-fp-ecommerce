@@ -15,9 +15,9 @@
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
+        sessionStorage.setItem('productID', productID);
         console.log(productID);
 
-      sessionStorage.setItem('productID', productID);
       window.location.href = "watch.html";
       });
     }

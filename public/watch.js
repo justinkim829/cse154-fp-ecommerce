@@ -21,15 +21,7 @@
     let wishlistIcon = qs("#add-to-wishlist p");
     wishlistIcon.addEventListener('click', addToWishlist);
 
-    let rightArrow = qs("#right-arrow p");
-    rightArrow.addEventListener('click', () => {
-      nextPicture(true);
-    });
-
-    let leftArrow = qs("#left-arrow p");
-    leftArrow.addEventListener('click', () => {
-      nextPicture(false);
-    });
+    arrowsToNextImage();
 
     //lock header when window is scrolled down
     window.onscroll = function () {
@@ -44,10 +36,23 @@
     receiveSidebarToWatch();
   }
 
+  function arrowsToNextImage() {
+    let rightArrow = qs("#right-arrow p");
+    rightArrow.addEventListener('click', () => {
+      nextPicture(true);
+    });
+
+    let leftArrow = qs("#left-arrow p");
+    leftArrow.addEventListener('click', () => {
+      nextPicture(false);
+    });
+  }
+
   function receiveSidebarToWatch() {
     const checkProductID = setInterval(() => {
       const productID = sessionStorage.getItem('productID');
       if (productID) {
+        sessionStorage.removeItem('productID');
         reloadPage(productID);
         clearInterval(checkProductID);
       }
@@ -186,48 +191,68 @@
     }
   }
 
-  function changeWatchImages(productID) {
-    resetAllSidebar();
-    let productType = productID[0];
-    let productNum = parseInt(productID[1]);
+  async function changeWatchImages(productID) {
+    try {
+      console.log(productID);
+      let data = await getData(`http://localhost:8080/watchdetails/${productID}`, false);
+      console.log(data);
+      let productType = productID[0];
+      let productNum = parseInt(productID[1]);
 
-    let folderPath = `img/${productType}/watch${productNum}`;
-    let imagePath = folderPath + "/img1.png";
-    let currentImage = qs("#img-container img");
-    currentImage.src = imagePath;
-    currentImage.alt = imagePath;
+      let imagePath = data.Img1;
+      let currentImage = qs("#img-container img");
+      currentImage.src = imagePath;
+      currentImage.alt = productID;
 
-    let productNumber = qs("#product-number p");
-    productNumber.textContent = productID;
+      let productNumber = qs("#product-number p");
+      productNumber.textContent = productID;
 
-    let recommendations = [];
-    let watchNums = CATEGORIES_MAP.get(productType);
-    for (let i = productNum + 1; i <= productNum + watchNums; i++) {
-      let nextWatchNum = (i % watchNums) === 0 ? watchNums : i % watchNums;
-      if (nextWatchNum !== productNum) {
-        let sameCatPath = `img/${productType}/watch${nextWatchNum}/img1.png`;
-        recommendations.push([sameCatPath, productType + nextWatchNum]);
+      qs("#product-name h2").textContent = data.Name;
+      qs("#price p").textContent = "$" + data.Price;
+      qs("#sidebarfordetail p").textContent = data.Description;
+
+      let recommendations = [];
+      let watchNums = CATEGORIES_MAP.get(productType);
+      for (let i = productNum + 1; i <= productNum + watchNums; i++) {
+        let nextWatchNum = (i % watchNums) === 0 ? watchNums : i % watchNums;
+        if (nextWatchNum !== productNum) {
+          let sameCatPath = `img/${productType}/watch${nextWatchNum}/img1.png`;
+          recommendations.push([sameCatPath, productType + nextWatchNum]);
+        }
       }
-    }
-    for (let key of CATEGORIES_MAP.keys()) {
-      if (key !== productType) {
-        let diffCatPath = `img/${key}/watch${productNum}/img1.png`;
-        recommendations.push([diffCatPath, key + productNum]);
+      for (let key of CATEGORIES_MAP.keys()) {
+        if (key !== productType) {
+          let diffCatPath = `img/${key}/watch${productNum}/img1.png`;
+          recommendations.push([diffCatPath, key + productNum]);
+        }
       }
-    }
-    let recommendedWatches = qsa("#recommendation-list .watch-box img");
-    for (let i = 0; i < recommendedWatches.length; i++) {
-      recommendedWatches[i].src = recommendations[i][0];
-      recommendedWatches[i].alt = recommendations[i][1];
+      let recommendedWatches = qsa("#recommendation-list .watch-box img");
+      for (let i = 0; i < recommendedWatches.length; i++) {
+        recommendedWatches[i].src = recommendations[i][0];
+        recommendedWatches[i].alt = recommendations[i][1];
 
-      recommendedWatches[i].removeEventListener('click', recommendedWatches[i].clickHandler);
+        recommendedWatches[i].removeEventListener('click', recommendedWatches[i].clickHandler);
 
-      recommendedWatches[i].clickHandler = () => reloadPage(recommendedWatches[i].alt);
-      recommendedWatches[i].addEventListener('click', recommendedWatches[i].clickHandler, { once: true });
+        recommendedWatches[i].clickHandler = () => reloadPage(recommendedWatches[i].alt);
+        recommendedWatches[i].addEventListener('click', recommendedWatches[i].clickHandler, { once: true });
+      }
+    } catch (err) {
+      console.error(err);
     }
   }
 
+  function reloadContents() {
+    const body = qs("body");
+    let clonedBody = body.cloneNode(true);
+    body.remove();
+    document.documentElement.appendChild(clonedBody);
+    window.scrollTo(0, 0);
+    init();
+  }
+
   function reloadPage(productID) {
+    reloadContents();
+    resetAllSidebar();
     changeWatchImages(productID);
     resetHRs();
   }
@@ -347,6 +372,38 @@
       sidebar.style.left = "-300px";
       sidebar.style.display = "none";
     });
+  }
+
+  /**
+   * Fetches data from the given endpoint.
+   * @param {string} endPoint - The API endpoint.
+   * @param {boolean} isReturnText - Whether the received data is text or JSON.
+   * @returns {Promise<Object|string>} The fetched data after error handling.
+   */
+  async function getData(endPoint, isReturnText) {
+    try {
+      let data = await fetch(endPoint);
+      await statusCheck(data);
+      if (isReturnText) {
+        data = await data.text();
+      } else {
+        data = await data.json();
+      }
+      return data;
+    } catch (err) {
+      console.error(err);33
+    }
+  }
+
+  /**
+   * Checks the status of the response.
+   * @param {Response} res - The response object.
+   * @throws an error if the response is not ok.
+   */
+  async function statusCheck(res) {
+    if (!res.ok) {
+      throw new Error(await res.text());
+    }
   }
 
   //HEADER FUNCTION END

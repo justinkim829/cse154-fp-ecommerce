@@ -28,6 +28,21 @@
     id("form1").addEventListener("submit", (evt) => {
       createAccount(evt);
     });
+
+    sendSidebarToWatch();
+  }
+
+  function sendSidebarToWatch() {
+    let options = qsa(".double-sidebar ul li");
+    for (let i = 0; i < options.length; i++) {
+      options[i].addEventListener('click', () => {
+        let productID = options[i].querySelector("p").textContent;
+        sessionStorage.setItem('productID', productID);
+        console.log(productID);
+
+      window.location.href = "watch.html";
+      });
+    }
   }
 
   function openSidebar(evt) {

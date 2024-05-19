@@ -8,6 +8,9 @@ const sqlite = require('sqlite');
 
 // other required modules ...
 const multer = require("multer"); // import multer into your project
+const cors = require('cors');
+
+app.use(cors());
 
 // For data sent as form-urlencoded
 app.use(express.urlencoded({ extended: true }));
@@ -16,8 +19,7 @@ app.use(express.json());
 // For data sent as a form
 app.use(multer().none()); // requires the "multer" module
 
-let currentUserID = 11;
-
+let currentUserID = 0;
 
 app.post("/REM/login", async (req, res) => {
   let db = await getDBConnection();
@@ -42,6 +44,20 @@ app.post("/REM/login", async (req, res) => {
 
 })
 
+app.get("/watchdetails/:ID", async function (req, res) {
+  try {
+    let watchID = req.params.ID;
+    let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
+    let db = await getDBConnection();
+    let result = await db.get(qry);
+    console.log(result);
+    res.status(200).json(result);
+  } catch (err) {
+    console.error(err);
+    res.type("text");
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 app.post("/REM/createAccount", async (req, res) => {
   let db = await getDBConnection();
