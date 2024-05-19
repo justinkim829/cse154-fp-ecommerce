@@ -28,7 +28,7 @@
       } else {
         header.classList.remove("lock-header");
       }
-    }
+    };
     receiveSidebarToWatch();
   }
 
@@ -133,7 +133,10 @@
     }
   }
 
-  /** This function is */
+  /**
+   * Display the sidebar to shwo details
+   * @param {event} event - the event that triggered
+   */
   function displayDetailSidebar(event) {
     let productDetails = id("sidebarfordetail");
     productDetails.style.right = "0px";
@@ -144,12 +147,19 @@
 
   }
 
+  /**
+   * close the sidebar to show details
+   *
   function closeTheDetailSidebar() {
     let productDetails = id("sidebarfordetail");
     productDetails.style.right = "-400px";
     id("overlay").style.display = "none";
   }
 
+  /**
+   * automatically close the sidebar to show details
+   * @param {event} event - the event the triggered
+   */
   function closeDetailSidebarAuto(event) {
     let sidebarfordetail = id("sidebarfordetail");
     let overlay = id("overlay");
@@ -162,7 +172,10 @@
     }
   }
 
-  // RELOAD PAGEEEEEEEEEE
+  /**
+   * reset the horizontal lines which indicate
+   * the picture num of watch that is shown
+   */
   function resetHRs() {
     let allHRs = qsa("#image-number hr");
     for (let i = 0; i < allHRs.length; i++) {
@@ -173,6 +186,10 @@
     allHRs[0].classList.remove("to-blacke-border");
   }
 
+  /**
+   * check if a watch type is clicked in the sidebar.
+   * reload the page if so.
+   */
   function checkClickedWatch() {
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
@@ -183,6 +200,10 @@
     }
   }
 
+  /**
+   * reset sidebars back to display nothing
+   * used when page reloads
+   */
   function resetAllSidebar() {
     let overlay = id("overlay");
     let arraySidebars = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar'), id("sidebar")];
@@ -193,6 +214,10 @@
     }
   }
 
+  /**
+   * update watch info (imgs, name, price, etc.) for the watch page
+   * @param {String} productID
+   */
   async function changeWatchImages(productID) {
     try {
       let data = await getData(`http://localhost:8080/watchdetails/${productID}`, false);
@@ -215,6 +240,11 @@
     }
   }
 
+  /**
+   * change recommendations that show up in the bottom of the page
+   * to match the watch type that is being viewed
+   * @param {String} productID
+   */
   function changeRecommendations(productID) {
     let productType = productID[0];
     let productNum = parseInt(productID[1]);
@@ -249,6 +279,10 @@
     }
   }
 
+  /**
+   * reload all contents
+   * used when page is being reloaded
+   */
   function reloadContents() {
     const body = qs("body");
     let clonedBody = body.cloneNode(true);
@@ -258,6 +292,10 @@
     init();
   }
 
+  /**
+   * reload page (reset sidebars, horizontal lines, and image information)
+   * @param {String} productID
+   */
   function reloadPage(productID) {
     reloadContents();
     resetAllSidebar();
@@ -265,6 +303,10 @@
     resetHRs();
   }
 
+  /**
+   * open the sidebar
+   * @param {event} evt event that triggered
+   */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
@@ -280,6 +322,10 @@
     document.addEventListener('click', closeSidebar);
   }
 
+  /**
+   * This function is used to open and close the sidebar
+   * @param {object} subSidebar - the sidebar to open/close
+   */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
       subSidebar.style.left = "300px";
@@ -290,6 +336,12 @@
     }
   }
 
+  /**
+   * This function is used to close all the sidebars
+   * @param {object} subSidebar1 - First sidebar that should be hidden
+   * @param {object} subSidebar2 - Second sidebar that should be hidden
+   * @param {object} subSidebar3 - Third sidebar that should be hidden
+   */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
       if (sidebar.style.left === "300px") {
@@ -299,6 +351,10 @@
     });
   }
 
+  /**
+   * when click the place other than sidebar, the sidebar would be closed
+   * @param {event} event - the action of click the page
+   */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
     let type1Sidebar = id('type1sidebar');
@@ -320,6 +376,12 @@
 
   }
 
+  /**
+   * This function is used to close all the sidebars
+   * @param {object} subSidebar1 the sidebar that pull out
+   * @param {object} subSidebar2 the sidebar that pull out
+   * @param {object} subSidebar3 the sidebar that pull out
+   */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
       sidebar.style.left = "-300px";
@@ -359,6 +421,11 @@
     }
   }
 
+  /**
+   * Helper function user to generate certain node
+   * @param {object} selector - the node user wants to create
+   * @return {Node} the node that was created.
+   */
   function gen(element) {
     return document.createElement(element);
   }
