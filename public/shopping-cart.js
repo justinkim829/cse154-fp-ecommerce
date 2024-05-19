@@ -47,7 +47,7 @@
 
   /**
    * This function is used to open the sidebar
-   * @param {object} - evt refers to which specific sidebar is being clicked
+   * @param {event} evt refers to which specific sidebar is being clicked
    */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
@@ -66,7 +66,7 @@
 
   /**
    * This function is used to open and close the sidebar
-   * @param {object} - subSidebar the sidebar that poll out
+   * @param {object} subSidebar the sidebar that poll out
    */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
@@ -80,8 +80,8 @@
 
   /**
    * This function is used to hide all the appeared sidebars
-   * @param {object} - subSidebar1 the subsidebar that already poll out
-   * @param {object} - subSidebar2 the subsidebar that already poll out
+   * @param {object} subSidebar1 the subsidebar that already poll out
+   * @param {object} subSidebar2 the subsidebar that already poll out
    */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
@@ -94,7 +94,7 @@
 
   /**
    * when click the place other than sidebar, the sidebar would be closed
-   * @param {object} - the action of click the page
+   * @param {event} event - the action of click the page
    */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
@@ -116,9 +116,9 @@
 
   /**
    * This function is used to close all the sidebars
-   * @param {object} - subSidebar1 the sidebar that poll out
-   * @param {object} - subSidebar2 the sidebar that poll out
-   * @param {object} - subSidebar3 the sidebar that poll out
+   * @param {object} subSidebar1 the sidebar that pull out
+   * @param {object} subSidebar2 the sidebar that pull out
+   * @param {object} subSidebar3 the sidebar that pull out
    */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
@@ -254,7 +254,7 @@
 
   /**
    * This function is used to change all the summury info
-   * @param {object} - an Array that contain all the watches object
+   * @param {object} result - an Array that contain all the watches object
    */
   function changeSummary(result) {
     qs("#order-summary p").textContent = result.length + " item";

@@ -1,7 +1,7 @@
 
 "use strict";
 
-(function (){
+(function() {
 
   window.addEventListener("load", init);
   const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
@@ -77,8 +77,8 @@
 
   /**
    * This function is used to hide all the appeared sidebars
-   * @param {object} - subSidebar1 the subsidebar that already poll out
-   * @param {object} - subSidebar2 the subsidebar that already poll out
+   * @param {object} subSidebar1 the subsidebar that already poll out
+   * @param {object} subSidebar2 the subsidebar that already poll out
    */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
@@ -91,7 +91,7 @@
 
   /**
    * when click the place other than sidebar, the sidebar would be closed
-   * @param {object} - the action of click the page
+   * @param {event} event - the action of click the page
    */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
@@ -112,9 +112,9 @@
 
   /**
    * This function is used to close all the sidebars
-   * @param {object} - subSidebar1 the sidebar that poll out
-   * @param {object} - subSidebar2 the sidebar that poll out
-   * @param {object} - subSidebar3 the sidebar that poll out
+   * @param {object} subSidebar1 the sidebar that poll out
+   * @param {object} subSidebar2 the sidebar that poll out
+   * @param {object} subSidebar3 the sidebar that poll out
    */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
@@ -144,8 +144,8 @@
 
   /**
    * This function is used to diaplay all the watch info into the board
-   * @param {object} - product each watch get from the database
-   * @return {object} productContainer -the creted block consisit of all the nodes
+   * @param {object} product each watch get from the database
+   * @return {object} itemSection - the creted block consisit of all the nodes
    */
   function updatedisplayboard(product) {
     let itemSection = gen('section');
@@ -168,7 +168,7 @@
 
   /**
    * This function is used to change all the summury info
-   * @param {object} - an Array that contain all the watches object
+   * @param {object} result - an Array that contain all the watches object
    */
   function changeSummary(result) {
     let subtotal = 0;
@@ -200,6 +200,7 @@
   /**
    * Helper function user to generate certain node
    * @param {object} selector - the node user wants to create
+   * @return {Node} the node that was created.
    */
   function gen(selector) {
     return document.createElement(selector);
