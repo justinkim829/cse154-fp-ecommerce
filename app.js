@@ -54,7 +54,6 @@ app.get("/watchdetails/:ID", async function (req, res) {
     res.status(200).json(result);
   } catch (err) {
     console.error(err);
-    res.type("text");
     res.status(500).send("Internal Server Error");
   }
 });

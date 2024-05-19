@@ -254,12 +254,12 @@ button:hover {
   background-color: white;
 }
 
-#showstatus{
+#showstatus {
   margin-top: 20px;
   height: 50px;
 }
 
-#showstatus p{
+#showstatus p {
   font-size: 20px;
   text-align: center;
 }

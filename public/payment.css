@@ -161,38 +161,33 @@ header, #search section {
   cursor: pointer;
 }
 
-
-
-
-
-#whole-page{
+#whole-page {
   display: flex;
   flex-direction: row;
   width: 100%;
   justify-content: space-between;
-
 }
 
-#info-display{
+#info-display {
   width: 30%;
   margin-right: 5%;
   margin-top: 2%;
 }
 
-.item{
+.item {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   margin-bottom: 30px;
 }
 
-.receipt{
+.receipt {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-form{
+form {
   display: flex;
   flex-direction: column;
   width: 55%;
@@ -200,14 +195,12 @@ form{
   justify-content: space-between;
   margin-top: 2%;
   margin-left: 5%;
-
-
 }
+
 label {
   margin-bottom: 5px;
   color: #333;
   font-size: 16px;
-
 }
 
 input[type="text"], select {
@@ -221,7 +214,7 @@ input[type="text"], select {
   margin-bottom: 15px;
 }
 
-#submit{
+#submit {
   background-color: black;
   color: white;
   padding: 10px 20px;
@@ -241,26 +234,25 @@ input[type="text"], select {
   background-color: white;
 }
 
-.info{
+.info {
   background-color: white;
   border-radius: 4%;
   margin-bottom: 30px;
   padding: 15px;
 }
 
-.item img{
+.item img {
   width: 30%;
 }
 
-h1{
+h1 {
   text-align: center;
   font-size: 60px;
   margin-top: 10%;
 }
 
-#itemsdisplayboard{
+#itemsdisplayboard {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-
 }

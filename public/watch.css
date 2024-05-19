@@ -313,12 +313,12 @@ main {
   z-index: 1000;
 }
 
-#sidebarfordetail p{
+#sidebarfordetail p {
   color: black;
   font-size: 15px;
   margin-left: 35px;
 }
 
-#product-details:hover{
+#product-details:hover {
   cursor: pointer;
 }
