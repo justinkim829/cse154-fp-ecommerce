@@ -288,6 +288,7 @@
       );
     }
   }
+
   /**
    * reload all contents
    * used when page is being reloaded
