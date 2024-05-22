@@ -189,14 +189,14 @@ header, #search section {
   pointer-events: none;
 }
 
-#close {
+.close {
   padding-top: 30px;
   padding-left: 50px;
   margin: 0;
   font-size: 20px;
 }
 
-#close:hover {
+.close:hover {
   cursor: pointer;
 }
 
