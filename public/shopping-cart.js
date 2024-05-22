@@ -1,26 +1,26 @@
 "use strict";
 
-(function() {
+(function () {
 
   window.addEventListener('load', init);
   const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
   const COLOR = ["blue", "white", "black"];
 
   /** This function is used to initiallize all the functions */
-  function init() {
+  async function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
+    id("menu").addEventListener('click', function (evt) {
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function() {
+    id("close").addEventListener('click', function () {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
+      id(idText).addEventListener("click", function () {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
@@ -29,8 +29,38 @@
     checkoutButton.addEventListener("click", () => {
       window.location.href = "payment.html";
     });
-    getAllWatches();
+
+
+    await getAllWatches();
     sendSidebarToWatch();
+
+    let removes = qsa(".remove p");
+    for (let remove of removes) {
+      remove.addEventListener("click", (event) => {
+        removeItem(event);
+      });
+    }
+
+  }
+
+  async function removeItem(event) {
+    let card = event.target.closest(".product");
+    let formdata = new FormData();
+    formdata.append("id", card.id);
+    try {
+      let response = await fetch("/REM/removeitem", {
+        method: "POST",
+        body: formdata
+      });
+      response = await statusCheck(response);
+      response = await response.text();
+      id("left-side").innerHTML = "";
+      let result = getCurrentWatches();
+      changeSummary(result);
+
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /** This function is used to change the mainpage into each watch page */
@@ -147,59 +177,95 @@
     }
   }
 
+  async function getCurrentWatches(){
+    try {
+      let response = await fetch(GET_WATCH_INFO_URL);
+      response = await statusCheck(response);
+      let result = await response.json();
+      let head = gen("h2");
+      head.textContent = "Your Selections (" + result.length + ")";
+      id("left-side").appendChild(head);
+      for (let product of result) {
+        let eachProduct = updateWebView(product);
+        id("left-side").appendChild(eachProduct);
+      }
+      let removes = qsa(".remove p");
+      for (let remove of removes) {
+        remove.addEventListener("click", (event) => {
+          removeItem(event);
+        });
+      }
+      changeSummary(result);
+
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   /**
    * This function is used to put each watch info into the display board
    * @param {object} product - the object of each watch
    * @return {object} productContainer -the creted block consisit of all the nodes
    */
   function updateWebView(product) {
-    updateProductInfo(product);
-    updateCostInfo(product);
-    let costSection = gen('section');
     let productContainer = gen('section');
+    productContainer.classList.add('product-container');
 
-    // Color selector
-    let colorSelector = gen('select');
-    for (let i = 0; i < COLOR.length; i++) {
-      const option = gen('option');
-      option.value = COLOR[i];
-      option.textContent = 'COLOR: ' + COLOR[i].toUpperCase();
-      colorSelector.appendChild(option);
-    }
-    costSection.appendChild(colorSelector);
-
-    // Remove/Edit options
-    let removeSection = gen('section');
-    removeSection.classList.add('remove');
-    costSection.appendChild(removeSection);
-
-    let edit = gen('p');
-    edit.textContent = 'Edit';
-    removeSection.appendChild(edit);
-
-    let remove = gen('p');
-    remove.textContent = 'Remove';
-    removeSection.appendChild(remove);
+    let productSection = addProductDescription(product, productContainer);
+    addCostOptions(product, productSection);
 
     // Insert a divider
     let hr = gen('hr');
     productContainer.appendChild(hr);
+
     return productContainer;
   }
 
-  /**
-   * This function is used to change all the info in the summary board
-   * @param {object} product - all the detail info of this watch
-   */
-  function updateCostInfo(product) {
+  function addProductDescription(product, productContainer) {
+    // Create product section
     let productSection = gen('section');
+    productSection.classList.add('product');
+    productContainer.appendChild(productSection);
 
+    // Add image
+    let img = gen('img');
+    img.src = product.Img1;
+    productSection.appendChild(img);
+
+    // Add description section
+    let descriptionSection = gen('section');
+    descriptionSection.classList.add('description');
+    productSection.appendChild(descriptionSection);
+
+    let productName = gen('p');
+    productName.classList.add('description-name');
+    productName.textContent = product.Name;
+    descriptionSection.appendChild(productName);
+
+    let productId = gen('p');
+    productId.classList.add('description-id');
+    productId.textContent = 'ID: ' + product.Type;
+    descriptionSection.appendChild(productId);
+
+    let productStatus = gen('p');
+    productStatus.classList.add('description-status');
+    productStatus.textContent = "Available";
+    descriptionSection.appendChild(productStatus);
+
+    let productStatusMsg = gen('p');
+    productStatusMsg.classList.add('description-status-msg');
+    productStatusMsg.textContent = "Your selection is available to purchase online.";
+    descriptionSection.appendChild(productStatusMsg);
+    productSection.id = product.WatchID;
+    return productSection;
+  }
+
+  function addCostOptions(product, productSection) {
     // Cost section
     let costSection = gen('section');
     costSection.classList.add('cost');
     productSection.appendChild(costSection);
 
-    // Price
     let price = gen('p');
     price.textContent = '$' + product.Price;
     costSection.appendChild(price);
@@ -211,45 +277,27 @@
       option.value = i;
       option.textContent = 'QTY: ' + i;
       quantitySelector.appendChild(option);
-      if (i === product.Quantity) {
-        option.selected = true;
-      }
-      costSection.appendChild(quantitySelector);
+      if (i === product.Quantity) option.selected = true;
     }
-  }
+    costSection.appendChild(quantitySelector);
 
-  /**
-   * This function is used to create a block of the watch and add it into the board
-   * @param {object} product - all the detail info of this watch
-   */
-  function updateProductInfo(product) {
-    let productContainer = gen('section');
-    productContainer.classList.add('product-container');
-    let productSection = gen('section');
-    productSection.classList.add('product');
-    productContainer.appendChild(productSection);
-    let img = gen('img');
-    img.src = product.Img1;
-    productSection.appendChild(img);
-    let descriptionSection = gen('section');
-    descriptionSection.classList.add('description');
-    productSection.appendChild(descriptionSection);
-    let productName = gen('p');
-    productName.classList.add('description-name');
-    productName.textContent = product.Name;
-    descriptionSection.appendChild(productName);
-    let productId = gen('p');
-    productId.classList.add('description-id');
-    productId.textContent = 'ID: ' + product.Type;
-    descriptionSection.appendChild(productId);
-    let productStatus = gen('p');
-    productStatus.classList.add('description-status');
-    productStatus.textContent = "Available";
-    descriptionSection.appendChild(productStatus);
-    let productStatusMsg = gen('p');
-    productStatusMsg.classList.add('description-status-msg');
-    productStatusMsg.textContent = "Your selection is available to purchase online.";
-    descriptionSection.appendChild(productStatusMsg);
+    // Color selector
+    let colorSelector = gen('select');
+    for (let color of ['blue', 'white', 'black']) {
+      let option = gen('option');
+      option.value = color;
+      option.textContent = 'COLOR: ' + color.toUpperCase();
+      colorSelector.appendChild(option);
+    }
+    costSection.appendChild(colorSelector);
+
+    // Remove/Edit options
+    let removeSection = gen('section');
+    removeSection.classList.add('remove');
+    let remove = gen('p');
+    remove.textContent = 'Remove';
+    removeSection.appendChild(remove);
+    costSection.appendChild(removeSection);
   }
 
   /**
@@ -259,15 +307,15 @@
   function changeSummary(result) {
     qs("#order-summary p").textContent = result.length + " item";
     let subtotal = 0;
-    for (let product of result) {
-      subtotal = subtotal + (product.Price) * (product.Quantity);
+    for (let i=0;i<result.length;i++) {
+      subtotal = subtotal + (result[i].Price) * (result[i].Quantity);
     }
     let tax = subtotal * 0.1025;
     let total = subtotal + tax;
 
-    qs("#subtotal p").textContent = "$" + subtotal;
-    qs("#tax p").textContent = "$" + tax;
-    qs("#total p").textContent = "$" + total;
+    qs("#subtotal p").textContent = "$" + Math.floor(subtotal);
+    qs("#tax p").textContent = "$" + Math.floor(tax);
+    qs("#total p").textContent = "$" + Math.floor(total);
   }
 
   /**

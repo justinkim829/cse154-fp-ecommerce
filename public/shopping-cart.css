@@ -342,3 +342,7 @@ footer p {
   font-style: normal;
   letter-spacing: 5px;
 }
+
+.remove p{
+  cursor: pointer;
+}

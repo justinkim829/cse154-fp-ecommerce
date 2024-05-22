@@ -2,8 +2,8 @@
 
 const express = require('express');
 const app = express();
-
 const sqlite3 = require('sqlite3');
+
 const sqlite = require('sqlite');
 
 const multer = require("multer");
@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(multer().none());
 
-let currentUserID = 0;
+let currentUserID = 11;
 
 /**
  * This function is used to check the userInfo and show the hint message that whether
@@ -105,6 +105,19 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
     res.type("json").send(arrayOfWatches);
   } catch (err) {
     res.type("json").send({"errMessage": err});
+  }
+});
+
+app.post("/REM/removeitem",async (req,res)=>{
+  try {
+    let db = await getDBConnection();
+    let watchID = req.body.id;
+    let removeSql = "DELETE FROM Shoppingcart WHERE watchID = ? AND UserID = ?;"
+    await db.run(removeSql,[watchID,currentUserID]);
+    res.type("text").send("Remove the Item successfully");
+  } catch (err) {
+    console.log(err);
+    res.type("text").status(500).send("Failed to remove from the Shoppingcart")
   }
 });
 
