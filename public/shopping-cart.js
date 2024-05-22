@@ -226,6 +226,11 @@
           removeItem(event);
         });
       }
+      for (let selector of qsa(".selectorquantity")) {
+        selector.addEventListener("change", (event) => {
+          changeQuantity(event);
+        });
+      }
       changeSummary(result);
 
     } catch (err) {
