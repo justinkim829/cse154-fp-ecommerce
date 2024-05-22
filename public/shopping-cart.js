@@ -25,8 +25,7 @@
         toggleSidebar(SIDEBARS[i]);
       });
     }
-    let checkoutButton = id("checkout");
-    checkoutButton.addEventListener("click", () => {
+    id("checkout").addEventListener("click", () => {
       window.location.href = "payment.html";
     });
 
@@ -34,14 +33,46 @@
     await getAllWatches();
     sendSidebarToWatch();
 
-    let removes = qsa(".remove p");
-    for (let remove of removes) {
+    for (let remove of qsa(".remove p")) {
       remove.addEventListener("click", (event) => {
         removeItem(event);
       });
     }
 
+    for (let selector of qsa(".selectorquantity")) {
+      selector.addEventListener("change", (event) => {
+        changeQuantity(event);
+      });
+    }
+
   }
+
+  async function changeQuantity(event) {
+    let card = event.target.closest(".product");
+    let numberOfWatch = event.target.value;
+    let formdata = new FormData();
+    formdata.append("id", card.id);
+    formdata.append("number", numberOfWatch);
+    try {
+      let response = await fetch("/REM/changequantity", {
+        method: "POST",
+        body: formdata
+      });
+      response = await statusCheck(response);
+      response = await response.text();
+      if (response === "change the quantity successfully") {
+        id("left-side").innerHTML = "";
+        let result = getCurrentWatches();
+        changeSummary(result);
+      }
+
+    } catch (err) {
+      console.error(err);
+    }
+
+  }
+
+
 
   async function removeItem(event) {
     let card = event.target.closest(".product");
@@ -177,7 +208,7 @@
     }
   }
 
-  async function getCurrentWatches(){
+  async function getCurrentWatches() {
     try {
       let response = await fetch(GET_WATCH_INFO_URL);
       response = await statusCheck(response);
@@ -272,6 +303,7 @@
 
     // Quantity selector
     let quantitySelector = gen('select');
+    quantitySelector.classList.add("selectorquantity");
     for (let i = 1; i <= 3; i++) {
       let option = gen('option');
       option.value = i;
@@ -305,11 +337,13 @@
    * @param {object} result - an Array that contain all the watches object
    */
   function changeSummary(result) {
-    qs("#order-summary p").textContent = result.length + " item";
     let subtotal = 0;
-    for (let i=0;i<result.length;i++) {
+    let numberOfWatch=0;
+    for (let i = 0; i < result.length; i++) {
+      numberOfWatch = numberOfWatch + result[i].Quantity;
       subtotal = subtotal + (result[i].Price) * (result[i].Quantity);
     }
+    qs("#order-summary p").textContent = numberOfWatch + " item";
     let tax = subtotal * 0.1025;
     let total = subtotal + tax;
 

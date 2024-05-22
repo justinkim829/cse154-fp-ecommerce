@@ -346,3 +346,7 @@ footer p {
 .remove p{
   cursor: pointer;
 }
+
+.selectorquantity{
+  color: black;
+}

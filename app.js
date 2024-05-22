@@ -116,10 +116,23 @@ app.post("/REM/removeitem",async (req,res)=>{
     await db.run(removeSql,[watchID,currentUserID]);
     res.type("text").send("Remove the Item successfully");
   } catch (err) {
-    console.log(err);
     res.type("text").status(500).send("Failed to remove from the Shoppingcart")
   }
 });
+
+app.post("/REM/changequantity",async (req,res)=>{
+  try {
+    let db = await getDBConnection();
+    let watchID = req.body.id;
+    let number = req.body.number;
+    let removeSql = "UPDATE Shoppingcart SET Quantity = ? WHERE watchID = ? AND UserID = ?;"
+    await db.run(removeSql,[number,watchID,currentUserID]);
+    res.type("text").send("change the quantity successfully");
+  } catch (err) {
+    res.type("text").status(500).send("Failed to change the quantity");
+  }
+});
+
 
 /**
  * Establishes a database connection to the database and returns the database object.
