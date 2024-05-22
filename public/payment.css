@@ -177,7 +177,7 @@ header, #search section {
 .item {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  gap: 30px;
   margin-bottom: 30px;
 }
 
@@ -242,7 +242,8 @@ input[type="text"], select {
 }
 
 .item img {
-  width: 30%;
+  max-width: 30%;
+  max-height: 30%;
 }
 
 h1 {

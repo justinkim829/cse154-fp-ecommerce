@@ -178,9 +178,9 @@
     let tax = subtotal * 0.1025;
     let total = subtotal + tax;
 
-    qs("#subtotal p").textContent = "$" + subtotal;
-    qs("#tax p").textContent = "$" + tax;
-    qs("#total p").textContent = "$" + total;
+    qs("#subtotal p").textContent = "$ " + Math.floor(subtotal);
+    qs("#tax p").textContent = "$ " + Math.floor(tax);
+    qs("#total p").textContent = "$ " + Math.floor(total);
   }
 
   /**
