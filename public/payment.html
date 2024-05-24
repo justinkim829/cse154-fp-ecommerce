@@ -62,7 +62,7 @@ p<!DOCTYPE html>
   <!-- -------------------------------------------- -->
   <h1>Check Out</h1>
   <section id="whole-page">
-    <form>
+    <form id="form1">
       <section id="personal-info" class="info">
         <section class="section-header">
           <h2>Personal Information</h2>
@@ -105,7 +105,7 @@ p<!DOCTYPE html>
         <input type="text" id="card-holder-name" required>
 
         <label for="card-number">Card Number:</label>
-        <input type="text" id="card-number" required pattern="\d{16,19}">
+        <input type="text" id="card-number" required>
 
         <label for="expiry-date">Expiry Date (MM/YY):</label>
         <input type="text" id="expiry-date" required pattern="\d{2}/\d{2}">
@@ -117,6 +117,7 @@ p<!DOCTYPE html>
         <input type="text" id="billing-address" required>
 
       </section>
+      <section id="displaymessage"></section>
 
       <button id="submit" type="submit">Comfirm</button>
 

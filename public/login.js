@@ -2,6 +2,7 @@
 
 (function() {
   const LOGIN_URL = "/REM/login";
+  let timeoutId = 0;
 
   window.addEventListener('load', init);
 
@@ -147,7 +148,10 @@
         let para = gen("p");
         para.textContent = result;
         id("messagedisplay").appendChild(para);
-        setInterval(() => {
+        if (timeoutId) {
+          clearTimeout(timeoutId);
+        }
+        timeoutId = setInterval(() => {
           if (id("messagedisplay").lastChild) {
             id("messagedisplay").removeChild(id("messagedisplay").lastChild);
           }

@@ -1,10 +1,11 @@
 body {
-  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
   margin: 0;
-  font-family: "Merienda", cursive;
+  padding: 0;
   width: 100%;
-  background-color: #f9f9f9;
 }
+
 
 header {
   height: 11vh;
@@ -78,6 +79,7 @@ header, #search section {
   margin-left: 10px;
   text-decoration: none;
 }
+
 
 .change {
   cursor: pointer;
@@ -161,115 +163,80 @@ header, #search section {
   cursor: pointer;
 }
 
-#whole-page {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  height: 200vh;
+.hidden {
+  display: none;
 }
 
-#info-display {
-  width: 30%;
-  margin-right: 5%;
-  margin-top: 2%;
-  height: 150vh;
+
+
+
+
+
+
+
+main {
+  padding: 20px;
+  margin-top: 6%;
 }
 
-.item {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-  margin-bottom: 30px;
-}
-
-.receipt {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-form {
+#transaction-list {
   display: flex;
   flex-direction: column;
-  width: 55%;
-  height: 150vh;
-  justify-content: space-between;
-  margin-top: 2%;
-  margin-left: 5%;
+  gap: 20px;
+
 }
 
-label {
-  margin-bottom: 5px;
-  color: #333;
-  font-size: 16px;
-}
-
-input[type="text"], select {
-  width: 100%;
-  height: 40px;
-  padding: 0 10px;
-  font-size: 16px;
+.transaction-record {
+  background-color: #fff;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-bottom: 15px;
-}
-
-#submit {
-  background-color: black;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 30px;
-  cursor: pointer;
-  margin-top: 20px;
-  height: 50px;
-  border: black 2px solid;
-  transition: all 0.2s ease;
-  text-align: center;
-  width: 90%;
-  margin-left: 5%;
-}
-
-#submit:hover {
-  color: black;
-  background-color: white;
-}
-
-.info {
-  background-color: white;
-  border-radius: 4%;
-  margin-bottom: 30px;
+  border-radius: 5px;
   padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 35vh;
+  margin-bottom: 20px;
 }
 
-.item img {
-  max-width: 30%;
+.transaction-record img {
+  max-width: 230px;
+  height: auto;
+  display: block;
+  margin-right: 20px;
 }
 
-h1 {
-  text-align: center;
-  font-size: 60px;
-  margin-top: 10%;
-}
-
-#itemsdisplayboard {
+.transaction-details {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  gap: 10px;
 }
 
-#credictcard-info {
-  margin-bottom: 5px;
-}
-
-#displaymessage {
-  height: 45px;
-  text-align: center;
-  font-size: 20px;
-}
-
-form{
-  height: 190vh;
+.transaction-details p {
   margin-bottom: 0;
+}
+
+.transaction-status {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: inline-block;
+  width: 100px;
+}
+
+.transaction-total {
+  text-align: right;
+  font-size: 1.2em;
+  font-weight: bold;
+  width: 90%;
+  margin-right: 10%;
+}
+
+#watch-list {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 3%;
+
 }

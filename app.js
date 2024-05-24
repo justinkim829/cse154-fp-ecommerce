@@ -11,7 +11,7 @@ const cors = require('cors');
 
 app.use(cors());
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
@@ -48,7 +48,7 @@ app.post("/REM/login", async (req, res) => {
 /**
  * This function is used to get certian watch that user wants to
  */
-app.get("/watchdetails/:ID", async function(req, res) {
+app.get("/watchdetails/:ID", async function (req, res) {
   try {
     let watchID = req.params.ID;
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
@@ -82,8 +82,8 @@ app.post("/REM/createAccount", async (req, res) => {
       res.type("text").send("Email Already Exists");
     } else {
       let sql = 'INSERT INTO User (Email, Password, Gender, FirstName, ' +
-                'LastName, DayOfBirth, MonthOfBirth, YearOfBirth) ' +
-                'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        'LastName, DayOfBirth, MonthOfBirth, YearOfBirth) ' +
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
       await db.run(sql, [email, password, gender, firstName, lastName, day, month, year]);
       res.send("Create Account Successful");
     }
@@ -100,38 +100,193 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
   try {
     let db = await getDBConnection();
     let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = ' +
-    'Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
+      'Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
     let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
     res.type("json").send(arrayOfWatches);
   } catch (err) {
-    res.type("json").send({"errMessage": err});
+    res.type("json").send({ "errMessage": err });
   }
 });
 
-app.post("/REM/removeitem",async (req,res)=>{
+app.post("/REM/removeitem", async (req, res) => {
   try {
     let db = await getDBConnection();
     let watchID = req.body.id;
     let removeSql = "DELETE FROM Shoppingcart WHERE watchID = ? AND UserID = ?;"
-    await db.run(removeSql,[watchID,currentUserID]);
+    await db.run(removeSql, [watchID, currentUserID]);
     res.type("text").send("Remove the Item successfully");
   } catch (err) {
     res.type("text").status(500).send("Failed to remove from the Shoppingcart")
   }
 });
 
-app.post("/REM/changequantity",async (req,res)=>{
+app.post("/REM/changequantity", async (req, res) => {
   try {
     let db = await getDBConnection();
     let watchID = req.body.id;
     let number = req.body.number;
     let removeSql = "UPDATE Shoppingcart SET Quantity = ? WHERE watchID = ? AND UserID = ?;"
-    await db.run(removeSql,[number,watchID,currentUserID]);
+    await db.run(removeSql, [number, watchID, currentUserID]);
     res.type("text").send("change the quantity successfully");
   } catch (err) {
     res.type("text").status(500).send("Failed to change the quantity");
   }
 });
+
+
+
+app.post("/REM/buyproduct", async (req, res) => {
+  try {
+    let db = await getDBConnection();
+    let { cardHolderName, cardNumber } = req.body
+    let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
+    let cardExist = await db.get(searchCardSql, [cardNumber, cardHolderName]);
+    if (await ifEnoughStorage()) {
+      if (cardExist) {
+        if (cardExist.UserName === cardHolderName) {
+          let currentDeposit = cardExist.Deposit;
+          let totalPrice = await getTotalPriceOfWatches();
+          if (currentDeposit >= totalPrice) {
+            let remainDeposit = currentDeposit - totalPrice;
+            await processAfterSuccess(remainDeposit,cardNumber);
+            res.type("text").send("Proceed Successfully");
+          } else {
+            res.type("text").send("Do not have enough money");
+          }
+        } else {
+          res.type("text").send("Wrong cardHolderName");
+        }
+      } else {
+        res.type("text").send("NO credit card find");
+      }
+    } else {
+      res.type("text").send("Not enough watches to supply");
+    }
+  } catch (err) {
+    res.type("text").status(500).send("Failed to Proceed");
+  }
+});
+
+async function processAfterSuccess(remainDeposit,cardNumber){
+  await deductMoney(remainDeposit, cardNumber);
+  await deductQuantity();
+  await addIntoTransaction();
+  await emptyShoppingcart();
+}
+
+async function addIntoTransaction() {
+  try {
+    let db = await getDBConnection();
+    let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = ' +
+      'Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
+    let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
+    for (let watch of arrayOfWatches) {
+      let WatchId = watch.WatchID;
+      let comfirmationNumber = generateConfirmationNumber();
+      let Userid = watch.UserID;
+      let Quantity = watch.Quantity;
+      let Img = watch.Img1;
+
+      let addIntoTransactionSql = "INSERT INTO transactions " +
+        "(confirmationNumber , UserID , WatchID , Quantity, Img) VALUES(?,?,?,?,?);";
+      await db.run(addIntoTransactionSql, [comfirmationNumber, Userid, WatchId, Quantity,Img]);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function generateConfirmationNumber() {
+  return 'REM' + Math.floor(Math.random() * 1000000000);
+}
+
+
+async function emptyShoppingcart() {
+  let db = await getDBConnection();
+  try {
+    let emptyShoppingcartSql = "DELETE FROM Shoppingcart WHERE UserID = ? ";
+    await db.run(emptyShoppingcartSql, [currentUserID]);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function deductMoney(remainDeposit, cardNumber) {
+  try {
+    let db = await getDBConnection();
+    let deductMoneySql = "UPDATE card SET Deposit = ? WHERE CardNumber = ?";
+    await db.run(deductMoneySql, [remainDeposit, cardNumber]);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function deductQuantity() {
+  try {
+    let db = await getDBConnection();
+    let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = ' +
+      'Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
+    let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
+    for (let watch of arrayOfWatches) {
+      let WatchId = watch.WatchID;
+      let Storage = watch.Storage;
+      let Quantity = watch.Quantity;
+      let remain = Storage - Quantity
+      let deductQuantitySql = "UPDATE watches SET Storage = ? WHERE ID = ?";
+      await db.run(deductQuantitySql, [remain, WatchId]);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function ifEnoughStorage() {
+  let flag = true;
+  let db = await getDBConnection();
+  try {
+    let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = ' +
+      'Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
+    let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
+    for (let watch of arrayOfWatches) {
+      if (watch.Quantity > watch.Storage) {
+        flag = false;
+      }
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return flag;
+}
+
+
+async function getTotalPriceOfWatches() {
+  let db = await getDBConnection();
+  let totalPrice = 0;
+  try {
+    let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = ' +
+      'Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
+    let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
+    for (let watch of arrayOfWatches) {
+      totalPrice = totalPrice + watch.Price;
+    }
+  } catch (err) {
+    console.error(err);
+  }
+  return totalPrice;
+}
+
+app.get("/REM/gettransaction",async (req,res)=>{
+  let db = await getDBConnection();
+  try {
+    let getTransactionSql = 'SELECT * FROM transactions JOIN WATCHES ON WATCHES.ID = ' +
+      "transactions.WatchID";
+    let arrayOfTranInfo = await db.all(getTransactionSql);
+    res.type("json").send(arrayOfTranInfo);
+
+  } catch (err) {
+    res.type("json").status(500).send("failed to get the Transaction history")
+  }
+})
 
 
 /**
@@ -148,5 +303,5 @@ async function getDBConnection() {
 }
 
 app.use(express.static('public'));
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8000;
 app.listen(PORT);

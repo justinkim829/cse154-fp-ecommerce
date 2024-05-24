@@ -1,99 +1,32 @@
-
 "use strict";
 
 (function () {
 
   window.addEventListener("load", init);
-  const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
-  let timeoutId = 0;
 
-  /** this function is used to initilizale the button with its functions. */
+  /** This function is used to initialize all the functions */
   async function init() {
-
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
+    id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function () {
+    id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
+      id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
     }
+    await getShoppingHistory();
     sendSidebarToWatch();
-    await getAllWatches();
-    id("form1").addEventListener("submit", (event) => {
-      buyProduct(event);
-    });
+
   }
-
-
-  async function buyProduct(event) {
-    event.preventDefault();
-    let cardHolderName = id('card-holder-name').value;
-    let cardNumber = id('card-number').value;
-    let formdata = new FormData();
-    formdata.append("cardHolderName", cardHolderName);
-    formdata.append("cardNumber", cardNumber);
-    try {
-      let response = await fetch("/REM/buyproduct", {
-        method: "POST",
-        body: formdata
-      });
-      response = await statusCheck(response);
-      let result = await response.text();
-      if (result === "Proceed Successfully") {
-        let displayMessage = gen("p");
-        displayMessage.textContent = "Proceed Successfully";
-        id("displaymessage").appendChild(displayMessage);
-
-        timeoutId = setInterval(() => {
-          window.location.href = "transaction.html";
-        }, 2000);
-
-      } else {
-        HandleFailSituation();
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
-
-  function HandleFailSituation() {
-    let displayMessage = gen("p");
-    displayMessage.textContent = "Failed to purchase";
-    id("displaymessage").appendChild(displayMessage);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    timeoutId = setInterval(() => {
-      if (id("displaymessage").lastChild) {
-        id("displaymessage").removeChild(id("displaymessage").lastChild);
-      }
-    }, 2000);
-    id("name").value = "";
-    id("email").value = "";
-    id("phone-number").value = "";
-    id("city").value = "";
-    id("country").value = "";
-    id("street-address").value = "";
-    id("zip-code").value = "";
-    id("card-holder-name").value = "";
-    id("card-number").value = "";
-    id("expiry-date").value = "";
-    id("cvv").value = "";
-    id("billing-address").value = "";
-  }
-
-
 
   /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {
@@ -128,7 +61,7 @@
 
   /**
    * This function is used to open and close the sidebar
-   * @param {object} subSidebar - the sidebar that poll out
+   * @param {object} subSidebar - all the sidebars when menu is clicked
    */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
@@ -142,8 +75,8 @@
 
   /**
    * This function is used to hide all the appeared sidebars
-   * @param {object} subSidebar1 the subsidebar that already poll out
-   * @param {object} subSidebar2 the subsidebar that already poll out
+   * @param {object} subSidebar1 - First other sidebar that should be hidden
+   * @param {object} subSidebar2 - Second other sidebar that should be hidden
    */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
@@ -155,16 +88,15 @@
   }
 
   /**
-   * when click the place other than sidebar, the sidebar would be closed
-   * @param {event} event - the action of click the page
+   * When click the place other than sidebar, the sidebar would be closed
+   * @param {object} event - event that triggered
    */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
+    let overlay = id("overlay");
     let type1Sidebar = id('type1sidebar');
     let type2Sidebar = id('type2sidebar');
     let type3Sidebar = id('type3sidebar');
-    let overlay = id("overlay");
-
     if (!sidebar.contains(event.target) && !type1Sidebar.contains(event.target) &&
       !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
       sidebar.style.left = "-300px";
@@ -177,9 +109,9 @@
 
   /**
    * This function is used to close all the sidebars
-   * @param {object} subSidebar1 the sidebar that poll out
-   * @param {object} subSidebar2 the sidebar that poll out
-   * @param {object} subSidebar3 the sidebar that poll out
+   * @param {object} subSidebar1 - First sidebar that should be hidden
+   * @param {object} subSidebar2 - Second sidebar that should be hidden
+   * @param {object} subSidebar3 - Third sidebar that should be hidden
    */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
@@ -188,65 +120,74 @@
     });
   }
 
-  /** This function is used get all the watches info form the backend */
-  async function getAllWatches() {
+  async function getShoppingHistory() {
     try {
-      let response = await fetch(GET_WATCH_INFO_URL);
+      let response = await fetch("/REM/gettransaction");
       response = await statusCheck(response);
       let result = await response.json();
-      for (let product of result) {
-        let item = updatedisplayboard(product);
-        id("itemsdisplayboard").appendChild(item);
-        let hr = gen('hr');
-        id("itemsdisplayboard").appendChild(hr);
+      for (let i = 0; i < result.length; i++) {
+        createCard(result[i]);
       }
-      changeSummary(result);
-
     } catch (err) {
       console.error(err);
     }
   }
 
-  /**
-   * This function is used to diaplay all the watch info into the board
-   * @param {object} product each watch get from the database
-   * @return {object} itemSection - the creted block consisit of all the nodes
-   */
-  function updatedisplayboard(product) {
-    let itemSection = gen('section');
-    itemSection.classList.add('item');
+  function createCard(transaction) {
+    let transactionList = id('watch-list');
+
+    let transactionRecord = gen('div');
+    transactionRecord.classList.add('transaction-record');
+
     let img = gen('img');
-    img.src = product.Img1;
-    img.alt = 'pictureOfWatch';
-    itemSection.appendChild(img);
-    let innerSection = gen('section');
-    let nameP = gen('p');
-    nameP.textContent = product.Name;
-    innerSection.appendChild(nameP);
-    let priceP = gen('p');
-    priceP.textContent = product.Price;
-    innerSection.appendChild(priceP);
-    itemSection.appendChild(innerSection);
-    document.body.appendChild(itemSection);
-    return itemSection;
+    img.src = transaction.Img1;
+    img.alt = transaction.Name;
+    transactionRecord.appendChild(img);
+
+    let transactionDetails = gen('div');
+    transactionDetails.classList.add('transaction-details');
+
+    let status = gen('p');
+    status.classList.add('transaction-status');
+    status.textContent = 'COMPLETED';
+    transactionDetails.appendChild(status);
+
+    let orderId = gen('p');
+    orderId.textContent = 'Order ID: ';
+    let orderIdSpan = gen('span');
+    orderIdSpan.textContent = transaction.confirmationNumber;
+    orderId.appendChild(orderIdSpan);
+    transactionDetails.appendChild(orderId);
+
+    let name = gen('p');
+    name.textContent = 'Name: ';
+    let nameSpan = gen('span');
+    nameSpan.textContent = transaction.Name;
+    name.appendChild(nameSpan);
+    transactionDetails.appendChild(name);
+
+    let type = gen('p');
+    type.textContent = 'Type: ';
+    let typeSpan = gen('span');
+    typeSpan.textContent = transaction.Type;
+    type.appendChild(typeSpan);
+    transactionDetails.appendChild(type);
+
+    let total = gen('p');
+    total.classList.add('transaction-total');
+    total.textContent = 'Total: ';
+    let totalSpan = gen('span');
+    totalSpan.textContent = `$${transaction.Price}`;
+    total.appendChild(totalSpan);
+    transactionDetails.appendChild(total);
+
+    transactionRecord.appendChild(transactionDetails);
+    transactionList.appendChild(transactionRecord);
   }
 
-  /**
-   * This function is used to change all the summury info
-   * @param {object} result - an Array that contain all the watches object
-   */
-  function changeSummary(result) {
-    let subtotal = 0;
-    for (let product of result) {
-      subtotal = subtotal + (product.Price) * (product.Quantity);
-    }
-    let tax = subtotal * 0.1025;
-    let total = subtotal + tax;
 
-    qs("#subtotal p").textContent = "$ " + Math.floor(subtotal);
-    qs("#tax p").textContent = "$ " + Math.floor(tax);
-    qs("#total p").textContent = "$ " + Math.floor(total);
-  }
+
+
 
 
 
@@ -272,7 +213,6 @@
   function gen(selector) {
     return document.createElement(selector);
   }
-
   /**
    * This function is used to get that element by its ID
    * @param {string} id - the ID that wants to get
