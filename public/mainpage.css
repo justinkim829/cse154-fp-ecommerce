@@ -256,12 +256,25 @@ footer {
   margin: 0;
 }
 
+#logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
 footer p {
   color: white;
   font-size: 50px;
   font-weight: 400;
   font-style: normal;
   letter-spacing: 5px;
+}
+
+footer img {
+  max-width: 120px;
+  max-height: 120px;
+  align-self: center;
 }
 
 .remove p {

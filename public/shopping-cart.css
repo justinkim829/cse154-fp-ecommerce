@@ -335,6 +335,13 @@ footer {
   margin: 0;
 }
 
+#logo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
 footer p {
   color: white;
   font-size: 50px;
@@ -343,10 +350,16 @@ footer p {
   letter-spacing: 5px;
 }
 
-.remove p{
+footer img {
+  max-width: 120px;
+  max-height: 120px;
+  align-self: center;
+}
+
+.remove p {
   cursor: pointer;
 }
 
-.selectorquantity{
+.selectorquantity {
   color: black;
 }
