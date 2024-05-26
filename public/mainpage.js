@@ -9,6 +9,16 @@
     sidebarStart();
     setDefaultInput();
     sendSidebarToWatch();
+    sendRecommendationsToWatch()
+
+    window.onscroll = function() {
+      let header = qs("header");
+      if (window.scrollY > 0) {
+        header.classList.add("lock-header");
+      } else {
+        header.classList.remove("lock-header");
+      }
+    };
   }
 
   /** This function is used to change the mainpage into each watch page */
@@ -17,6 +27,18 @@
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
+        sessionStorage.setItem('productID', productID);
+        window.location.href = "watch.html";
+      });
+    }
+  }
+
+  function sendRecommendationsToWatch() {
+    let recommended = qsa(".box");
+    let productIDs = ["M1", "D2", "P3"]
+    for (let i = 0; i < recommended.length; i++) {
+      recommended[i].addEventListener('click', () => {
+        let productID = productIDs[i];
         sessionStorage.setItem('productID', productID);
         window.location.href = "watch.html";
       });
@@ -48,11 +70,19 @@
    */
   function setDefaultInput() {
     let input = qs("#search-part input");
-    input.addEventListener('keypress', (evt) => {
+    input.addEventListener('keypress', async (evt) => {
       if (evt.key === "Enter") {
         let inputValue = input.value.trim().toLowerCase();
-        if (inputValue === '' || "watch".includes(inputValue)) {
-          window.location.href = 'watch.html';
+        let params = new FormData();
+        params.append("input", inputValue);
+        try {
+          let recommendedID = await postData('/REM/recommendation', params, true);
+          console.log(recommendedID.status);
+          sessionStorage.setItem('productID', recommendedID);
+          window.location.href = "watch.html";
+        } catch (err) {
+          id("textarea").value = "";
+          id("textarea").placeholder = "No Matches Found. Try Again.";
         }
       }
     });
@@ -126,6 +156,35 @@
       overlay.style.pointerEvents = 'none';
 
       document.removeEventListener('click', closeSidebar);
+    }
+  }
+
+  async function postData(endPoint, params, isReturnText) {
+    try {
+      let data = await fetch(endPoint, {
+        method: 'POST',
+        body: params
+      });
+      await statusCheck(data);
+      if (isReturnText) {
+        data = await data.text();
+      } else {
+        data = await data.json();
+      }
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * Checks the status of the response.
+   * @param {Response} res - The response object.
+   * @throws an error if the response is not ok.
+   */
+  async function statusCheck(res) {
+    if (!res.ok) {
+      throw new Error(await res.text());
     }
   }
 

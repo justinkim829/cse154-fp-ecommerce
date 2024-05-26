@@ -167,9 +167,9 @@
     transactionDetails.appendChild(name);
 
     let type = gen('p');
-    type.textContent = 'Quantity: ';
+    type.textContent = 'Type: ';
     let typeSpan = gen('span');
-    typeSpan.textContent = transaction.Quantity;
+    typeSpan.textContent = transaction.Type;
     type.appendChild(typeSpan);
     transactionDetails.appendChild(type);
 

@@ -26,6 +26,15 @@
       });
     }
 
+    window.onscroll = function() {
+      let header = qs("header");
+      if (window.scrollY > 0) {
+        header.classList.add("lock-header");
+      } else {
+        header.classList.remove("lock-header");
+      }
+    };
+
     await getAllWatches();
     sendSidebarToWatch();
 

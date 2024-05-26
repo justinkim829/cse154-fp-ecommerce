@@ -138,7 +138,81 @@ app.post("/REM/changequantity", async (req, res) => {
   }
 });
 
+app.post("/REM/addtoshoppingcart", async (req, res) => {
+  try {
+    res.type("text");
+    let db = await getDBConnection();
+    let productID = req.body.productID;
+    let userID = req.body.userID;
+    userID = userID? userID : "14";
+    let watchID = await db.get("SELECT ID FROM watches WHERE Type = ?", productID);
+    watchID = watchID.ID;
+    let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +
+    "VALUES (?, ?, ?)";
+    await db.run(selection, userID, watchID, 1);
+    res.status(200).send("Successfully added to shopping cart");
+  } catch(err) {
+    res.type("text").status(500).send("Internal Server Error. Failed to add watch to shopping cart");
+  }
+});
 
+app.post("/REM/removefromshoppingcart", async (req, res) => {
+  try {
+    res.type("text");
+    let db = await getDBConnection();
+    let productID = req.body.productID;
+    let userID = req.body.userID;
+    userID = userID? userID : "0";
+    await db.run("DELETE FROM Shoppingcart WHERE userID = ? AND WatchID = ?", userID, productID);
+    res.status(200).send("Successfully deleted from shopping cart");
+  } catch(err) {
+    res.type("text").status(500).send("Internal Server Error. Failed to add watch to shopping cart");
+  }
+});
+
+app.post('/REM/recommendation', async (req, res) => {
+  try {
+    const input = req.body.input;
+    const db = await getDBConnection();
+
+    // Find all watches matching the input
+    const watches = await db.all(
+      `SELECT * FROM watches WHERE LOWER(name) LIKE ? OR category LIKE ?`,
+      `%${input}%`,
+      `${input}%`
+    );
+
+    if (watches.length === 0) {
+      return res.status(404).send('No matching watches found');
+    }
+
+    let maxWatch = null;
+    let maxCount = 0;
+
+    for (const watch of watches) {
+      const countResult = await db.get(
+        `SELECT COUNT(*) as count FROM shoppingcart WHERE WatchID = ?`,
+        watch.ID
+      );
+
+      if (countResult.count > maxCount) {
+        maxWatch = watch;
+        maxCount = countResult.count;
+      }
+    }
+
+    await db.close();
+
+    if (maxWatch) {
+      res.status(200).send(maxWatch.Type);
+    } else {
+      res.status(200).send(watches[0].Type);
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 app.post("/REM/buyproduct", async (req, res) => {
   try {

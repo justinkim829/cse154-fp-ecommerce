@@ -102,7 +102,7 @@ header, #search section {
   margin-bottom: 0;
 }
 
-.sidebar2 ul li a {
+.sidebar2 ul li p {
   padding: 10px 15px;
   text-decoration: none;
   display: block;
@@ -111,7 +111,7 @@ header, #search section {
   margin-bottom: 20px;
 }
 
-.sidebar2 ul li a:hover {
+.sidebar2 ul li p:hover {
   background-color: #e0e0e0;
 }
 

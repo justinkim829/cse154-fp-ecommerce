@@ -51,13 +51,14 @@
    */
   function receiveSidebarToWatch() {
     const checkProductID = setInterval(() => {
-      const productID = sessionStorage.getItem('productID');
+      let productID = sessionStorage.getItem('productID');
       if (productID) {
+        localStorage.setItem('productID', productID);
         sessionStorage.removeItem('productID');
         reloadPage(productID);
         clearInterval(checkProductID);
       }
-    }, 100);
+    }, 50);
   }
 
   /** This function is used to open the sidebar */
@@ -115,16 +116,27 @@
   }
 
   /** this function is used to add this product into the wishlist when click the love icon */
-  function addToWishlist() {
+  async function addToWishlist() {
     let wishlistIcon = qs("#add-to-wishlist p");
     let message = gen("p");
+    let params = new FormData();
+
+    // need to add userID
+    params.append("productID", localStorage.getItem("productID"));
+    params.append("userID", "14")
     if (id("add-message").children.length === 0) {
-      if (wishlistIcon.textContent === "â™¡") {
-        wishlistIcon.textContent = "â™¥ï¸Ž";
-        message.textContent = "Added to wishlist";
-      } else {
-        wishlistIcon.textContent = "â™¡";
-        message.textContent = "Removed from Wishlist";
+      try {
+        if (wishlistIcon.textContent === "♡") {
+          wishlistIcon.textContent = "♥︎";
+          let response = await postData("/REM/addtoshoppingcart", params, true)
+          message.textContent = response;
+        } else {
+          wishlistIcon.textContent = "♡";
+          let response = await postData("/REM/removefromshoppingcart", params, true);
+          message.textContent = response;
+        }
+      } catch (err) {
+        console.error(err);
       }
       setTimeout(() => {
         id("add-message").removeChild(message);
@@ -144,7 +156,6 @@
     id("overlay").style.pointerEvents = 'auto';
     event.stopPropagation();
     document.addEventListener('click', closeDetailSidebarAuto);
-
   }
 
   /**
@@ -220,7 +231,7 @@
    */
   async function changeWatchImages(productID) {
     try {
-      let data = await getData(`http://localhost:8080/watchdetails/${productID}`, false);
+      let data = await getData(`/watchdetails/${productID}`, false);
 
       let imagePath = data.Img1;
       let currentImage = qs("#img-container img");
@@ -408,6 +419,24 @@
   async function getData(endPoint, isReturnText) {
     try {
       let data = await fetch(endPoint);
+      await statusCheck(data);
+      if (isReturnText) {
+        data = await data.text();
+      } else {
+        data = await data.json();
+      }
+      return data;
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function postData(endPoint, params, isReturnText) {
+    try {
+      let data = await fetch(endPoint, {
+        method: 'POST',
+        body: params
+      });
       await statusCheck(data);
       if (isReturnText) {
         data = await data.text();
