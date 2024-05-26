@@ -7,7 +7,7 @@
   window.addEventListener('load', init);
 
   /** This function is used to initiallize all the functions */
-  function init() {
+  async function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
     id("menu").addEventListener('click', function(evt) {
@@ -29,6 +29,7 @@
       login(event);
     });
     sendSidebarToWatch();
+    await checkIsLogin();
   }
 
   /** This function is used to change the mainpage into each watch page */
@@ -40,6 +41,17 @@
         sessionStorage.setItem('productID', productID);
         window.location.href = "watch.html";
       });
+    }
+  }
+
+  async function checkIsLogin() {
+    let response = await fetch("/REM/checkiflogin");
+    await statusCheck(response);
+    let result = await response.text();
+    if (result === "havn't Login") {
+      id("trans").removeAttribute('href');
+    } else {
+      id("trans").setAttribute('href', "transaction.html");
     }
   }
 

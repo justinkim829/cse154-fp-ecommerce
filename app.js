@@ -19,6 +19,13 @@ app.use(multer().none());
 
 let currentUserID = 0;
 
+app.get("/REM/checkiflogin", (req, res) => {
+  if (currentUserID !== 0) {
+    res.type("text").status(200).send("Already Login");
+  } else {
+    res.type("text").status(200).send("havn't Login");
+  }
+});
 
 app.get("/REM/currentuserid", async (req, res) => {
   res.type("text").send(currentUserID.toString());

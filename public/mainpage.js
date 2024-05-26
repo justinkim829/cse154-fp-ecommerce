@@ -5,7 +5,7 @@
   window.addEventListener("load", init);
 
   /** This function is used to initialize all the functions */
-  function init() {
+  async function init() {
     sidebarStart();
     setDefaultInput();
     sendSidebarToWatch();
@@ -19,6 +19,7 @@
         header.classList.remove("lock-header");
       }
     };
+    await checkIsLogin();
   }
 
   /** This function is used to change the mainpage into each watch page */
@@ -30,6 +31,18 @@
         sessionStorage.setItem('productID', productID);
         window.location.href = "watch.html";
       });
+    }
+  }
+
+  async function checkIsLogin() {
+    let response = await fetch("/REM/checkiflogin");
+    await statusCheck(response);
+    let result = await response.text();
+    if (result === "havn't Login") {
+      id("trans").removeAttribute('href');
+
+    } else {
+      id("trans").setAttribute('href', "transaction.html");
     }
   }
 

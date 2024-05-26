@@ -11,7 +11,7 @@
   ]);
 
   /** this function is used to initilizale the button with its functions. */
-  function init() {
+  async function init() {
     sidebarStart();
     qs("#product-details p").addEventListener("click", displayDetailSidebar);
     qs("#sidebarfordetail .close").addEventListener("click", closeTheDetailSidebar);
@@ -29,6 +29,7 @@
       }
     };
     receiveSidebarToWatch();
+    await checkIsLogin();
   }
 
   /** This function is used change into the next image */
@@ -78,6 +79,17 @@
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
+    }
+  }
+
+  async function checkIsLogin() {
+    let response = await fetch("/REM/checkiflogin");
+    await statusCheck(response);
+    let result = await response.text();
+    if (result === "havn't Login") {
+      id("trans").removeAttribute('href');
+    } else {
+      id("trans").setAttribute('href', "transaction.html");
     }
   }
 

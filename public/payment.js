@@ -32,6 +32,7 @@
     id("form1").addEventListener("submit", (event) => {
       buyProduct(event);
     });
+    await checkIsLogin();
   }
 
 
@@ -66,6 +67,16 @@
     }
   }
 
+  async function checkIsLogin() {
+    let response = await fetch("/REM/checkiflogin");
+    await statusCheck(response);
+    let result = await response.text();
+    if (result === "havn't Login") {
+      id("trans").removeAttribute('href');
+    } else {
+      id("trans").setAttribute('href', "transaction.html");
+    }
+  }
 
   function HandleFailSituation() {
     let displayMessage = gen("p");

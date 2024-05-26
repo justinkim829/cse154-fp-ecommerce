@@ -35,6 +35,7 @@
       }
     };
 
+
     await getAllWatches();
     sendSidebarToWatch();
 
@@ -55,6 +56,8 @@
         changeQuantity(event);
       });
     }
+
+    await checkIsLogin();
   }
 
   function checkoutStatusChecking() {
@@ -62,6 +65,17 @@
       qs("button").disabled = true;
     } else {
       qs("button").disabled = false;
+    }
+  }
+
+  async function checkIsLogin() {
+    let response = await fetch("/REM/checkiflogin");
+    await statusCheck(response);
+    let result = await response.text();
+    if (result === "havn't Login") {
+      id("trans").removeAttribute('href');
+    } else {
+      id("trans").setAttribute('href', "transaction.html");
     }
   }
 

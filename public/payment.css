@@ -273,3 +273,7 @@ form{
   height: 190vh;
   margin-bottom: 0;
 }
+
+.hide {
+  visibility: hidden;
+}
