@@ -19,6 +19,11 @@ app.use(multer().none());
 
 let currentUserID = 0;
 
+
+app.get("/REM/currentuserid", async (req, res) => {
+  res.type("text").send(currentUserID.toString());
+});
+
 /**
  * This function is used to check the userInfo and show the hint message that whether
  * user login successfully or not
@@ -144,7 +149,6 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
     let db = await getDBConnection();
     let productID = req.body.productID;
     let userID = req.body.userID;
-    userID = userID? userID : "14";
     let watchID = await db.get("SELECT ID FROM watches WHERE Type = ?", productID);
     watchID = watchID.ID;
     let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +

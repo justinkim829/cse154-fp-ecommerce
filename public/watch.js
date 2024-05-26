@@ -17,8 +17,7 @@
     qs("#sidebarfordetail .close").addEventListener("click", closeTheDetailSidebar);
     checkClickedWatch();
 
-    let wishlistIcon = qs("#add-to-wishlist p");
-    wishlistIcon.addEventListener('click', addToWishlist);
+    id("add-to-cart").addEventListener('click', addToWishlist);
     arrowsToNextImage();
 
     window.onscroll = function() {
@@ -122,10 +121,11 @@
     let params = new FormData();
 
     // need to add userID
-    params.append("productID", localStorage.getItem("productID"));
-    params.append("userID", "14")
     if (id("add-message").children.length === 0) {
       try {
+        let currentUserID = await getData("/REM/currentuserid", true);
+        params.append("productID", localStorage.getItem("productID"));
+        params.append("userID", currentUserID);
         if (wishlistIcon.textContent === "♡") {
           wishlistIcon.textContent = "♥︎";
           let response = await postData("/REM/addtoshoppingcart", params, true)
