@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(multer().none());
 
-let currentUserID = 11;
+let currentUserID = 0;
 
 /**
  * This function is used to check the userInfo and show the hint message that whether
