@@ -1,25 +1,26 @@
 "use strict";
 
-(function() {
+(function () {
 
   window.addEventListener('load', init);
   const CREATE_URL = "/REM/createAccount";
+  let intervalid = 0;
 
   /** This function is used to initiallize all the functions */
   function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
+    id("menu").addEventListener('click', function (evt) {
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function() {
+    id("close").addEventListener('click', function () {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
+      id(idText).addEventListener("click", function () {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
@@ -146,12 +147,41 @@
       });
       response = await statusCheck(response);
       let result = await response.text();
-      let message = gen("p");
-      message.textContent = result;
-      id("showstatus").appendChild(message);
+      statusChecking(result);
 
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  function statusChecking(result) {
+    let board = id("showstatus");
+    if (board.children.length !== 0) {
+      board.removeChild(board.lastChild);
+    }
+    let message = gen("p");
+    message.textContent = result;
+    board.appendChild(message);
+
+    if (intervalid) {
+      clearTimeout(intervalid);
+    }
+    intervalid = setInterval(() => {
+      if (board.lastChild) {
+        board.removeChild(board.lastChild);
+      }
+    }, 2000);
+    handleSuccess(result);
+  }
+
+  function handleSuccess(result) {
+    if (result === "Create Account Successful") {
+      if (intervalid) {
+        clearTimeout(intervalid);
+      }
+      intervalid = setInterval(() => {
+        window.location.href = "login.html";
+      }, 2000);
     }
   }
 
@@ -167,6 +197,15 @@
       throw new Error(await res.text());
     }
     return res;
+  }
+
+  /**
+ * This function is used to get that element by its name
+ * @param {string} selector - the element wants to be find in the HTML page
+ * @return {Node} return the node that selector corespond to .
+ */
+  function qs(selector) {
+    return document.querySelector(selector);
   }
 
   /**

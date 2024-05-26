@@ -25,17 +25,19 @@
         toggleSidebar(SIDEBARS[i]);
       });
     }
-    id("checkout").addEventListener("click", () => {
-      window.location.href = "payment.html";
-    });
-
 
     await getAllWatches();
     sendSidebarToWatch();
 
+    checkoutStatusChecking();
+    id("checkout").addEventListener("click", () => {
+      window.location.href = "payment.html";
+    });
+
     for (let remove of qsa(".remove p")) {
       remove.addEventListener("click", (event) => {
         removeItem(event);
+
       });
     }
 
@@ -44,7 +46,14 @@
         changeQuantity(event);
       });
     }
+  }
 
+  function checkoutStatusChecking() {
+    if (id("left-side").children.length === 1) {
+      qs("button").disabled = true;
+    } else {
+      qs("button").disabled = false;
+    }
   }
 
   async function changeQuantity(event) {
@@ -86,8 +95,10 @@
       response = await statusCheck(response);
       response = await response.text();
       id("left-side").innerHTML = "";
-      let result = getCurrentWatches();
+      let result = await getCurrentWatches();
       changeSummary(result);
+      checkoutStatusChecking();
+
 
     } catch (err) {
       console.error(err);
@@ -232,6 +243,7 @@
         });
       }
       changeSummary(result);
+      return result;
 
     } catch (err) {
       console.error(err);
@@ -343,7 +355,7 @@
    */
   function changeSummary(result) {
     let subtotal = 0;
-    let numberOfWatch=0;
+    let numberOfWatch = 0;
     for (let i = 0; i < result.length; i++) {
       numberOfWatch = numberOfWatch + result[i].Quantity;
       subtotal = subtotal + (result[i].Price) * (result[i].Quantity);

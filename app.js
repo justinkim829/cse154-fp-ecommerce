@@ -31,13 +31,18 @@ app.post("/REM/login", async (req, res) => {
   try {
     let user = await db.get("SELECT * FROM User WHERE Email = ?", [email]);
     if (user) {
-      currentUserID = user.ID;
-      if (password === user.Password) {
-        res.type("text").send("Login successful!");
+      if (currentUserID === 0) {
+        currentUserID = user.ID;
+        if (password === user.Password) {
+          res.type("text").send("Login successful!");
+        } else {
+          res.type("text").send("Invalid password");
+        }
       } else {
-        res.type("text").send("Invalid password");
+        res.type("text").send("Already Login");
       }
-    } else {
+    }
+    else {
       res.type("text").send("Email not found");
     }
   } catch (error) {
@@ -85,7 +90,7 @@ app.post("/REM/createAccount", async (req, res) => {
         'LastName, DayOfBirth, MonthOfBirth, YearOfBirth) ' +
         'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
       await db.run(sql, [email, password, gender, firstName, lastName, day, month, year]);
-      res.send("Create Account Successful");
+      res.type("text").send("Create Account Successful");
     }
   } catch (err) {
     res.type("text").send("Failed To Create Account");
@@ -148,7 +153,7 @@ app.post("/REM/buyproduct", async (req, res) => {
           let totalPrice = await getTotalPriceOfWatches();
           if (currentDeposit >= totalPrice) {
             let remainDeposit = currentDeposit - totalPrice;
-            await processAfterSuccess(remainDeposit,cardNumber);
+            await processAfterSuccess(remainDeposit, cardNumber);
             res.type("text").send("Proceed Successfully");
           } else {
             res.type("text").send("Do not have enough money");
@@ -167,7 +172,7 @@ app.post("/REM/buyproduct", async (req, res) => {
   }
 });
 
-async function processAfterSuccess(remainDeposit,cardNumber){
+async function processAfterSuccess(remainDeposit, cardNumber) {
   await deductMoney(remainDeposit, cardNumber);
   await deductQuantity();
   await addIntoTransaction();
@@ -189,7 +194,7 @@ async function addIntoTransaction() {
 
       let addIntoTransactionSql = "INSERT INTO transactions " +
         "(confirmationNumber , UserID , WatchID , Quantity, Img) VALUES(?,?,?,?,?);";
-      await db.run(addIntoTransactionSql, [comfirmationNumber, Userid, WatchId, Quantity,Img]);
+      await db.run(addIntoTransactionSql, [comfirmationNumber, Userid, WatchId, Quantity, Img]);
     }
   } catch (err) {
     console.error(err);
@@ -275,7 +280,7 @@ async function getTotalPriceOfWatches() {
   return totalPrice;
 }
 
-app.get("/REM/gettransaction",async (req,res)=>{
+app.get("/REM/gettransaction", async (req, res) => {
   let db = await getDBConnection();
   try {
     let getTransactionSql = 'SELECT * FROM transactions JOIN WATCHES ON WATCHES.ID = ' +
