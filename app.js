@@ -44,7 +44,7 @@ app.post("/REM/login", async (req, res) => {
           res.type("text").send("Invalid password");
         }
       } else {
-        res.type("text").send("Already Login");
+        res.type("text").send("Already Logged In");
       }
     }
     else {

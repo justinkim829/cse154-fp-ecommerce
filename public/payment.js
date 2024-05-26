@@ -51,7 +51,7 @@
       let result = await response.text();
       if (result === "Proceed Successfully") {
         let displayMessage = gen("p");
-        displayMessage.textContent = "Proceed Successfully";
+        displayMessage.textContent = "Purchased Successfully";
         id("displaymessage").appendChild(displayMessage);
 
         timeoutId = setInterval(() => {
