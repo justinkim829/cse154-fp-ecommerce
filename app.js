@@ -358,8 +358,8 @@ app.get("/REM/gettransaction", async (req, res) => {
   let db = await getDBConnection();
   try {
     let getTransactionSql = 'SELECT * FROM transactions JOIN WATCHES ON WATCHES.ID = ' +
-      "transactions.WatchID";
-    let arrayOfTranInfo = await db.all(getTransactionSql);
+      "transactions.WatchID WHERE transactions.UserID = ?";
+    let arrayOfTranInfo = await db.all(getTransactionSql, currentUserID);
     res.type("json").send(arrayOfTranInfo);
 
   } catch (err) {
