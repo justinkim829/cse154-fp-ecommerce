@@ -11,7 +11,7 @@ const cors = require('cors');
 
 app.use(cors());
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 app.use(express.json());
 
@@ -21,13 +21,15 @@ let currentUserID = 0;
 
 app.get("/REM/checkiflogin", (req, res) => {
   if (currentUserID !== 0) {
-    res.type("text").status(200).send("Already Login");
+    res.type("text").status(200);
+    res.send("Already Login");
   } else {
-    res.type("text").status(200).send("havn't Login");
+    res.type("text").status(200);
+    res.send("havn't Login");
   }
 });
 
-app.get("/REM/currentuserid", async (req, res) => {
+app.get("/REM/currentuserid", (req, res) => {
   res.type("text").send(currentUserID.toString());
 });
 
@@ -53,8 +55,7 @@ app.post("/REM/login", async (req, res) => {
       } else {
         res.type("text").send("Already Logged In");
       }
-    }
-    else {
+    } else {
       res.type("text").send("Email not found");
     }
   } catch (error) {
@@ -65,7 +66,7 @@ app.post("/REM/login", async (req, res) => {
 /**
  * This function is used to get certian watch that user wants to
  */
-app.get("/watchdetails/:ID", async function (req, res) {
+app.get("/watchdetails/:ID", async function(req, res) {
   try {
     let watchID = req.params.ID;
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
@@ -121,7 +122,7 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
     let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
     res.type("json").send(arrayOfWatches);
   } catch (err) {
-    res.type("json").send({ "errMessage": err });
+    res.type("json").send({"errMessage": err});
   }
 });
 
@@ -131,9 +132,11 @@ app.post("/REM/removeitem", async (req, res) => {
     let watchID = req.body.id;
     let removeSql = "DELETE FROM Shoppingcart WHERE watchID = ? AND UserID = ?;"
     await db.run(removeSql, [watchID, currentUserID]);
-    res.type("text").send("Remove the Item successfully");
+    res.type("text");
+    res.send("Remove the Item successfully");
   } catch (err) {
-    res.type("text").status(500).send("Failed to remove from the Shoppingcart")
+    res.type("text").status(500);
+    res.send("Failed to remove from the Shoppingcart");
   }
 });
 
@@ -144,9 +147,11 @@ app.post("/REM/changequantity", async (req, res) => {
     let number = req.body.number;
     let removeSql = "UPDATE Shoppingcart SET Quantity = ? WHERE watchID = ? AND UserID = ?;"
     await db.run(removeSql, [number, watchID, currentUserID]);
-    res.type("text").send("change the quantity successfully");
+    res.type("text");
+    res.send("change the quantity successfully");
   } catch (err) {
-    res.type("text").status(500).send("Failed to change the quantity");
+    res.type("text").status(500);
+    res.send("Failed to change the quantity");
   }
 });
 
@@ -161,9 +166,11 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
     let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +
       "VALUES (?, ?, ?)";
     await db.run(selection, userID, watchID, 1);
-    res.status(200).send("Successfully added to shopping cart");
+    res.status(200);
+    res.send("Successfully added to shopping cart");
   } catch (err) {
-    res.type("text").status(500).send("Internal Server Error. Failed to add watch to shopping cart");
+    res.type("text").status(500);
+    res.send("Internal Server Error. Failed to add watch to shopping cart");
   }
 });
 
@@ -175,9 +182,11 @@ app.post("/REM/removefromshoppingcart", async (req, res) => {
     let userID = req.body.userID;
     userID = userID ? userID : "0";
     await db.run("DELETE FROM Shoppingcart WHERE userID = ? AND WatchID = ?", userID, productID);
-    res.status(200).send("Successfully deleted from shopping cart");
+    res.status(200);
+    res.send("Successfully deleted from shopping cart");
   } catch (err) {
-    res.type("text").status(500).send("Internal Server Error. Failed to add watch to shopping cart");
+    res.type("text").status(500);
+    res.send("Internal Server Error. Failed to add watch to shopping cart");
   }
 });
 
@@ -215,13 +224,15 @@ app.post('/REM/recommendation', async (req, res) => {
     await db.close();
 
     if (maxWatch) {
-      res.status(200).send(maxWatch.Type);
+      res.status(200);
+      res.send(maxWatch.Type);
     } else {
-      res.status(200).send(watches[0].Type);
+      res.status(200);
+      res.send(watches[0].Type);
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).send('Internal Server Error');
+    res.status(500);
+    res.send('Internal Server Error');
   }
 });
 
@@ -239,21 +250,27 @@ app.post("/REM/buyproduct", async (req, res) => {
           if (currentDeposit >= totalPrice) {
             let remainDeposit = currentDeposit - totalPrice;
             await processAfterSuccess(remainDeposit, cardNumber);
-            res.type("text").send("Proceed Successfully");
+            res.type("text");
+            res.send("Proceed Successfully");
           } else {
-            res.type("text").send("Do not have enough money");
+            res.type("text");
+            res.send("Do not have enough money");
           }
         } else {
-          res.type("text").send("Wrong cardHolderName");
+          res.type("text");
+          res.send("Wrong cardHolderName");
         }
       } else {
-        res.type("text").send("NO credit card find");
+        res.type("text");
+        res.send("NO credit card find");
       }
     } else {
-      res.type("text").send("Not enough watches to supply");
+      res.type("text");
+      res.send("Not enough watches to supply");
     }
   } catch (err) {
-    res.type("text").status(500).send("Failed to Proceed");
+    res.type("text").status(500);
+    res.send("Failed to Proceed");
   }
 });
 
@@ -371,20 +388,20 @@ app.get("/REM/gettransaction", async (req, res) => {
     let getTransactionSql = 'SELECT * FROM transactions JOIN WATCHES ON WATCHES.ID = ' +
       "transactions.WatchID WHERE transactions.UserID = ?";
     let arrayOfTranInfo = await db.all(getTransactionSql, currentUserID);
-    res.type("json").send(arrayOfTranInfo);
+    res.type("json");
+    res.send(arrayOfTranInfo);
 
   } catch (err) {
-    res.type("json").status(500).send("failed to get the Transaction history")
+    res.type("json").status(500);
+    res.send("failed to get the Transaction history")
   }
 })
 
 app.get("/REM/logout", async (req, res) => {
   currentUserID = 0;
-  res.type("text").send("Logout Successfully");
+  res.type("text");
+  res.send("Logout Successfully");
 })
-
-
-
 
 /**
  * Establishes a database connection to the database and returns the database object.
