@@ -34,6 +34,7 @@
       logOut();
       window.location.reload();
     });
+    reloadPage(localStorage.getItem("productID"));
   }
 
   async function logOut() {
@@ -235,6 +236,7 @@
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
+        localStorage.setItem("productID", productID);
         reloadPage(productID);
       });
     }
@@ -347,7 +349,7 @@
    * @param {String} productID product ID of the watch
    */
   function reloadPage(productID) {
-    reloadContents();
+    // reloadContents();
     resetAllSidebar();
     changeWatchImages(productID);
     resetHRs();
