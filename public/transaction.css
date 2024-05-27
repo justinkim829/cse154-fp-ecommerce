@@ -6,7 +6,6 @@ body {
   width: 100%;
 }
 
-
 header {
   height: 11vh;
   justify-content: space-between;
@@ -79,7 +78,6 @@ header, #search section {
   margin-left: 10px;
   text-decoration: none;
 }
-
 
 .change {
   cursor: pointer;
@@ -176,7 +174,6 @@ main {
   display: flex;
   flex-direction: column;
   gap: 20px;
-
 }
 
 .transaction-record {
@@ -231,5 +228,4 @@ main {
   width: 80%;
   margin-left: 10%;
   margin-top: 3%;
-
 }

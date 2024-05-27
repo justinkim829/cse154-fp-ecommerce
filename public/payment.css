@@ -269,15 +269,10 @@ h1 {
   font-size: 20px;
 }
 
-form{
-  height: 190vh;
-  margin-bottom: 0;
-}
-
 .hide {
   visibility: hidden;
 }
 
-.hidden{
+.hidden {
   display: none;
 }
