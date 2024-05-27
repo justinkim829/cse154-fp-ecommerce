@@ -11,7 +11,7 @@ const cors = require('cors');
 
 app.use(cors());
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
@@ -19,6 +19,7 @@ app.use(multer().none());
 
 let currentUserID = 0;
 
+/** This end point is used to check if the user is currently log in or not */
 app.get("/REM/checkiflogin", (req, res) => {
   if (currentUserID !== 0) {
     res.type("text").status(200);
@@ -66,7 +67,7 @@ app.post("/REM/login", async (req, res) => {
 /**
  * This function is used to get certian watch that user wants to
  */
-app.get("/watchdetails/:ID", async function(req, res) {
+app.get("/watchdetails/:ID", async function (req, res) {
   try {
     let watchID = req.params.ID;
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
@@ -122,10 +123,11 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
     let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
     res.type("json").send(arrayOfWatches);
   } catch (err) {
-    res.type("json").send({"errMessage": err});
+    res.type("json").send({ "errMessage": err });
   }
 });
 
+/** This endpoint is used to remove the item from the shopping cart  */
 app.post("/REM/removeitem", async (req, res) => {
   try {
     let db = await getDBConnection();
@@ -140,6 +142,7 @@ app.post("/REM/removeitem", async (req, res) => {
   }
 });
 
+/** This endpoint is used to change the quantity of product wants to buy for user */
 app.post("/REM/changequantity", async (req, res) => {
   try {
     let db = await getDBConnection();
@@ -155,6 +158,7 @@ app.post("/REM/changequantity", async (req, res) => {
   }
 });
 
+/** This endpoint is used to add the item into the shoppingcart */
 app.post("/REM/addtoshoppingcart", async (req, res) => {
   try {
     res.type("text");
@@ -174,6 +178,7 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
   }
 });
 
+/** This endpoint is used to remove the itrm form the shopping cart */
 app.post("/REM/removefromshoppingcart", async (req, res) => {
   try {
     res.type("text");
@@ -190,12 +195,11 @@ app.post("/REM/removefromshoppingcart", async (req, res) => {
   }
 });
 
+/** This endpoint is used to get the recommendation of all the products */
 app.post('/REM/recommendation', async (req, res) => {
   try {
     const input = req.body.input;
-
     const result = await findRecommendations(input)
-
     if (result[0]) {
       res.status(200);
       res.send(result[0].Type);
@@ -209,10 +213,11 @@ app.post('/REM/recommendation', async (req, res) => {
   }
 });
 
+/** This endpoint is used to buy the product from the shoppingcart */
 app.post("/REM/buyproduct", async (req, res) => {
   try {
     let db = await getDBConnection();
-    let {cardHolderName, cardNumber} = req.body;
+    let { cardHolderName, cardNumber } = req.body;
     let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
     let cardExist = await db.get(searchCardSql, [cardNumber, cardHolderName]);
     if (await ifEnoughStorage()) {
@@ -221,25 +226,19 @@ app.post("/REM/buyproduct", async (req, res) => {
           let currentDeposit = cardExist.Deposit;
           let totalPrice = await getTotalPriceOfWatches();
           if (currentDeposit >= totalPrice) {
-            let remainDeposit = currentDeposit - totalPrice;
-            await processAfterSuccess(remainDeposit, cardNumber);
-            res.type("text");
-            res.send("Proceed Successfully");
+            await processAfterSuccess(currentDeposit - totalPrice, cardNumber);
+            errMessage(res, "Proceed Successfully");
           } else {
-            res.type("text");
-            res.send("Do not have enough money");
+            errMessage(res, "Do not have enough money");
           }
         } else {
-          res.type("text");
-          res.send("Wrong cardHolderName");
+          errMessage(res, "Wrong cardHolderName");
         }
       } else {
-        res.type("text");
-        res.send("NO credit card find");
+        errMessage(res, "NO credit card find");
       }
     } else {
-      res.type("text");
-      res.send("Not enough watches to supply");
+      errMessage(res, "Not enough watches to supply");
     }
   } catch (err) {
     res.type("text").status(500);
@@ -247,6 +246,13 @@ app.post("/REM/buyproduct", async (req, res) => {
   }
 });
 
+/** This function is used to handle the error message */
+function errMessage(res, message) {
+  res.type("text");
+  res.send(message);
+}
+
+/** This function is used to process all the info when purchase successfully */
 async function processAfterSuccess(remainDeposit, cardNumber) {
   await deductMoney(remainDeposit, cardNumber);
   await deductQuantity();
@@ -254,6 +260,7 @@ async function processAfterSuccess(remainDeposit, cardNumber) {
   await emptyShoppingcart();
 }
 
+/** This endpoint is used to put the purchase info into the transaction database */
 async function addIntoTransaction() {
   try {
     let db = await getDBConnection();
@@ -276,10 +283,12 @@ async function addIntoTransaction() {
   }
 }
 
+/** This function is used to generte the comfirmation code */
 function generateConfirmationNumber() {
   return 'REM' + Math.floor(Math.random() * 1000000000);
 }
 
+/** This function is used to empty all the shoppingcart */
 async function emptyShoppingcart() {
   let db = await getDBConnection();
   try {
@@ -290,6 +299,7 @@ async function emptyShoppingcart() {
   }
 }
 
+/** This function is used to deduct the money in the card account */
 async function deductMoney(remainDeposit, cardNumber) {
   try {
     let db = await getDBConnection();
@@ -300,6 +310,7 @@ async function deductMoney(remainDeposit, cardNumber) {
   }
 }
 
+/** This function is used to deduct the quantity of the watches in the storage */
 async function deductQuantity() {
   try {
     let db = await getDBConnection();
@@ -319,6 +330,7 @@ async function deductQuantity() {
   }
 }
 
+/** This function is used to check if it has the enough storage */
 async function ifEnoughStorage() {
   let flag = true;
   let db = await getDBConnection();
@@ -337,7 +349,7 @@ async function ifEnoughStorage() {
   return flag;
 }
 
-
+/** This function is used to get the total price of the selected watches */
 async function getTotalPriceOfWatches() {
   let db = await getDBConnection();
   let totalPrice = 0;
@@ -354,6 +366,7 @@ async function getTotalPriceOfWatches() {
   return totalPrice;
 }
 
+/** This endpoint is used to get all the transaction history */
 app.get("/REM/gettransaction", async (req, res) => {
   let db = await getDBConnection();
   try {
@@ -368,12 +381,14 @@ app.get("/REM/gettransaction", async (req, res) => {
   }
 });
 
+/** This endpoint is used to log out */
 app.get("/REM/logout", (req, res) => {
   currentUserID = 0;
   res.type("text");
   res.send("Logout Successfully");
 });
 
+/** This function is used to find the recommendation watch */
 async function findRecommendations(input) {
   try {
     const db = await getDBConnection();
@@ -382,26 +397,21 @@ async function findRecommendations(input) {
       `%${input}%`,
       `${input}%`
     );
-
     if (watches.length === 0) {
       return res.status(404).send('No matching watches found');
     }
-
     let maxWatch = null;
     let maxCount = 0;
-
     for (const watch of watches) {
       const countResult = await db.get(
         `SELECT COUNT(*) as count FROM shoppingcart WHERE WatchID = ?`,
         watch.ID
       );
-
       if (countResult.count > maxCount) {
         maxWatch = watch;
         maxCount = countResult.count;
       }
     }
-
     await db.close()
     return [maxWatch, watches[0].Type];
   } catch (err) {

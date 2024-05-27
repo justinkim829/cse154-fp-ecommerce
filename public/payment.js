@@ -73,7 +73,7 @@
         }, 2000);
 
       } else {
-        HandleFailSituation();
+        HandleFailSituation(result);
       }
     } catch (err) {
       console.error(err);
@@ -94,9 +94,9 @@
     }
   }
 
-  function HandleFailSituation() {
+  function HandleFailSituation(result) {
     let displayMessage = gen("p");
-    displayMessage.textContent = "Failed to purchase";
+    displayMessage.textContent = result;
     id("displaymessage").appendChild(displayMessage);
     if (timeoutId) {
       clearTimeout(timeoutId);
