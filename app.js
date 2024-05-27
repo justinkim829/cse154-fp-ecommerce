@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(multer().none());
 
-let currentUserID = 14;
+let currentUserID = 0;
 
 app.get("/REM/checkiflogin", (req, res) => {
   if (currentUserID !== 0) {
