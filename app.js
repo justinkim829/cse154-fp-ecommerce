@@ -193,42 +193,15 @@ app.post("/REM/removefromshoppingcart", async (req, res) => {
 app.post('/REM/recommendation', async (req, res) => {
   try {
     const input = req.body.input;
-    const db = await getDBConnection();
 
-    // Find all watches matching the input
-    const watches = await db.all(
-      `SELECT * FROM watches WHERE LOWER(name) LIKE ? OR category LIKE ?`,
-      `%${input}%`,
-      `${input}%`
-    );
+    const result = await findRecommendations(input)
 
-    if (watches.length === 0) {
-      return res.status(404).send('No matching watches found');
-    }
-
-    let maxWatch = null;
-    let maxCount = 0;
-
-    for (const watch of watches) {
-      const countResult = await db.get(
-        `SELECT COUNT(*) as count FROM shoppingcart WHERE WatchID = ?`,
-        watch.ID
-      );
-
-      if (countResult.count > maxCount) {
-        maxWatch = watch;
-        maxCount = countResult.count;
-      }
-    }
-
-    await db.close();
-
-    if (maxWatch) {
+    if (result[0]) {
       res.status(200);
-      res.send(maxWatch.Type);
+      res.send(result[0].Type);
     } else {
       res.status(200);
-      res.send(watches[0].Type);
+      res.send(result[1]);
     }
   } catch (err) {
     res.status(500);
@@ -239,7 +212,7 @@ app.post('/REM/recommendation', async (req, res) => {
 app.post("/REM/buyproduct", async (req, res) => {
   try {
     let db = await getDBConnection();
-    let { cardHolderName, cardNumber } = req.body
+    let {cardHolderName, cardNumber} = req.body;
     let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
     let cardExist = await db.get(searchCardSql, [cardNumber, cardHolderName]);
     if (await ifEnoughStorage()) {
@@ -306,7 +279,6 @@ async function addIntoTransaction() {
 function generateConfirmationNumber() {
   return 'REM' + Math.floor(Math.random() * 1000000000);
 }
-
 
 async function emptyShoppingcart() {
   let db = await getDBConnection();
@@ -390,18 +362,52 @@ app.get("/REM/gettransaction", async (req, res) => {
     let arrayOfTranInfo = await db.all(getTransactionSql, currentUserID);
     res.type("json");
     res.send(arrayOfTranInfo);
-
   } catch (err) {
     res.type("json").status(500);
-    res.send("failed to get the Transaction history")
+    res.send("failed to get the Transaction history");
   }
-})
+});
 
-app.get("/REM/logout", async (req, res) => {
+app.get("/REM/logout", (req, res) => {
   currentUserID = 0;
   res.type("text");
   res.send("Logout Successfully");
-})
+});
+
+async function findRecommendations(input) {
+  try {
+    const db = await getDBConnection();
+    const watches = await db.all(
+      `SELECT * FROM watches WHERE LOWER(name) LIKE ? OR category LIKE ?`,
+      `%${input}%`,
+      `${input}%`
+    );
+
+    if (watches.length === 0) {
+      return res.status(404).send('No matching watches found');
+    }
+
+    let maxWatch = null;
+    let maxCount = 0;
+
+    for (const watch of watches) {
+      const countResult = await db.get(
+        `SELECT COUNT(*) as count FROM shoppingcart WHERE WatchID = ?`,
+        watch.ID
+      );
+
+      if (countResult.count > maxCount) {
+        maxWatch = watch;
+        maxCount = countResult.count;
+      }
+    }
+
+    await db.close()
+    return [maxWatch, watches[0].Type];
+  } catch (err) {
+    throw new Error(err);
+  }
+}
 
 /**
  * Establishes a database connection to the database and returns the database object.
