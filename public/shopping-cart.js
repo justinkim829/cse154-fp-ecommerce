@@ -64,6 +64,7 @@
     });
   }
 
+  /** This function is used to log out */
   async function logOut() {
     let response = await fetch("/REM/logout");
     await statusCheck(response);
@@ -74,6 +75,7 @@
     }
   }
 
+  /** This function is used to check if there are items in the shoppingcart */
   function checkoutStatusChecking() {
     if (id("left-side").children.length === 1) {
       qs("button").disabled = true;
@@ -82,6 +84,7 @@
     }
   }
 
+  /** This function is used to check if the account is log in or not */
   async function checkIsLogin() {
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
@@ -96,6 +99,7 @@
     }
   }
 
+  /** This function is used to change the quantity of the watch */
   async function changeQuantity(event) {
     let card = event.target.closest(".product");
     let numberOfWatch = event.target.value;
@@ -114,15 +118,13 @@
         let result = getCurrentWatches();
         changeSummary(result);
       }
-
     } catch (err) {
       console.error(err);
     }
 
   }
 
-
-
+  /** this function is used to remove the item from the shoppingcart */
   async function removeItem(event) {
     let card = event.target.closest(".product");
     let formdata = new FormData();
@@ -138,8 +140,6 @@
       let result = await getCurrentWatches();
       changeSummary(result);
       checkoutStatusChecking();
-
-
     } catch (err) {
       console.error(err);
     }
@@ -214,7 +214,6 @@
     let type2Sidebar = id('type2sidebar');
     let type3Sidebar = id('type3sidebar');
     let overlay = id("overlay");
-
     if (!sidebar.contains(event.target) && !type1Sidebar.contains(event.target) &&
       !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
       sidebar.style.left = "-300px";
@@ -259,6 +258,7 @@
     }
   }
 
+  /** This function is used to get all the watches in the shoppingcart */
   async function getCurrentWatches() {
     try {
       let response = await fetch(GET_WATCH_INFO_URL);
@@ -309,37 +309,34 @@
     return productContainer;
   }
 
+  /**
+   * this function is used to add the product description in the card
+   * @param {object} product all the info the products
+   * @param {object} productContainer the container that contain all the watch info
+   * @returns created card of the watch info
+   */
   function addProductDescription(product, productContainer) {
-    // Create product section
     let productSection = gen('section');
     productSection.classList.add('product');
     productContainer.appendChild(productSection);
-
-    // Add image
     let img = gen('img');
     img.src = product.Img1;
     productSection.appendChild(img);
-
-    // Add description section
     let descriptionSection = gen('section');
     descriptionSection.classList.add('description');
     productSection.appendChild(descriptionSection);
-
     let productName = gen('p');
     productName.classList.add('description-name');
     productName.textContent = product.Name;
     descriptionSection.appendChild(productName);
-
     let productId = gen('p');
     productId.classList.add('description-id');
     productId.textContent = 'ID: ' + product.Type;
     descriptionSection.appendChild(productId);
-
     let productStatus = gen('p');
     productStatus.classList.add('description-status');
     productStatus.textContent = "Available";
     descriptionSection.appendChild(productStatus);
-
     let productStatusMsg = gen('p');
     productStatusMsg.classList.add('description-status-msg');
     productStatusMsg.textContent = "Your selection is available to purchase online.";
@@ -348,17 +345,18 @@
     return productSection;
   }
 
+  /**
+   * This function is used to update the total price every time user change the idea
+   * @param {object} product all the info the products
+   * @param {object} productSection the created card
+   */
   function addCostOptions(product, productSection) {
-    // Cost section
     let costSection = gen('section');
     costSection.classList.add('cost');
     productSection.appendChild(costSection);
-
     let price = gen('p');
     price.textContent = '$' + product.Price;
     costSection.appendChild(price);
-
-    // Quantity selector
     let quantitySelector = gen('select');
     quantitySelector.classList.add("selectorquantity");
     for (let i = 1; i <= 3; i++) {
@@ -369,8 +367,6 @@
       if (i === product.Quantity) option.selected = true;
     }
     costSection.appendChild(quantitySelector);
-
-    // Color selector
     let colorSelector = gen('select');
     for (let color of ['blue', 'white', 'black']) {
       let option = gen('option');
@@ -379,8 +375,6 @@
       colorSelector.appendChild(option);
     }
     costSection.appendChild(colorSelector);
-
-    // Remove/Edit options
     let removeSection = gen('section');
     removeSection.classList.add('remove');
     let remove = gen('p');

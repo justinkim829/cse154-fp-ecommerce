@@ -26,6 +26,7 @@
     });
   }
 
+  /** This function is used to log out form the account */
   async function logOut() {
     let response = await fetch("/REM/logout");
     await statusCheck(response);
@@ -48,6 +49,7 @@
     }
   }
 
+  /** This function is used to check if the account is log in */
   async function checkIsLogin() {
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
@@ -62,6 +64,7 @@
     }
   }
 
+  /** This function is used to get the recommendation info of the watchces */
   function sendRecommendationsToWatch() {
     let recommended = qsa(".box");
     let productIDs = ["M1", "D2", "P3"]
@@ -188,6 +191,13 @@
     }
   }
 
+  /**
+   *
+   * @param {String} endPoint - the endpoint of the post
+   * @param {object} params - the body of the post request
+   * @param {String} isReturnText - the return text
+   * @returns
+   */
   async function postData(endPoint, params, isReturnText) {
     try {
       let data = await fetch(endPoint, {

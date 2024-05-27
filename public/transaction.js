@@ -33,6 +33,7 @@
 
   }
 
+  /** This function is used to log out from the user account */
   async function logOut() {
     let response = await fetch("/REM/logout");
     response = await statusCheck(response);
@@ -43,13 +44,13 @@
     }
   }
 
-
+  /** This function is used to check if the user is login or not */
   async function checkIsLogin() {
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
     let result = await response.text();
     if (result !== "havn't Login") {
-      qs("#log").textContent="LogOut";
+      qs("#log").textContent = "LogOut";
       id("log").removeAttribute('href');
     }
   }
@@ -146,6 +147,7 @@
     });
   }
 
+  /** This function is used to get all the shopping history */
   async function getShoppingHistory() {
     try {
       let response = await fetch("/REM/gettransaction");
@@ -159,62 +161,84 @@
     }
   }
 
-  function createCard(transaction) {
-    let transactionList = id('watch-list');
-
-    let transactionRecord = gen('div');
-    transactionRecord.classList.add('transaction-record');
-
-    let img = gen('img');
+  /**
+   * This function is used to create the imge element
+   * @param {object} transaction - the transaction info
+   * @returns the img element
+   */
+  function createImageElement(transaction) {
+    let img = document.createElement('img');
     img.src = transaction.Img1;
     img.alt = transaction.Name;
-    transactionRecord.appendChild(img);
+    return img;
+}
 
-    let transactionDetails = gen('div');
-    transactionDetails.classList.add('transaction-details');
-
-    let status = gen('p');
+/**
+ * This function is used to create the status element
+ * @returns created status element
+ */
+function createStatusElement() {
+    let status = document.createElement('p');
     status.classList.add('transaction-status');
     status.textContent = 'COMPLETED';
+    return status;
+}
+
+/**
+ * This function is used to create the detail element
+ * @param {object} label the lable element
+ * @param {object} value the value of the label
+ * @returns the detail element
+ */
+function createDetailElement(label, value) {
+    let detail = document.createElement('p');
+    detail.textContent = `${label}: `;
+    let span = document.createElement('span');
+    span.textContent = value;
+    detail.appendChild(span);
+    return detail;
+}
+
+/**
+ * This function is used to append all the info element into the container
+ * @param {object} container the container that contain all the purchase info
+ * @param {object} elements the small pieces of info needed to be add into the card
+ */
+function appendTransactionDetails(container, elements) {
+    elements.forEach(element => {
+        container.appendChild(element);
+    });
+}
+
+/**
+ * This function is used to create the card for each transaction history
+ * @param {object} transaction all the purchse info
+ */
+function createCard(transaction) {
+    let transactionList = document.getElementById('watch-list');
+
+    let transactionRecord = document.createElement('div');
+    transactionRecord.classList.add('transaction-record');
+
+    let img = createImageElement(transaction);
+    transactionRecord.appendChild(img);
+
+    let transactionDetails = document.createElement('div');
+    transactionDetails.classList.add('transaction-details');
+
+    let status = createStatusElement();
     transactionDetails.appendChild(status);
 
-    let orderId = gen('p');
-    orderId.textContent = 'Order ID: ';
-    let orderIdSpan = gen('span');
-    orderIdSpan.textContent = transaction.confirmationNumber;
-    orderId.appendChild(orderIdSpan);
-    transactionDetails.appendChild(orderId);
-
-    let name = gen('p');
-    name.textContent = 'Name: ';
-    let nameSpan = gen('span');
-    nameSpan.textContent = transaction.Name;
-    name.appendChild(nameSpan);
-    transactionDetails.appendChild(name);
-
-    let type = gen('p');
-    type.textContent = 'Type: ';
-    let typeSpan = gen('span');
-    typeSpan.textContent = transaction.Type;
-    type.appendChild(typeSpan);
-    transactionDetails.appendChild(type);
-
-    let total = gen('p');
+    let orderId = createDetailElement('Order ID', transaction.confirmationNumber);
+    let name = createDetailElement('Name', transaction.Name);
+    let type = createDetailElement('Type', transaction.Type);
+    let total = createDetailElement('Total', `$${transaction.Price}`);
     total.classList.add('transaction-total');
-    total.textContent = 'Total: ';
-    let totalSpan = gen('span');
-    totalSpan.textContent = `$${transaction.Price}`;
-    total.appendChild(totalSpan);
-    transactionDetails.appendChild(total);
 
+    appendTransactionDetails(transactionDetails, [orderId, name, type, total]);
     transactionRecord.appendChild(transactionDetails);
     transactionList.appendChild(transactionRecord);
-  }
-
-
-
-
-
+}
 
 
   /**

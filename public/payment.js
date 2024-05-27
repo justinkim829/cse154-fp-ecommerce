@@ -39,6 +39,7 @@
     });
   }
 
+  /** This function is used to log out form the account */
   async function logOut() {
     let response = await fetch("/REM/logout");
     response = await statusCheck(response);
@@ -49,6 +50,10 @@
     }
   }
 
+  /**
+   * This function is used to buy the product
+   * @param {event} event - the event of clicking the payment button
+   */
   async function buyProduct(event) {
     event.preventDefault();
     let cardHolderName = id('card-holder-name').value;
@@ -67,11 +72,9 @@
         let displayMessage = gen("p");
         displayMessage.textContent = "Purchased Successfully";
         id("displaymessage").appendChild(displayMessage);
-
         timeoutId = setInterval(() => {
           window.location.href = "transaction.html";
         }, 2000);
-
       } else {
         HandleFailSituation(result);
       }
@@ -80,6 +83,7 @@
     }
   }
 
+  /** This function is used to check if the account is log in or not */
   async function checkIsLogin() {
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
@@ -94,6 +98,10 @@
     }
   }
 
+  /**
+   * This function is used to handle all the fail situation when purchase the item
+   * @param {object} result - the result of purchase the item
+   */
   function HandleFailSituation(result) {
     let displayMessage = gen("p");
     displayMessage.textContent = result;
@@ -119,8 +127,6 @@
     id("cvv").value = "";
     id("billing-address").value = "";
   }
-
-
 
   /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {

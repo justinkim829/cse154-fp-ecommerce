@@ -36,6 +36,7 @@
     });
   }
 
+  /** This function is used to log out from the account */
   async function logOut() {
     let response = await fetch("/REM/logout");
     response = await statusCheck(response);
