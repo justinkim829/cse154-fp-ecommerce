@@ -20,6 +20,20 @@
       }
     };
     await checkIsLogin();
+    qs("#log").addEventListener("click", () => {
+      logOut();
+      window.location.reload();
+    });
+  }
+
+  async function logOut() {
+    let response = await fetch("/REM/logout");
+    await statusCheck(response);
+    let result = await response.text();
+    if (result === "Logout Successfully") {
+      id("log").setAttribute('href', "login.html");
+      qs("#log").textContent = "Login";
+    }
   }
 
   /** This function is used to change the mainpage into each watch page */
@@ -40,9 +54,11 @@
     let result = await response.text();
     if (result === "havn't Login") {
       id("trans").removeAttribute('href');
-
     } else {
       id("trans").setAttribute('href', "transaction.html");
+      id("trans").classList.remove("hidden");
+      qs("#log").textContent="LogOut";
+      id("log").removeAttribute('href');
     }
   }
 

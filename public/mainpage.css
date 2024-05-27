@@ -284,3 +284,7 @@ footer img {
 .selectorquantity {
   color: black;
 }
+
+.hidden{
+  display: none;
+}

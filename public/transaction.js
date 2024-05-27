@@ -25,7 +25,33 @@
     }
     await getShoppingHistory();
     sendSidebarToWatch();
+    await checkIsLogin();
+    qs("#log").addEventListener("click", () => {
+      logOut();
+      window.location.reload();
+    });
 
+  }
+
+  async function logOut() {
+    let response = await fetch("/REM/logout");
+    response = await statusCheck(response);
+    let result = await response.text();
+    if (result === "Logout Successfully") {
+      id("log").setAttribute('href', "login.html");
+      qs("#log").textContent = "Login";
+    }
+  }
+
+
+  async function checkIsLogin() {
+    let response = await fetch("/REM/checkiflogin");
+    await statusCheck(response);
+    let result = await response.text();
+    if (result !== "havn't Login") {
+      qs("#log").textContent="LogOut";
+      id("log").removeAttribute('href');
+    }
   }
 
   /** This function is used to change the mainpage into each watch page */

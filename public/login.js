@@ -1,6 +1,6 @@
 "use strict";
 
-(function() {
+(function () {
   const LOGIN_URL = "/REM/login";
   let timeoutId = 0;
 
@@ -10,17 +10,17 @@
   async function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
+    id("menu").addEventListener('click', function (evt) {
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function() {
+    id("close").addEventListener('click', function () {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
+      id(idText).addEventListener("click", function () {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
@@ -30,7 +30,22 @@
     });
     sendSidebarToWatch();
     await checkIsLogin();
+    qs("#log").addEventListener("click", () => {
+      logOut();
+      window.location.reload();
+    });
   }
+
+  async function logOut() {
+    let response = await fetch("/REM/logout");
+    response = await statusCheck(response);
+    let result = await response.text();
+    if (result === "Logout Successfully") {
+      id("log").setAttribute('href', "login.html");
+      qs("#log").textContent = "Login";
+    }
+  }
+
 
   /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {
@@ -52,6 +67,9 @@
       id("trans").removeAttribute('href');
     } else {
       id("trans").setAttribute('href', "transaction.html");
+      id("trans").classList.remove("hidden");
+      qs("#log").textContent = "LogOut";
+      id("log").removeAttribute('href');
     }
   }
 
@@ -222,6 +240,15 @@
    */
   function qsa(selector) {
     return document.querySelectorAll(selector);
+  }
+
+  /**
+   * This function is used to get that element by its name
+   * @param {string} selector - the element wants to be find in the HTML page
+   * @return {Node} return the node that selector corespond to .
+   */
+  function qs(selector) {
+    return document.querySelector(selector);
   }
 
   /**

@@ -260,6 +260,7 @@ main {
   height: 50px;
   border-radius: 30px;
   font-size: 15px;
+  cursor: pointer;
 }
 
 #product-details {
@@ -365,4 +366,8 @@ footer img {
 
 .selectorquantity {
   color: black;
+}
+
+.hidden {
+  display: none;
 }

@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(multer().none());
 
-let currentUserID = 0;
+let currentUserID = 14;
 
 app.get("/REM/checkiflogin", (req, res) => {
   if (currentUserID !== 0) {
@@ -159,10 +159,10 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
     let watchID = await db.get("SELECT ID FROM watches WHERE Type = ?", productID);
     watchID = watchID.ID;
     let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +
-    "VALUES (?, ?, ?)";
+      "VALUES (?, ?, ?)";
     await db.run(selection, userID, watchID, 1);
     res.status(200).send("Successfully added to shopping cart");
-  } catch(err) {
+  } catch (err) {
     res.type("text").status(500).send("Internal Server Error. Failed to add watch to shopping cart");
   }
 });
@@ -173,10 +173,10 @@ app.post("/REM/removefromshoppingcart", async (req, res) => {
     let db = await getDBConnection();
     let productID = req.body.productID;
     let userID = req.body.userID;
-    userID = userID? userID : "0";
+    userID = userID ? userID : "0";
     await db.run("DELETE FROM Shoppingcart WHERE userID = ? AND WatchID = ?", userID, productID);
     res.status(200).send("Successfully deleted from shopping cart");
-  } catch(err) {
+  } catch (err) {
     res.type("text").status(500).send("Internal Server Error. Failed to add watch to shopping cart");
   }
 });
@@ -377,6 +377,13 @@ app.get("/REM/gettransaction", async (req, res) => {
     res.type("json").status(500).send("failed to get the Transaction history")
   }
 })
+
+app.get("/REM/logout", async (req, res) => {
+  currentUserID = 0;
+  res.type("text").send("Logout Successfully");
+})
+
+
 
 
 /**

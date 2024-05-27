@@ -33,8 +33,21 @@
       buyProduct(event);
     });
     await checkIsLogin();
+    qs("#log").addEventListener("click", () => {
+      logOut();
+      window.location.reload();
+    });
   }
 
+  async function logOut() {
+    let response = await fetch("/REM/logout");
+    response = await statusCheck(response);
+    let result = await response.text();
+    if (result === "Logout Successfully") {
+      id("log").setAttribute('href', "login.html");
+      qs("#log").textContent = "Login";
+    }
+  }
 
   async function buyProduct(event) {
     event.preventDefault();
@@ -75,6 +88,9 @@
       id("trans").removeAttribute('href');
     } else {
       id("trans").setAttribute('href', "transaction.html");
+      id("trans").classList.remove("hidden");
+      qs("#log").textContent="LogOut";
+      id("log").removeAttribute('href');
     }
   }
 
