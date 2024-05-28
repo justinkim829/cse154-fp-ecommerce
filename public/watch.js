@@ -37,6 +37,9 @@
     reloadPage(localStorage.getItem("productID"));
   }
 
+  /**
+   * Log out the user.
+   */
   async function logOut() {
     let response = await fetch("/REM/logout");
     await statusCheck(response);
@@ -97,6 +100,9 @@
     }
   }
 
+  /**
+   * Checks if the user is logged in.
+   */
   async function checkIsLogin() {
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
@@ -106,7 +112,7 @@
     } else {
       id("trans").setAttribute('href', "transaction.html");
       id("trans").classList.remove("hidden");
-      qs("#log").textContent="LogOut";
+      qs("#log").textContent = "LogOut";
       id("log").removeAttribute('href');
     }
   }
@@ -158,7 +164,7 @@
         params.append("userID", currentUserID);
         if (wishlistIcon.textContent === "♡") {
           wishlistIcon.textContent = "♥︎";
-          let response = await postData("/REM/addtoshoppingcart", params, true)
+          let response = await postData("/REM/addtoshoppingcart", params, true);
           message.textContent = response;
         } else {
           wishlistIcon.textContent = "♡";
@@ -332,24 +338,10 @@
   }
 
   /**
-   * reload all contents
-   * used when page is being reloaded
-   */
-  function reloadContents() {
-    const body = qs("body");
-    let clonedBody = body.cloneNode(true);
-    body.remove();
-    document.documentElement.appendChild(clonedBody);
-    window.scrollTo(0, 0);
-    init();
-  }
-
-  /**
    * reload page (reset sidebars, horizontal lines, and image information)
    * @param {String} productID product ID of the watch
    */
   function reloadPage(productID) {
-    // reloadContents();
     resetAllSidebar();
     changeWatchImages(productID);
     resetHRs();
@@ -462,6 +454,14 @@
     }
   }
 
+  /**
+   * Sends a POST request to the specified endpoint with the provided parameters.
+   * @param {string} endPoint - The URL to which the request is sent.
+   * @param {FormData} params - The parameters to be sent in the request body.
+   * @param {boolean} isReturnText - Indicates whether the response should be returned as text (true) or JSON (false).
+   * @return {Promise<string|Object>} - The response data as a string if isReturnText is true, or as an object if false.
+   * @throws Will log an error message to the console if the request fails.
+   */
   async function postData(endPoint, params, isReturnText) {
     try {
       let data = await fetch(endPoint, {

@@ -177,7 +177,7 @@
    * show user-friendly response when login was successful/unsuccessful
    * @param {string} result - indicates if login was successful
    */
-  async function processLogIn(result) {
+  function processLogIn(result) {
     try {
       let para = gen("p");
       if (result === "Login successful!") {

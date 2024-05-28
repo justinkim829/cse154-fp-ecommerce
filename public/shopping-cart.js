@@ -5,7 +5,6 @@
   window.addEventListener('load', init);
   const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
 
-
   /**
    * This function initializes all the functions and event listeners on page load.
    */
@@ -84,7 +83,8 @@
   }
 
   /**
-   * This function checks if there are items in the shopping cart and updates the checkout button status.
+   * This function checks if there are items in the shopping cart
+   * and updates the checkout button status.
    */
   function checkoutStatusChecking() {
     if (id("left-side").children.length === 1) {
@@ -151,7 +151,7 @@
         method: "POST",
         body: formdata
       });
-      response = await statusCheck(response);
+      await statusCheck(response);
       response = await response.text();
       id("left-side").innerHTML = "";
       let result = await getCurrentWatches();

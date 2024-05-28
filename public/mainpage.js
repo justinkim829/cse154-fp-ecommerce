@@ -197,7 +197,7 @@
    * @param {String} endPoint - the endpoint of the post
    * @param {object} params - the body of the post request
    * @param {String} isReturnText - the return text
-   * @returns data - the processed data
+   * @returns {String|JSON} data - the processed data
    */
   async function postData(endPoint, params, isReturnText) {
     try {
