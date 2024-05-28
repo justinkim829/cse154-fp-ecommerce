@@ -165,7 +165,6 @@
     let message = gen("p");
     let params = new FormData();
 
-    // need to add userID
     if (id("add-message").children.length === 0) {
       try {
         let currentUserID = await getData("/REM/currentuserid", true);
@@ -174,10 +173,12 @@
         if (wishlistIcon.textContent === "♡") {
           wishlistIcon.textContent = "♥︎";
           let response = await postData("/REM/addtoshoppingcart", params, true);
+          qs("#add-to-cart button").textContent = "Remove From Cart";
           message.textContent = response;
         } else {
           wishlistIcon.textContent = "♡";
           let response = await postData("/REM/removefromshoppingcart", params, true);
+          qs("#add-to-cart button").textContent = "Add To Cart";
           message.textContent = response;
         }
       } catch (err) {
@@ -189,6 +190,7 @@
       id("add-message").appendChild(message);
     }
   }
+
 
   /**
    * Display the sidebar to shwo details
