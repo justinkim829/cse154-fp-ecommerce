@@ -220,6 +220,7 @@ app.post("/REM/buyproduct", async (req, res) => {
     let {cardHolderName, cardNumber} = req.body;
     let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
     let cardExist = await db.get(searchCardSql, [cardNumber, cardHolderName]);
+    res.type("text");
     if (await ifEnoughStorage()) {
       if (cardExist) {
         if (cardExist.UserName === cardHolderName) {
@@ -227,18 +228,18 @@ app.post("/REM/buyproduct", async (req, res) => {
           let totalPrice = await getTotalPriceOfWatches();
           if (currentDeposit >= totalPrice) {
             await processAfterSuccess(currentDeposit - totalPrice, cardNumber);
-            errMessage(res, "Proceed Successfully");
+            res.send("Proceed Successfully");
           } else {
-            errMessage(res, "Do not have enough money");
+            res.send("Do not have enough money");
           }
         } else {
-          errMessage(res, "Wrong cardHolderName");
+          res.send("Wrong cardHolderName");
         }
       } else {
-        errMessage(res, "NO credit card find");
+        res.send("NO credit card find");
       }
     } else {
-      errMessage(res, "Not enough watches to supply");
+      res.send("Not enough watches to supply");
     }
   } catch (err) {
     res.type("text").status(500);
@@ -268,13 +269,11 @@ app.get("/REM/logout", (req, res) => {
   res.send("Logout Successfully");
 });
 
-/** This function is used to handle the error message */
-function errMessage(res, message) {
-  res.type("text");
-  res.send(message);
-}
-
-/** This function is used to process all the info when purchase successfully */
+/**
+ * This function is used to process all the info when purchase successfully
+ * @param {String} remainDeposit - the remaining deposit in dollars
+ * @param {String} cardNumber - the card number for purchase
+ */
 async function processAfterSuccess(remainDeposit, cardNumber) {
   await deductMoney(remainDeposit, cardNumber);
   await deductQuantity();
