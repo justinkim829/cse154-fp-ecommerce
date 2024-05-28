@@ -1,3 +1,12 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Section: CSE 154
+ * This is the css file for the mainpage page, this page has a background img, and
+ * put the search bar in the middle, also has three boxes about the recommendation
+ * watches parallea to each other
+ */
+
 body {
   background-image: url("img/mainpage-picture.jpg");
   background-size: cover;

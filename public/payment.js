@@ -1,3 +1,11 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Class: CSE 154
+ * This is the JS to implement for the payment website, which is used to fullfill
+ * the payment of the items in the shoppingcart after user is login, user need to provide
+ * the credict card info as well as all the divery info.
+ */
 
 "use strict";
 

@@ -1,3 +1,11 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Section: CSE 154
+ * This is the css file for the transaction page, use the color of gray, involving
+ * a bunch of cards that have the transaction history.
+ */
+
 body {
   font-family: "Merienda", cursive;
   background-color: #f4f4f4;

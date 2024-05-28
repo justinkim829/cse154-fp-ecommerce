@@ -1,3 +1,12 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Class: CSE 154
+ * This is the JS to implement for the login website,which is used to fullfill to
+ * login the userAccoount, give the err messege if user have the wrong password or email
+ * address.
+ */
+
 "use strict";
 
 (function() {

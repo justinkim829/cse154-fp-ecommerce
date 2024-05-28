@@ -1,3 +1,12 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Class: CSE 154
+ * This is the JS to implement for the watch website,which is used to fullfill to
+ * help User better understand this watch, showing all the details information, User
+ * can also add this watch into the shoppingcart
+ */
+
 "use strict";
 
 (function() {

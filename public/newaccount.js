@@ -1,3 +1,12 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Class: CSE 154
+ * This is the JS to implement for the newaccount website, which is used to fullfill
+ * to create a new account for the new user, the user has to provide some basic info
+ * in order to create the account successfully.
+ */
+
 "use strict";
 
 (function() {

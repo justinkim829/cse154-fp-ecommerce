@@ -1,3 +1,11 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Section: CSE 154
+ * This is the css file for the newaccount page, use the color of gray ,white and black,
+ * basicly just a bunch of input bars to let user to input
+ */
+
 body, #add-to-cart button {
   font-family: "Merienda", cursive;
 }

@@ -1,3 +1,12 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Class: CSE 154
+ * This is the JS to implement for the shoppingcart website, which is used to fullfill
+ * the function of check all the watches in the shoppingcart, user can also change the
+ * Quantity and color of the watch, then display the total price of all the watches.
+ */
+
 "use strict";
 
 (function() {
@@ -36,7 +45,7 @@
       window.location.reload();
     });
   }
-
+  /** This function is used to deal with if user is login or not*/
   async function twoDifferentSituation(){
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);

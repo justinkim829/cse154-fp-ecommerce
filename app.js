@@ -1,3 +1,12 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Section: CSE 154
+ * This endpoint is used to handle different situations, including buying a prduct,
+ * Delete from the shoppingcart, add into the transaction database,simulate all the
+ * situations for a watch saling web page.
+ */
+
 'use strict';
 
 const express = require('express');

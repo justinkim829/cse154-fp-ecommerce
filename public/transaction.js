@@ -1,3 +1,11 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Class: CSE 154
+ * This is the JS to implement for the transaction website,which is used to fullfill to
+ * make user check their transaction history after they already login.
+ */
+
 "use strict";
 
 (function() {

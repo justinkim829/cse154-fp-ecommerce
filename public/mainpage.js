@@ -1,3 +1,12 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Class: CSE 154
+ * This is the JS to implement for the mianpage website, which is used to fullfill
+ * to search the watches they want in the search bar, also view some recommendation
+ * watches below.
+ */
+
 "use strict";
 
 (function() {
