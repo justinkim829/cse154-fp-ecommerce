@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener("load", init);
 
@@ -164,57 +164,57 @@
   /**
    * This function is used to create the imge element
    * @param {object} transaction - the transaction info
-   * @returns the img element
+   * @returns {Image} the img element
    */
   function createImageElement(transaction) {
     let img = document.createElement('img');
     img.src = transaction.Img1;
     img.alt = transaction.Name;
     return img;
-}
+  }
 
-/**
- * This function is used to create the status element
- * @returns created status element
- */
-function createStatusElement() {
-    let status = document.createElement('p');
-    status.classList.add('transaction-status');
-    status.textContent = 'COMPLETED';
-    return status;
-}
+  /**
+   * This function is used to create the status element
+   * @returns created status element
+   */
+  function createStatusElement() {
+      let status = document.createElement('p');
+      status.classList.add('transaction-status');
+      status.textContent = 'COMPLETED';
+      return status;
+  }
 
-/**
- * This function is used to create the detail element
- * @param {object} label the lable element
- * @param {object} value the value of the label
- * @returns the detail element
- */
-function createDetailElement(label, value) {
+  /**
+   * This function is used to create the detail element
+   * @param {object} label the lable element
+   * @param {object} value the value of the label
+   * @returns the detail element
+   */
+  function createDetailElement(label, value) {
     let detail = document.createElement('p');
     detail.textContent = `${label}: `;
     let span = document.createElement('span');
     span.textContent = value;
     detail.appendChild(span);
     return detail;
-}
+  }
 
-/**
- * This function is used to append all the info element into the container
- * @param {object} container the container that contain all the purchase info
- * @param {object} elements the small pieces of info needed to be add into the card
- */
-function appendTransactionDetails(container, elements) {
+  /**
+   * This function is used to append all the info element into the container
+   * @param {object} container the container that contain all the purchase info
+   * @param {object} elements the small pieces of info needed to be add into the card
+   */
+  function appendTransactionDetails(container, elements) {
     elements.forEach(element => {
-        container.appendChild(element);
+      container.appendChild(element);
     });
-}
+  }
 
-/**
- * This function is used to create the card for each transaction history
- * @param {object} transaction all the purchse info
- */
-function createCard(transaction) {
+  /**
+   * This function is used to create the card for each transaction history
+   * @param {object} transaction all the purchse info
+   */
+  function createCard(transaction) {
     let transactionList = document.getElementById('watch-list');
 
     let transactionRecord = document.createElement('div');
@@ -238,8 +238,7 @@ function createCard(transaction) {
     appendTransactionDetails(transactionDetails, [orderId, name, type, total]);
     transactionRecord.appendChild(transactionDetails);
     transactionList.appendChild(transactionRecord);
-}
-
+  }
 
   /**
    * Helper function to return the response's result text if successful, otherwise
@@ -255,14 +254,6 @@ function createCard(transaction) {
     return res;
   }
 
-  /**
-   * Helper function user to generate certain node
-   * @param {object} selector - the node user wants to create
-   * @return {Node} the node that was created.
-   */
-  function gen(selector) {
-    return document.createElement(selector);
-  }
   /**
    * This function is used to get that element by its ID
    * @param {string} id - the ID that wants to get
