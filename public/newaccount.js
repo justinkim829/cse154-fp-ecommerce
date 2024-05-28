@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener('load', init);
   const CREATE_URL = "/REM/createAccount";
@@ -10,17 +10,17 @@
   function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
+    id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function () {
+    id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
+      id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
@@ -154,6 +154,11 @@
     }
   }
 
+  /**
+   * This function updates the status message displayed to the user and manages the
+   * visibility of the status message on the screen.
+   * @param {string} result - The result message to be displayed.
+   */
   function statusChecking(result) {
     let board = id("showstatus");
     if (board.children.length !== 0) {
@@ -174,6 +179,11 @@
     handleSuccess(result);
   }
 
+  /**
+   * This function handles the successful account creation result, redirecting the user to the
+   * login page if the account creation was successful.
+   * @param {string} result - The result message from the account creation process.
+   */
   function handleSuccess(result) {
     if (result === "Create Account Successful") {
       if (intervalid) {
@@ -197,15 +207,6 @@
       throw new Error(await res.text());
     }
     return res;
-  }
-
-  /**
- * This function is used to get that element by its name
- * @param {string} selector - the element wants to be find in the HTML page
- * @return {Node} return the node that selector corespond to .
- */
-  function qs(selector) {
-    return document.querySelector(selector);
   }
 
   /**

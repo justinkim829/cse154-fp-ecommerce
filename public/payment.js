@@ -1,7 +1,7 @@
 
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener("load", init);
   const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
@@ -12,17 +12,17 @@
 
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
+    id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function () {
+    id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
+      id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
@@ -76,7 +76,7 @@
           window.location.href = "transaction.html";
         }, 2000);
       } else {
-        HandleFailSituation(result);
+        handleFailSituation(result);
       }
     } catch (err) {
       console.error(err);
@@ -93,7 +93,7 @@
     } else {
       id("trans").setAttribute('href', "transaction.html");
       id("trans").classList.remove("hidden");
-      qs("#log").textContent="LogOut";
+      qs("#log").textContent = "LogOut";
       id("log").removeAttribute('href');
     }
   }
@@ -102,7 +102,7 @@
    * This function is used to handle all the fail situation when purchase the item
    * @param {object} result - the result of purchase the item
    */
-  function HandleFailSituation(result) {
+  function handleFailSituation(result) {
     let displayMessage = gen("p");
     displayMessage.textContent = result;
     id("displaymessage").appendChild(displayMessage);
@@ -280,8 +280,6 @@
     qs("#tax p").textContent = "$ " + Math.floor(tax);
     qs("#total p").textContent = "$ " + Math.floor(total);
   }
-
-
 
   /**
    * Helper function to return the response's result text if successful, otherwise

@@ -11,7 +11,7 @@ const cors = require('cors');
 
 app.use(cors());
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 app.use(express.json());
 
@@ -67,7 +67,7 @@ app.post("/REM/login", async (req, res) => {
 /**
  * This function is used to get certian watch that user wants to
  */
-app.get("/watchdetails/:ID", async function (req, res) {
+app.get("/watchdetails/:ID", async function(req, res) {
   try {
     let watchID = req.params.ID;
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
@@ -123,7 +123,7 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
     let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
     res.type("json").send(arrayOfWatches);
   } catch (err) {
-    res.type("json").send({ "errMessage": err });
+    res.type("json").send({"errMessage": err});
   }
 });
 
@@ -132,7 +132,7 @@ app.post("/REM/removeitem", async (req, res) => {
   try {
     let db = await getDBConnection();
     let watchID = req.body.id;
-    let removeSql = "DELETE FROM Shoppingcart WHERE watchID = ? AND UserID = ?;"
+    let removeSql = "DELETE FROM Shoppingcart WHERE watchID = ? AND UserID = ?;";
     await db.run(removeSql, [watchID, currentUserID]);
     res.type("text");
     res.send("Remove the Item successfully");
@@ -148,7 +148,7 @@ app.post("/REM/changequantity", async (req, res) => {
     let db = await getDBConnection();
     let watchID = req.body.id;
     let number = req.body.number;
-    let removeSql = "UPDATE Shoppingcart SET Quantity = ? WHERE watchID = ? AND UserID = ?;"
+    let removeSql = "UPDATE Shoppingcart SET Quantity = ? WHERE watchID = ? AND UserID = ?;";
     await db.run(removeSql, [number, watchID, currentUserID]);
     res.type("text");
     res.send("change the quantity successfully");
@@ -199,7 +199,7 @@ app.post("/REM/removefromshoppingcart", async (req, res) => {
 app.post('/REM/recommendation', async (req, res) => {
   try {
     const input = req.body.input;
-    const result = await findRecommendations(input)
+    const result = await findRecommendations(input);
     if (result[0]) {
       res.status(200);
       res.send(result[0].Type);
@@ -217,7 +217,7 @@ app.post('/REM/recommendation', async (req, res) => {
 app.post("/REM/buyproduct", async (req, res) => {
   try {
     let db = await getDBConnection();
-    let { cardHolderName, cardNumber } = req.body;
+    let {cardHolderName, cardNumber} = req.body;
     let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
     let cardExist = await db.get(searchCardSql, [cardNumber, cardHolderName]);
     if (await ifEnoughStorage()) {
@@ -244,6 +244,28 @@ app.post("/REM/buyproduct", async (req, res) => {
     res.type("text").status(500);
     res.send("Failed to Proceed");
   }
+});
+
+/** This endpoint is used to get all the transaction history */
+app.get("/REM/gettransaction", async (req, res) => {
+  let db = await getDBConnection();
+  try {
+    let getTransactionSql = 'SELECT * FROM transactions JOIN WATCHES ON WATCHES.ID = ' +
+      "transactions.WatchID WHERE transactions.UserID = ?";
+    let arrayOfTranInfo = await db.all(getTransactionSql, currentUserID);
+    res.type("json");
+    res.send(arrayOfTranInfo);
+  } catch (err) {
+    res.type("json").status(500);
+    res.send("failed to get the Transaction history");
+  }
+});
+
+/** This endpoint is used to log out */
+app.get("/REM/logout", (req, res) => {
+  currentUserID = 0;
+  res.type("text");
+  res.send("Logout Successfully");
 });
 
 /** This function is used to handle the error message */
@@ -365,28 +387,6 @@ async function getTotalPriceOfWatches() {
   }
   return totalPrice;
 }
-
-/** This endpoint is used to get all the transaction history */
-app.get("/REM/gettransaction", async (req, res) => {
-  let db = await getDBConnection();
-  try {
-    let getTransactionSql = 'SELECT * FROM transactions JOIN WATCHES ON WATCHES.ID = ' +
-      "transactions.WatchID WHERE transactions.UserID = ?";
-    let arrayOfTranInfo = await db.all(getTransactionSql, currentUserID);
-    res.type("json");
-    res.send(arrayOfTranInfo);
-  } catch (err) {
-    res.type("json").status(500);
-    res.send("failed to get the Transaction history");
-  }
-});
-
-/** This endpoint is used to log out */
-app.get("/REM/logout", (req, res) => {
-  currentUserID = 0;
-  res.type("text");
-  res.send("Logout Successfully");
-});
 
 /** This function is used to find the recommendation watch */
 async function findRecommendations(input) {

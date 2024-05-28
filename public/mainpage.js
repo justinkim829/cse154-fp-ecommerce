@@ -9,7 +9,7 @@
     sidebarStart();
     setDefaultInput();
     sendSidebarToWatch();
-    sendRecommendationsToWatch()
+    sendRecommendationsToWatch();
 
     window.onscroll = function() {
       let header = qs("header");
@@ -59,15 +59,18 @@
     } else {
       id("trans").setAttribute('href', "transaction.html");
       id("trans").classList.remove("hidden");
-      qs("#log").textContent="LogOut";
+      qs("#log").textContent = "LogOut";
       id("log").removeAttribute('href');
     }
   }
 
-  /** This function is used to get the recommendation info of the watchces */
+  /**
+   * This function is used to change the images and contents of the page
+   * to match the clicked recommendation (watch).
+   */
   function sendRecommendationsToWatch() {
     let recommended = qsa(".box");
-    let productIDs = ["M1", "D2", "P3"]
+    let productIDs = ["M1", "D2", "P3"];
     for (let i = 0; i < recommended.length; i++) {
       recommended[i].addEventListener('click', () => {
         let productID = productIDs[i];
@@ -109,7 +112,6 @@
         params.append("input", inputValue);
         try {
           let recommendedID = await postData('/REM/recommendation', params, true);
-          console.log(recommendedID.status);
           sessionStorage.setItem('productID', recommendedID);
           window.location.href = "watch.html";
         } catch (err) {
@@ -192,11 +194,10 @@
   }
 
   /**
-   *
    * @param {String} endPoint - the endpoint of the post
    * @param {object} params - the body of the post request
    * @param {String} isReturnText - the return text
-   * @returns
+   * @returns data - the processed data
    */
   async function postData(endPoint, params, isReturnText) {
     try {

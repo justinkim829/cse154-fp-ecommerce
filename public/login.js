@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+(function() {
   const LOGIN_URL = "/REM/login";
   let timeoutId = 0;
 
@@ -10,17 +10,17 @@
   async function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
+    id("menu").addEventListener('click', function(evt) {
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function () {
+    id("close").addEventListener('click', function() {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
+      id(idText).addEventListener("click", function() {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
@@ -47,7 +47,6 @@
     }
   }
 
-
   /** This function is used to change the mainpage into each watch page */
   function sendSidebarToWatch() {
     let options = qsa(".double-sidebar ul li");
@@ -60,6 +59,7 @@
     }
   }
 
+  /** Checks if user is loggied in */
   async function checkIsLogin() {
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
@@ -166,8 +166,21 @@
     formData.append("Password", id("password").value);
     try {
       let result = await postRequest(formData);
+      processLogIn(result);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  /**
+   * process the log in action
+   * show user-friendly response when login was successful/unsuccessful
+   * @param {string} result - indicates if login was successful
+   */
+  async function processLogIn(result) {
+    try {
+      let para = gen("p");
       if (result === "Login successful!") {
-        let para = gen("p");
         para.textContent = result;
         id("messagedisplay").appendChild(para);
         setInterval(() => {
@@ -176,7 +189,6 @@
       } else {
         id("password").value = "";
         id("email").value = "";
-        let para = gen("p");
         para.textContent = result;
         id("messagedisplay").appendChild(para);
         if (timeoutId) {

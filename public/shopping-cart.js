@@ -4,38 +4,13 @@
 
   window.addEventListener('load', init);
   const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
-  const COLOR = ["blue", "white", "black"];
 
-  /** This function is used to initiallize all the functions */
+
+  /**
+   * This function initializes all the functions and event listeners on page load.
+   */
   async function init() {
-    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
-    id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function (evt) {
-      openSidebar(evt);
-    });
-
-    id("close").addEventListener('click', function () {
-      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
-    });
-
-    for (let i = 0; i < SIDEBARS.length; i++) {
-      let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function () {
-        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
-        toggleSidebar(SIDEBARS[i]);
-      });
-    }
-
-    window.onscroll = function() {
-      let header = qs("header");
-      if (window.scrollY > 0) {
-        header.classList.add("lock-header");
-      } else {
-        header.classList.remove("lock-header");
-      }
-    };
-
-
+    activateSideBarAndScroll();
     await getAllWatches();
     sendSidebarToWatch();
 
@@ -47,7 +22,6 @@
     for (let remove of qsa(".remove p")) {
       remove.addEventListener("click", (event) => {
         removeItem(event);
-
       });
     }
 
@@ -64,7 +38,41 @@
     });
   }
 
-  /** This function is used to log out */
+  /**
+   * This function activates the sidebar and handles scrolling behavior.
+   */
+  function activateSideBarAndScroll() {
+    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
+    id("menu").classList.add(".change");
+    id("menu").addEventListener('click', function(evt) {
+      openSidebar(evt);
+    });
+
+    id("close").addEventListener('click', function() {
+      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
+    });
+
+    for (let i = 0; i < SIDEBARS.length; i++) {
+      let idText = "type" + String(i + 1);
+      id(idText).addEventListener("click", function() {
+        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
+        toggleSidebar(SIDEBARS[i]);
+      });
+    }
+
+    window.onscroll = function() {
+      let header = qs("header");
+      if (window.scrollY > 0) {
+        header.classList.add("lock-header");
+      } else {
+        header.classList.remove("lock-header");
+      }
+    };
+  }
+
+  /**
+   * This function logs out the user by sending a request to the server.
+   */
   async function logOut() {
     let response = await fetch("/REM/logout");
     await statusCheck(response);
@@ -75,7 +83,9 @@
     }
   }
 
-  /** This function is used to check if there are items in the shoppingcart */
+  /**
+   * This function checks if there are items in the shopping cart and updates the checkout button status.
+   */
   function checkoutStatusChecking() {
     if (id("left-side").children.length === 1) {
       qs("button").disabled = true;
@@ -84,7 +94,9 @@
     }
   }
 
-  /** This function is used to check if the account is log in or not */
+  /**
+   * This function checks if the user is logged in or not and updates the UI accordingly.
+   */
   async function checkIsLogin() {
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
@@ -94,12 +106,15 @@
     } else {
       id("trans").setAttribute('href', "transaction.html");
       id("trans").classList.remove("hidden");
-      qs("#log").textContent="LogOut";
+      qs("#log").textContent = "LogOut";
       id("log").removeAttribute('href');
     }
   }
 
-  /** This function is used to change the quantity of the watch */
+  /**
+   * This function changes the quantity of a watch in the shopping cart.
+   * @param {Event} event - The event triggered by changing the quantity.
+   */
   async function changeQuantity(event) {
     let card = event.target.closest(".product");
     let numberOfWatch = event.target.value;
@@ -121,10 +136,12 @@
     } catch (err) {
       console.error(err);
     }
-
   }
 
-  /** this function is used to remove the item from the shoppingcart */
+  /**
+   * This function removes an item from the shopping cart.
+   * @param {Event} event - The event triggered by removing an item.
+   */
   async function removeItem(event) {
     let card = event.target.closest(".product");
     let formdata = new FormData();
@@ -145,7 +162,9 @@
     }
   }
 
-  /** This function is used to change the mainpage into each watch page */
+  /**
+   * This function changes the main page into each watch page.
+   */
   function sendSidebarToWatch() {
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
@@ -158,8 +177,8 @@
   }
 
   /**
-   * This function is used to open the sidebar
-   * @param {event} evt refers to which specific sidebar is being clicked
+   * This function opens the sidebar.
+   * @param {Event} evt - The event triggered by clicking the menu button.
    */
   function openSidebar(evt) {
     let type1Sidebar = id('type1sidebar');
@@ -177,8 +196,8 @@
   }
 
   /**
-   * This function is used to open and close the sidebar
-   * @param {object} subSidebar the sidebar that poll out
+   * This function toggles the visibility of the sidebar.
+   * @param {HTMLElement} subSidebar - The sidebar element to be toggled.
    */
   function toggleSidebar(subSidebar) {
     if (subSidebar.style.left === "0px") {
@@ -191,9 +210,9 @@
   }
 
   /**
-   * This function is used to hide all the appeared sidebars
-   * @param {object} subSidebar1 the subsidebar that already poll out
-   * @param {object} subSidebar2 the subsidebar that already poll out
+   * This function hides all the visible sidebars.
+   * @param {HTMLElement} subSidebar1 - The first sidebar to be hidden.
+   * @param {HTMLElement} subSidebar2 - The second sidebar to be hidden.
    */
   function hideExistSidebars(subSidebar1, subSidebar2) {
     [subSidebar1, subSidebar2].forEach(sidebar => {
@@ -205,8 +224,8 @@
   }
 
   /**
-   * when click the place other than sidebar, the sidebar would be closed
-   * @param {event} event - the action of click the page
+   * Closes the sidebar when clicking outside of it.
+   * @param {Event} event - The event triggered by clicking outside the sidebar.
    */
   function closeSidebar(event) {
     let sidebar = id('sidebar');
@@ -226,10 +245,10 @@
   }
 
   /**
-   * This function is used to close all the sidebars
-   * @param {object} subSidebar1 the sidebar that pull out
-   * @param {object} subSidebar2 the sidebar that pull out
-   * @param {object} subSidebar3 the sidebar that pull out
+   * This function hides all sidebars.
+   * @param {HTMLElement} subSidebar1 - The first sidebar to be hidden.
+   * @param {HTMLElement} subSidebar2 - The second sidebar to be hidden.
+   * @param {HTMLElement} subSidebar3 - The third sidebar to be hidden.
    */
   function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
     [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
@@ -238,7 +257,9 @@
     });
   }
 
-  /** This function is used get all the watches info form the backend */
+  /**
+   * Fetches all watch information from the backend and updates the UI.
+   */
   async function getAllWatches() {
     try {
       let response = await fetch(GET_WATCH_INFO_URL);
@@ -252,13 +273,15 @@
         id("left-side").appendChild(eachProduct);
       }
       changeSummary(result);
-
     } catch (err) {
       console.error(err);
     }
   }
 
-  /** This function is used to get all the watches in the shoppingcart */
+  /**
+   * Fetches current watches in the shopping cart from the backend and updates the UI.
+   * @return {Array} - The list of current watches.
+   */
   async function getCurrentWatches() {
     try {
       let response = await fetch(GET_WATCH_INFO_URL);
@@ -284,16 +307,15 @@
       }
       changeSummary(result);
       return result;
-
     } catch (err) {
       console.error(err);
     }
   }
 
   /**
-   * This function is used to put each watch info into the display board
-   * @param {object} product - the object of each watch
-   * @return {object} productContainer -the creted block consisit of all the nodes
+   * Updates the UI with the watch information.
+   * @param {Object} product - The watch product information.
+   * @return {HTMLElement} productContainer - The container element with the watch information.
    */
   function updateWebView(product) {
     let productContainer = gen('section');
@@ -310,10 +332,10 @@
   }
 
   /**
-   * this function is used to add the product description in the card
-   * @param {object} product all the info the products
-   * @param {object} productContainer the container that contain all the watch info
-   * @returns created card of the watch info
+   * Adds product description to the product container.
+   * @param {Object} product - The watch product information.
+   * @param {HTMLElement} productContainer - The container element for the product.
+   * @returns {HTMLElement} - The section element with the product description.
    */
   function addProductDescription(product, productContainer) {
     let productSection = gen('section');
@@ -346,9 +368,9 @@
   }
 
   /**
-   * This function is used to update the total price every time user change the idea
-   * @param {object} product all the info the products
-   * @param {object} productSection the created card
+   * Adds cost options to the product section.
+   * @param {Object} product - The watch product information.
+   * @param {HTMLElement} productSection - The section element for the product.
    */
   function addCostOptions(product, productSection) {
     let costSection = gen('section');
@@ -384,8 +406,8 @@
   }
 
   /**
-   * This function is used to change all the summury info
-   * @param {object} result - an Array that contain all the watches object
+   * Updates the order summary with the current watch selections.
+   * @param {Array} result - An array containing all the watch objects.
    */
   function changeSummary(result) {
     let subtotal = 0;
@@ -404,20 +426,19 @@
   }
 
   /**
-   * Helper function user to generate certain node
-   * @param {object} selector - the node user wants to create
-   * @return {object} return the created node
+   * Helper function to create a new HTML element.
+   * @param {string} selector - The type of element to create.
+   * @return {HTMLElement} - The created element.
    */
   function gen(selector) {
     return document.createElement(selector);
   }
 
   /**
-   * Helper function to return the response's result text if successful, otherwise
-   * returns the rejected Promise result with an error status and corresponding text
-   * @param {object} res - response to check for success/error
-   * @return {object} - valid response if response was successful, otherwise rejected
-   *                    Promise result
+   * Helper function to check the response status and return the result if successful.
+   * @param {Response} res - The response to check.
+   * @return {Promise<Response>} - The valid response if successful.
+   * @throws {Error} - If the response is not successful.
    */
   async function statusCheck(res) {
     if (!res.ok) {
@@ -427,27 +448,27 @@
   }
 
   /**
-   * This function is used to get that element by its ID
-   * @param {string} id - the ID that wants to get
-   * @return {Node} return the node that ID corespond to .
+   * Helper function to get an element by its ID.
+   * @param {string} id - The ID of the element.
+   * @return {HTMLElement} - The element with the specified ID.
    */
   function id(id) {
     return document.getElementById(id);
   }
 
   /**
-   * This function is used to get that element by its name
-   * @param {string} selector - the element wants to be find in the HTML page
-   * @return {Node} return the node that selector corespond to .
+   * Helper function to get the first element that matches the selector.
+   * @param {string} selector - The CSS selector.
+   * @return {HTMLElement} - The first element that matches the selector.
    */
   function qs(selector) {
     return document.querySelector(selector);
   }
 
   /**
-   * This function is used to get all the elements by its name
-   * @param {string} selector - the elements wants to be find in the HTML page
-   * @return {Node} return the all the node that selector corespond to .
+   * Helper function to get all elements that match the selector.
+   * @param {string} selector - The CSS selector.
+   * @return {NodeList} - A NodeList of elements that match the selector.
    */
   function qsa(selector) {
     return document.querySelectorAll(selector);
