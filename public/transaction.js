@@ -175,20 +175,20 @@
 
   /**
    * This function is used to create the status element
-   * @returns created status element
+   * @returns {element} created status element
    */
   function createStatusElement() {
-      let status = document.createElement('p');
-      status.classList.add('transaction-status');
-      status.textContent = 'COMPLETED';
-      return status;
+    let status = document.createElement('p');
+    status.classList.add('transaction-status');
+    status.textContent = 'COMPLETED';
+    return status;
   }
 
   /**
    * This function is used to create the detail element
    * @param {object} label the lable element
    * @param {object} value the value of the label
-   * @returns the detail element
+   * @returns {Element} the detail element
    */
   function createDetailElement(label, value) {
     let detail = document.createElement('p');
