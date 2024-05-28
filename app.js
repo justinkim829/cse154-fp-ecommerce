@@ -200,7 +200,9 @@ app.post('/REM/recommendation', async (req, res) => {
   try {
     const input = req.body.input;
     const result = await findRecommendations(input);
-    if (result[0]) {
+    if (result[2].length === 0) {
+      return res.status(404).send('No matching watches found');
+    } else if (result[0]) {
       res.status(200);
       res.send(result[0].Type);
     } else {
@@ -304,7 +306,10 @@ async function addIntoTransaction() {
   }
 }
 
-/** This function is used to generte the comfirmation code */
+/**
+ * This function is used to generte the comfirmation code
+ * @returns {String} Confirmation number of the purchase
+ */
 function generateConfirmationNumber() {
   return 'REM' + Math.floor(Math.random() * 1000000000);
 }
@@ -320,7 +325,11 @@ async function emptyShoppingcart() {
   }
 }
 
-/** This function is used to deduct the money in the card account */
+/**
+ * This function is used to deduct the money in the card account
+ * @param {String} remainDeposit - remaining deposit amount in dollars
+ * @param {String} cardNumber - card number used for purchase
+ */
 async function deductMoney(remainDeposit, cardNumber) {
   try {
     let db = await getDBConnection();
@@ -342,7 +351,7 @@ async function deductQuantity() {
       let WatchId = watch.WatchID;
       let Storage = watch.Storage;
       let Quantity = watch.Quantity;
-      let remain = Storage - Quantity
+      let remain = Storage - Quantity;
       let deductQuantitySql = "UPDATE watches SET Storage = ? WHERE ID = ?";
       await db.run(deductQuantitySql, [remain, WatchId]);
     }
@@ -387,7 +396,11 @@ async function getTotalPriceOfWatches() {
   return totalPrice;
 }
 
-/** This function is used to find the recommendation watch */
+/**
+ * This function is used to find the recommendation watch
+ * @param {String} input - user input to search a watch
+ * @return {Array} - array containing recommendation IDs for watches.
+ */
 async function findRecommendations(input) {
   try {
     const db = await getDBConnection();
@@ -396,9 +409,6 @@ async function findRecommendations(input) {
       `%${input}%`,
       `${input}%`
     );
-    if (watches.length === 0) {
-      return res.status(404).send('No matching watches found');
-    }
     let maxWatch = null;
     let maxCount = 0;
     for (const watch of watches) {
@@ -411,8 +421,8 @@ async function findRecommendations(input) {
         maxCount = countResult.count;
       }
     }
-    await db.close()
-    return [maxWatch, watches[0].Type];
+    await db.close();
+    return [maxWatch, watches[0].Type, watches];
   } catch (err) {
     throw new Error(err);
   }
