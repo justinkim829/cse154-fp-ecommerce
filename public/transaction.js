@@ -50,7 +50,7 @@
       id("log").setAttribute('href', "login.html");
       qs("#log").textContent = "Login";
     }
-    window.location.href="mainpage.html";
+    window.location.href = "mainpage.html";
   }
 
   /** This function is used to check if the user is login or not */
