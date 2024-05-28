@@ -45,8 +45,9 @@
       window.location.reload();
     });
   }
+
   /** This function is used to deal with if user is login or not*/
-  async function twoDifferentSituation(){
+  async function twoDifferentSituation() {
     let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
     let result = await response.text();
@@ -106,7 +107,7 @@
    * This function checks if there are items in the shopping cart
    * and updates the checkout button status.
    */
-  async function checkoutStatusChecking() {
+  function checkoutStatusChecking() {
     if (id("left-side").children.length === 1) {
       qs("button").disabled = true;
     } else {
