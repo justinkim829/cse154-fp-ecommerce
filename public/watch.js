@@ -458,8 +458,10 @@
    * Sends a POST request to the specified endpoint with the provided parameters.
    * @param {string} endPoint - The URL to which the request is sent.
    * @param {FormData} params - The parameters to be sent in the request body.
-   * @param {boolean} isReturnText - Indicates whether the response should be returned as text (true) or JSON (false).
-   * @return {Promise<string|Object>} - The response data as a string if isReturnText is true, or as an object if false.
+   * @param {boolean} isReturnText - Indicates whether the response should be
+   *                                 returned as text (true) or JSON (false).
+   * @return {Promise<string|Object>} - The response data as a string if isReturnText
+   *                                    is true, or as an object if false.
    * @throws Will log an error message to the console if the request fails.
    */
   async function postData(endPoint, params, isReturnText) {

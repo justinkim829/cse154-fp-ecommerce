@@ -373,12 +373,42 @@
    * @param {HTMLElement} productSection - The section element for the product.
    */
   function addCostOptions(product, productSection) {
+    let costSection = createCostSection();
+    productSection.appendChild(costSection);
+
+    addPriceToSection(product.Price, costSection);
+    addQuantitySelector(product.Quantity, costSection);
+    addColorSelector(costSection);
+    addRemoveOption(costSection);
+  }
+
+  /**
+   * Creates and returns the cost section element.
+   * @return {HTMLElement} - The created cost section element.
+   */
+  function createCostSection() {
     let costSection = gen('section');
     costSection.classList.add('cost');
-    productSection.appendChild(costSection);
-    let price = gen('p');
-    price.textContent = '$' + product.Price;
-    costSection.appendChild(price);
+    return costSection;
+  }
+
+  /**
+   * Adds the price information to the given section.
+   * @param {number} price - The price of the product.
+   * @param {HTMLElement} section - The section to which the price information is added.
+   */
+  function addPriceToSection(price, section) {
+    let priceElement = gen('p');
+    priceElement.textContent = '$' + price;
+    section.appendChild(priceElement);
+  }
+
+  /**
+   * Adds a quantity selector to the given section.
+   * @param {number} selectedQuantity - The currently selected quantity of the product.
+   * @param {HTMLElement} section - The section to which the quantity selector is added.
+   */
+  function addQuantitySelector(selectedQuantity, section) {
     let quantitySelector = gen('select');
     quantitySelector.classList.add("selectorquantity");
     for (let i = 1; i <= 3; i++) {
@@ -386,9 +416,18 @@
       option.value = i;
       option.textContent = 'QTY: ' + i;
       quantitySelector.appendChild(option);
-      if (i === product.Quantity) option.selected = true;
+      if (i === selectedQuantity) {
+        option.selected = true;
+      }
     }
-    costSection.appendChild(quantitySelector);
+    section.appendChild(quantitySelector);
+  }
+
+  /**
+   * Adds a color selector to the given section.
+   * @param {HTMLElement} section - The section to which the color selector is added.
+   */
+  function addColorSelector(section) {
     let colorSelector = gen('select');
     for (let color of ['blue', 'white', 'black']) {
       let option = gen('option');
@@ -396,13 +435,20 @@
       option.textContent = 'COLOR: ' + color.toUpperCase();
       colorSelector.appendChild(option);
     }
-    costSection.appendChild(colorSelector);
+    section.appendChild(colorSelector);
+  }
+
+  /**
+   * Adds a remove option to the given section.
+   * @param {HTMLElement} section - The section to which the remove option is added.
+   */
+  function addRemoveOption(section) {
     let removeSection = gen('section');
     removeSection.classList.add('remove');
     let remove = gen('p');
     remove.textContent = 'Remove';
     removeSection.appendChild(remove);
-    costSection.appendChild(removeSection);
+    section.appendChild(removeSection);
   }
 
   /**
