@@ -1,6 +1,6 @@
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener('load', init);
   const GET_WATCH_INFO_URL = "/REM/getwatchesinfo";
