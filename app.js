@@ -217,12 +217,10 @@ app.post('/REM/recommendation', async (req, res) => {
 
 /** This endpoint is used to buy the product from the shoppingcart */
 app.post("/REM/buyproduct", async (req, res) => {
+  res.type("text");
   try {
-    let db = await getDBConnection();
     let {cardHolderName, cardNumber} = req.body;
-    let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
-    let cardExist = await db.get(searchCardSql, [cardNumber, cardHolderName]);
-    res.type("text");
+    let cardExist = await findCard(cardNumber, cardHolderName);
     if (await ifEnoughStorage()) {
       if (cardExist) {
         if (cardExist.UserName === cardHolderName) {
@@ -244,8 +242,7 @@ app.post("/REM/buyproduct", async (req, res) => {
       res.send("Not enough watches to supply");
     }
   } catch (err) {
-    res.type("text").status(500);
-    res.send("Failed to Proceed");
+    res.status(500).send("Failed to Proceed");
   }
 });
 
@@ -270,6 +267,22 @@ app.get("/REM/logout", (req, res) => {
   res.type("text");
   res.send("Logout Successfully");
 });
+
+/**
+ * Finds a card in the database based on the card number and card holder name.
+ * @param {string} cardNumber - The card number to search for.
+ * @param {string} cardHolderName - The name of the card holder.
+ * @returns {Promise<Object|null>} - The card object if found, otherwise null.
+ */
+async function findCard(cardNumber, cardHolderName) {
+  try {
+    let db = await getDBConnection();
+    let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
+    return await db.get(searchCardSql, [cardNumber, cardHolderName]);
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 /**
  * This function is used to process all the info when purchase successfully
