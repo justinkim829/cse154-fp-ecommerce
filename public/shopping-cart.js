@@ -15,7 +15,7 @@
 
     checkoutStatusChecking();
     id("checkout").addEventListener("click", () => {
-      window.location.href = "payment.html";
+      twoDifferentSituation();
     });
 
     for (let remove of qsa(".remove p")) {
@@ -35,6 +35,17 @@
       logOut();
       window.location.reload();
     });
+  }
+
+  async function twoDifferentSituation(){
+    let response = await fetch("/REM/checkiflogin");
+    await statusCheck(response);
+    let result = await response.text();
+    if (result === "havn't Login") {
+      window.location.href = "login.html";
+    } else {
+      window.location.href = "payment.html";
+    }
   }
 
   /**
@@ -86,7 +97,7 @@
    * This function checks if there are items in the shopping cart
    * and updates the checkout button status.
    */
-  function checkoutStatusChecking() {
+  async function checkoutStatusChecking() {
     if (id("left-side").children.length === 1) {
       qs("button").disabled = true;
     } else {
