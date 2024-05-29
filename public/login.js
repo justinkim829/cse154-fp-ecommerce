@@ -9,7 +9,7 @@
 
 "use strict";
 
-(function() {
+(function () {
   const LOGIN_URL = "/REM/login";
   let timeoutId = 0;
 
@@ -19,23 +19,24 @@
   async function init() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
+    id("menu").addEventListener('click', function (evt) {
       openSidebar(evt);
     });
 
-    id("close").addEventListener('click', function() {
+    id("close").addEventListener('click', function () {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
+      id(idText).addEventListener("click", function () {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
     }
     id("input").addEventListener("submit", (event) => {
       login(event);
+      storeEmail(event);
     });
     sendSidebarToWatch();
     await checkIsLogin();
@@ -43,6 +44,21 @@
       logOut();
       window.location.reload();
     });
+    autoFillLogin();
+
+  }
+
+  function autoFillLogin() {
+    let savedEmail = sessionStorage.getItem('userEmail');
+    if (savedEmail) {
+      id('email').value = savedEmail;
+    }
+  }
+
+  function storeEmail(event) {
+    event.preventDefault();
+    let email = id("email").value
+    sessionStorage.setItem('userEmail', email);
   }
 
   /** This function is used to log out from the account */

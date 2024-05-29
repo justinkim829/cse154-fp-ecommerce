@@ -20,13 +20,25 @@ const cors = require('cors');
 
 app.use(cors());
 
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.json());
 
 app.use(multer().none());
 
 let currentUserID = 0;
+
+/** This end point is used to get the current user name */
+app.get("/REM/getusername", async (req, res) => {
+  let db = await getDBConnection();
+  let getUserSql = "SELECT name FROM USER WHERE ID = ?;"
+  try {
+    let name = db.get(getUserSql, [currentUserID]);
+    res.type("text").send(name);
+  } catch {
+    res.status(500).send("An error occurred");
+  }
+});
 
 /** This end point is used to check if the user is currently log in or not */
 app.get("/REM/checkiflogin", (req, res) => {
@@ -76,7 +88,7 @@ app.post("/REM/login", async (req, res) => {
 /**
  * This function is used to get certian watch that user wants to
  */
-app.get("/watchdetails/:ID", async function(req, res) {
+app.get("/watchdetails/:ID", async function (req, res) {
   try {
     let watchID = req.params.ID;
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
@@ -132,7 +144,7 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
     let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
     res.type("json").send(arrayOfWatches);
   } catch (err) {
-    res.type("json").send({"errMessage": err});
+    res.type("json").send({ "errMessage": err });
   }
 });
 
@@ -228,7 +240,7 @@ app.post('/REM/recommendation', async (req, res) => {
 app.post("/REM/buyproduct", async (req, res) => {
   res.type("text");
   try {
-    let {cardHolderName, cardNumber} = req.body;
+    let { cardHolderName, cardNumber } = req.body;
     let cardExist = await findCard(cardNumber, cardHolderName);
     if (await ifEnoughStorage()) {
       if (cardExist) {

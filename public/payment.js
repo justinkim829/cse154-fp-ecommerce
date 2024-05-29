@@ -264,9 +264,9 @@
     let nameP = gen('p');
     nameP.textContent = product.Name;
     innerSection.appendChild(nameP);
-    let priceP = gen('p');
-    priceP.textContent = product.Price;
-    innerSection.appendChild(priceP);
+    let QuantityOfWatch = gen('p');
+    QuantityOfWatch.textContent = " x "+product.Quantity;
+    innerSection.appendChild(QuantityOfWatch);
     itemSection.appendChild(innerSection);
     document.body.appendChild(itemSection);
     return itemSection;
