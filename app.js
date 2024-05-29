@@ -188,11 +188,17 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
     let userID = req.body.userID;
     let watchID = await db.get("SELECT ID FROM watches WHERE Type = ?", productID);
     watchID = watchID.ID;
-    let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +
+    let selectExisting = "SELECT * FROM Shoppingcart WHERE WatchID = ? AND UserID = ?";
+    let doesWatchExist = await db.all(selectExisting, watchID, userID);
+    if (doesWatchExist.length) {
+      let update = "UPDATE Shoppingcart SET Quantity = Quantity + 1 WHERE WatchID = ? AND UserID = ?";
+      await db.run(update, watchID, userID);
+    } else {
+      let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +
       "VALUES (?, ?, ?)";
-    await db.run(selection, userID, watchID, 1);
-    res.status(200);
-    res.send("Successfully added to shopping cart");
+      await db.run(selection, userID, watchID, 1);
+    }
+    res.status(200).send("Successfully added to shopping cart");
   } catch (err) {
     res.type("text").status(500);
     res.send("Internal Server Error. Failed to add watch to shopping cart");
