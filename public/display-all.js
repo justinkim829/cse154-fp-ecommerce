@@ -2,25 +2,23 @@
  * Name: Jincheng Wang,Jinseok Kim
  * Date: May 28, 2024
  * Class: CSE 154
- * This is the JS to implement for the mianpage website, which is used to fullfill
- * to search the watches they want in the search bar, also view some recommendation
- * watches below.
+ * This is the JS to implement for the display-all website, which is used to get all
+ * the watches info from the database and display on the page
  */
 
 "use strict";
 
-(function() {
+(function () {
 
   window.addEventListener("load", init);
 
   /** This function is used to initialize all the functions */
   async function init() {
     sidebarStart();
-    setDefaultInput();
     sendSidebarToWatch();
     sendRecommendationsToWatch();
 
-    window.onscroll = function() {
+    window.onscroll = function () {
       let header = qs("header");
       if (window.scrollY > 0) {
         header.classList.add("lock-header");
@@ -33,10 +31,116 @@
       logOut();
       window.location.reload();
     });
-    id("all").addEventListener("click",() => {
-      window.location.href = "display-all.html";
+    id("layout").addEventListener("click", () => {
+      toggleLayout();
+    });
+    await fetchWatches()
+    for (let box of qsa(".box")) {
+      box.addEventListener("click", (event) => {
+        changeToWatchPage(event);
+      });
+    }
+  }
+
+  function toggleLayout() {
+    let displayAll = id("displayall");
+    let mechanical = id("mechanicalwatch");
+    let digital = id("digitalwatch");
+    let pocket = id("pocketwatch");
+    mechanical.classList.toggle("changewatchlength");
+    digital.classList.toggle("changewatchlength");
+    pocket.classList.toggle("changewatchlength");
+    for (let row of qsa(".watch-row")) {
+      row.classList.toggle("changetorow");
+    }
+    for (let box of qsa(".box")) {
+      box.classList.toggle("changebox");
+    }
+    displayAll.classList.toggle("grid-view");
+    displayAll.classList.toggle("list-view");
+  }
+
+  function changeToWatchPage(event) {
+    let box = event.currentTarget;
+    sendToWatch(box.id);
+  }
+
+  async function fetchWatches() {
+    try {
+      let response = await fetch("/REM/getallwatches");
+      await statusCheck(response);
+      let result = await response.json();
+      displayWatches(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  function displayWatches(watches) {
+    let mechanicalWatches = watches.filter(watch => watch.category === 'mechanical');
+    let digitalWatches = watches.filter(watch => watch.category === 'digital');
+    let pocketWatches = watches.filter(watch => watch.category === 'pocket');
+
+    addWatchSection('mechanical', 'MECHANICAL WATCH', 'mechanical-watch-row');
+    addWatchSection('digital', 'DIGITAL WATCH', 'digital-watch-row');
+    addWatchSection('pocket', 'POCKET WATCH', 'pocket-watch-row');
+
+    addWatchesToRow(mechanicalWatches, 'mechanical-watch-row');
+    addWatchesToRow(digitalWatches, 'digital-watch-row');
+    addWatchesToRow(pocketWatches, 'pocket-watch-row');
+  }
+
+
+  function addWatchSection(id, title, rowId) {
+    let section = document.createElement('section');
+    section.id = `${id}watch`;
+
+    let h3 = document.createElement('h3');
+    h3.textContent = title;
+    section.appendChild(h3);
+
+    let row = document.createElement('div');
+    row.className = 'watch-row';
+    row.id = rowId;
+    section.appendChild(row);
+
+    document.getElementById('displayall').appendChild(section);
+  }
+
+  function addWatchesToRow(watches, rowId) {
+    let row = document.getElementById(rowId);
+    watches.forEach(watch => {
+      let box = gen('section');
+      box.className = 'box';
+      box.id = watch.Type;
+      let img = gen('img');
+      img.src = watch.Img1;
+      img.alt = watch.Name;
+      let h3 = gen('h3');
+      h3.textContent = watch.Name;
+      let details = gen('div');
+      details.className = 'details';
+      let price = gen('p');
+      price.textContent = `Price: $ ${watch.Price}`;
+      let category = gen('p');
+      category.textContent = `Storage: ${watch.Storage}`;
+      details.appendChild(price);
+      details.appendChild(category);
+      details.classList.toggle("hidden");
+
+      box.appendChild(img);
+      box.appendChild(h3);
+      row.appendChild(box);
+      box.appendChild(details);
     });
   }
+
+  /** This function is used to change the mainpage into each watch page */
+  function sendToWatch(productID) {
+    sessionStorage.setItem('productID', productID);
+    window.location.href = "watch.html";
+  }
+
 
   /** This function is used to log out form the account */
   async function logOut() {
@@ -111,44 +215,22 @@
     document.addEventListener('click', closeSidebar);
   }
 
-  /**
-   * This function is used to make sure when there is nothing input into the search bar,
-   * When we hit return on the search bar, we would go to certian watch page
-   */
-  function setDefaultInput() {
-    let input = qs("#search-part input");
-    input.addEventListener('keypress', async (evt) => {
-      if (evt.key === "Enter") {
-        let inputValue = input.value.trim().toLowerCase();
-        let params = new FormData();
-        params.append("input", inputValue);
-        try {
-          let recommendedID = await postData('/REM/recommendation', params, true);
-          sessionStorage.setItem('productID', recommendedID);
-          window.location.href = "watch.html";
-        } catch (err) {
-          id("textarea").value = "";
-          id("textarea").placeholder = "No Matches Found. Try Again.";
-        }
-      }
-    });
-  }
 
   /** This function is used to control all the small sidebars and open it when clicked */
   function sidebarStart() {
     const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
     id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
+    id("menu").addEventListener('click', function (evt) {
       openSidebar(evt);
     });
 
-    qs(".close").addEventListener('click', function() {
+    qs(".close").addEventListener('click', function () {
       closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
     });
 
     for (let i = 0; i < SIDEBARS.length; i++) {
       let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
+      id(idText).addEventListener("click", function () {
         hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
         toggleSidebar(SIDEBARS[i]);
       });
@@ -195,38 +277,13 @@
     let overlay = id("overlay");
 
     if (!sidebar.contains(event.target) && !type1Sidebar.contains(event.target) &&
-    !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
+      !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
       sidebar.style.left = "-300px";
       hideAllSidebars(type1Sidebar, type2Sidebar, type3Sidebar);
       overlay.style.display = "none";
       overlay.style.pointerEvents = 'none';
 
       document.removeEventListener('click', closeSidebar);
-    }
-  }
-
-  /**
-   * Fetches data from post endpoints.
-   * @param {String} endPoint - the endpoint of the post
-   * @param {FormData} params - the body of the post request
-   * @param {String} isReturnText - the return text
-   * @returns {String|JSON} data - the processed data
-   */
-  async function postData(endPoint, params, isReturnText) {
-    try {
-      let data = await fetch(endPoint, {
-        method: 'POST',
-        body: params
-      });
-      await statusCheck(data);
-      if (isReturnText) {
-        data = await data.text();
-      } else {
-        data = await data.json();
-      }
-      return data;
-    } catch (err) {
-      console.error(err);
     }
   }
 
@@ -252,6 +309,15 @@
       sidebar.style.left = "-300px";
       sidebar.style.display = "none";
     });
+  }
+
+  /**
+   * Helper function to create a new HTML element.
+   * @param {string} selector - The type of element to create.
+   * @return {HTMLElement} - The created element.
+   */
+  function gen(selector) {
+    return document.createElement(selector);
   }
 
   /**

@@ -15,6 +15,8 @@ const sqlite3 = require('sqlite3');
 
 const sqlite = require('sqlite');
 
+const nodemailer = require('nodemailer');
+
 const multer = require("multer");
 const cors = require('cors');
 
@@ -26,7 +28,28 @@ app.use(express.json());
 
 app.use(multer().none());
 
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
+  auth: {
+    user: 'rem375254@gmail.com',
+    pass: 'tdmg sdjz okgq ggov'
+  }
+});
+
 let currentUserID = 0;
+
+app.get("/REM/getallwatches", async (req, res) => {
+  let db = await getDBConnection();
+  let getWatchesSql = "SELECT * FROM watches;"
+  try{
+    let watchArray = await db.all(getWatchesSql);
+    res.type("json").send(watchArray);
+  }catch {
+    res.status(500).send("An error occurred");
+  }
+});
 
 /** This end point is used to get the current user name */
 app.get("/REM/getusername", async (req, res) => {
@@ -126,11 +149,31 @@ app.post("/REM/createAccount", async (req, res) => {
         'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
       await db.run(sql, [email, password, gender, firstName, lastName, day, month, year]);
       res.type("text").send("Create Account Successful");
+      sendMailProcess(email, firstName);
     }
   } catch (err) {
     res.type("text").send("Failed To Create Account");
   }
 });
+
+function sendMailProcess(email, firstName) {
+  try {
+    transporter.sendMail({
+      from: '"Re:M" <rem375254@gmail.com>',
+      to: email,
+      subject: "Create Re:m Account Successfully",
+      html:`
+           <p>Dear ${firstName}:</p>
+           <p>You have created the account successfully,</p>
+           <p>You can use this account to explore more items and enjoy our services.</p>
+           <p>Best regards,</p>
+           <p>Re:M</p>
+           `
+    });
+  }catch(err){
+    console.error(err);
+  }
+}
 
 /**
  * This function is used to get all the watches from the database that
@@ -195,7 +238,7 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
       await db.run(update, watchID, userID);
     } else {
       let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +
-      "VALUES (?, ?, ?)";
+        "VALUES (?, ?, ?)";
       await db.run(selection, userID, watchID, 1);
     }
     res.status(200).send("Successfully added to shopping cart");
