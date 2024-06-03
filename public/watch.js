@@ -65,7 +65,6 @@
   function receiveSidebarToWatch() {
     const bc = new BroadcastChannel('bc');
     bc.addEventListener("message", (evt) => {
-      localStorage.setItem('productID', evt.data);
       reloadPage(evt.data);
     });
   }
@@ -134,7 +133,6 @@
       id("add-message").appendChild(message);
     }
   }
-
 
   /**
    * Display the sidebar to shwo details

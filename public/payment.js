@@ -43,7 +43,7 @@
       });
       response = await statusCheck(response);
       let result = await response.text();
-      if (result === "Proceed Successfully") {
+      if (result.substring(0,17) === "Confirmation code") {
         let displayMessage = gen("p");
         displayMessage.textContent = "Purchased Successfully";
         id("displaymessage").appendChild(displayMessage);

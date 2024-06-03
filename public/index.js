@@ -15,7 +15,7 @@
 
   /** This function is used to initialize all the functions */
   function init() {
-    setDefaultInput();
+    filterSearchBar();
     sendRecommendationsToWatch();
     changeHeaderWhenScrolled();
   }
@@ -46,6 +46,7 @@
     for (let i = 0; i < recommended.length; i++) {
       recommended[i].addEventListener('click', () => {
         let productID = productIDs[i];
+        localStorage.setItem('productID', productID);
         bc.postMessage(productID);
         window.location.href = "watch.html";
       });
@@ -56,7 +57,8 @@
    * This function is used to make sure when there is nothing input into the search bar,
    * When we hit return on the search bar, we would go to certian watch page
    */
-  function setDefaultInput() {
+  function filterSearchBar() {
+    const bc = new BroadcastChannel('bc');
     let input = qs("#search-part input");
     input.addEventListener('keypress', async (evt) => {
       if (evt.key === "Enter") {
@@ -65,7 +67,9 @@
         params.append("input", inputValue);
         try {
           let recommendedID = await postData('/REM/recommendation', params, true);
-          sessionStorage.setItem('productID', recommendedID);
+          console.log(recommendedID);
+          localStorage.setItem('productID', recommendedID);
+          bc.postMessage(recommendedID);
           window.location.href = "watch.html";
         } catch (err) {
           id("textarea").value = "";
@@ -96,7 +100,7 @@
       }
       return data;
     } catch (err) {
-      console.error(err);
+      throw new Error(await data.text());
     }
   }
 

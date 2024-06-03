@@ -21,7 +21,7 @@ const nodemailer = require('nodemailer');
 
 app.use(cors());
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 app.use(express.json());
 
@@ -45,6 +45,7 @@ app.get("/REM/getallwatches", async (req, res) => {
   let getWatchesSql = "SELECT * FROM watches;"
   try{
     let watchArray = await db.all(getWatchesSql);
+    db.close();
     res.type("json").send(watchArray);
   }catch {
     res.status(500).send("An error occurred");
@@ -57,6 +58,7 @@ app.get("/REM/getusername", async (req, res) => {
   let getUserSql = "SELECT name FROM USER WHERE ID = ?;"
   try {
     let name = db.get(getUserSql, [currentUserID]);
+    db.close();
     res.type("text").send(name);
   } catch {
     res.status(500).send("An error occurred");
@@ -89,6 +91,7 @@ app.post("/REM/login", async (req, res) => {
 
   try {
     let user = await db.get("SELECT * FROM User WHERE Email = ?", [email]);
+    await db.close();
     if (user) {
       if (currentUserID === 0) {
         currentUserID = user.ID;
@@ -117,9 +120,9 @@ app.get("/watchdetails/:ID", async function (req, res) {
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
     let db = await getDBConnection();
     let result = await db.get(qry);
+    await db.close();
     res.status(200).json(result);
   } catch (err) {
-    throw new Error(err);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -149,6 +152,7 @@ app.post("/REM/createAccount", async (req, res) => {
         'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
       await db.run(sql, [email, password, gender, firstName, lastName, day, month, year]);
       sendMailProcess(email, firstName);
+      await db.close();
       res.type("text").send("Create Account Successful");
     }
   } catch (err) {
@@ -166,6 +170,7 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
     let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = ' +
       'Shoppingcart.WatchID JOIN User ON User.ID = Shoppingcart.UserID WHERE User.ID=?';
     let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
+    await db.close();
     res.type("json").send(arrayOfWatches);
   } catch (err) {
     res.type("json").send({ "errMessage": err });
@@ -179,6 +184,7 @@ app.post("/REM/removeitem", async (req, res) => {
     let watchID = req.body.id;
     let removeSql = "DELETE FROM Shoppingcart WHERE watchID = ? AND UserID = ?;";
     await db.run(removeSql, [watchID, currentUserID]);
+    await db.close();
     res.type("text");
     res.send("Remove the Item successfully");
   } catch (err) {
@@ -197,6 +203,7 @@ app.post("/REM/changequantity", async (req, res) => {
     await db.run(removeSql, [number, watchID, currentUserID]);
     res.type("text");
     res.send("change the quantity successfully");
+    await db.close();
   } catch (err) {
     res.type("text").status(500);
     res.send("Failed to change the quantity");
@@ -222,6 +229,7 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
       "VALUES (?, ?, ?)";
       await db.run(selection, userID, watchID, 1);
     }
+    await db.close();
     res.status(200).send("Successfully added to shopping cart");
   } catch (err) {
     res.type("text").status(500);
@@ -238,6 +246,7 @@ app.post("/REM/removefromshoppingcart", async (req, res) => {
     let userID = req.body.userID;
     userID = userID ? userID : "0";
     await db.run("DELETE FROM Shoppingcart WHERE userID = ? AND WatchID = ?", userID, productID);
+    await db.close();
     res.status(200);
     res.send("Successfully deleted from shopping cart");
   } catch (err) {
@@ -250,15 +259,12 @@ app.post("/REM/removefromshoppingcart", async (req, res) => {
 app.post('/REM/recommendation', async (req, res) => {
   try {
     const input = req.body.input;
-    const result = await findRecommendations(input);
-    if (result[2].length === 0) {
+    const maxWatch = await findRecommendations(input);
+    if (maxWatch === null) {
       return res.status(404).send('No matching watches found');
-    } else if (result[0]) {
-      res.status(200);
-      res.send(result[0].Type);
     } else {
       res.status(200);
-      res.send(result[1]);
+      res.send(maxWatch.Type);
     }
   } catch (err) {
     res.status(500);
@@ -278,8 +284,8 @@ app.post("/REM/buyproduct", async (req, res) => {
           let currentDeposit = cardExist.Deposit;
           let totalPrice = await getTotalPriceOfWatches();
           if (currentDeposit >= totalPrice) {
-            await processAfterSuccess(currentDeposit - totalPrice, cardNumber);
-            res.send("Proceed Successfully");
+            let comformNum = await processAfterSuccess(currentDeposit - totalPrice, cardNumber);
+            res.send("Confirmation code: " + comformNum);
           } else {
             res.send("Do not have enough money");
           }
@@ -304,6 +310,7 @@ app.get("/REM/gettransaction", async (req, res) => {
     let getTransactionSql = 'SELECT * FROM transactions JOIN WATCHES ON WATCHES.ID = ' +
       "transactions.WatchID WHERE transactions.UserID = ?";
     let arrayOfTranInfo = await db.all(getTransactionSql, currentUserID);
+    await db.close();
     res.type("json");
     res.send(arrayOfTranInfo);
   } catch (err) {
@@ -330,7 +337,7 @@ async function findCard(cardNumber) {
     let db = await getDBConnection();
     let searchCardSql = "Select * From card Where CardNumber = ?";
     let result = await db.get(searchCardSql, cardNumber);
-    console.log(result);
+    await db.close();
     return result;
   } catch (err) {
     throw new Error(err);
@@ -345,12 +352,14 @@ async function findCard(cardNumber) {
 async function processAfterSuccess(remainDeposit, cardNumber) {
   await deductMoney(remainDeposit, cardNumber);
   await deductQuantity();
-  await addIntoTransaction();
+  let confirmationNumber = await addIntoTransaction();
   await emptyShoppingcart();
+  return confirmationNumber;
 }
 
 /** This endpoint is used to put the purchase info into the transaction database */
 async function addIntoTransaction() {
+  let confirmation = generateConfirmationNumber();
   try {
     let db = await getDBConnection();
     let getwatchesSql = 'SELECT * FROM WATCHES JOIN Shoppingcart ON WATCHES.ID = ' +
@@ -358,18 +367,18 @@ async function addIntoTransaction() {
     let arrayOfWatches = await db.all(getwatchesSql, [currentUserID]);
     for (let watch of arrayOfWatches) {
       let WatchId = watch.WatchID;
-      let comfirmationNumber = generateConfirmationNumber();
+      let confirmationNumber = confirmation;
       let Userid = watch.UserID;
       let Quantity = watch.Quantity;
       let Img = watch.Img1;
-
       let addIntoTransactionSql = "INSERT INTO transactions " +
         "(confirmationNumber , UserID , WatchID , Quantity, Img) VALUES(?,?,?,?,?);";
-      await db.run(addIntoTransactionSql, [comfirmationNumber, Userid, WatchId, Quantity, Img]);
+      await db.run(addIntoTransactionSql, [confirmationNumber, Userid, WatchId, Quantity, Img]);
     }
   } catch (err) {
     throw new Error(err);
   }
+  return confirmation;
 }
 
 /**
@@ -386,6 +395,7 @@ async function emptyShoppingcart() {
   try {
     let emptyShoppingcartSql = "DELETE FROM Shoppingcart WHERE UserID = ? ";
     await db.run(emptyShoppingcartSql, [currentUserID]);
+    await db.close();
   } catch (err) {
     throw new Error(err);
   }
@@ -401,6 +411,7 @@ async function deductMoney(remainDeposit, cardNumber) {
     let db = await getDBConnection();
     let deductMoneySql = "UPDATE card SET Deposit = ? WHERE CardNumber = ?";
     await db.run(deductMoneySql, [remainDeposit, cardNumber]);
+    await db.close();
   } catch (err) {
     throw new Error(err);
   }
@@ -421,6 +432,7 @@ async function deductQuantity() {
       let deductQuantitySql = "UPDATE watches SET Storage = ? WHERE ID = ?";
       await db.run(deductQuantitySql, [remain, WatchId]);
     }
+    await db.close();
   } catch (err) {
     throw new Error(err);
   }
@@ -439,6 +451,7 @@ async function ifEnoughStorage() {
         flag = false;
       }
     }
+    await db.close();
   } catch (err) {
     throw new Error(err);
   }
@@ -456,6 +469,7 @@ async function getTotalPriceOfWatches() {
     for (let watch of arrayOfWatches) {
       totalPrice = totalPrice + watch.Price;
     }
+    await db.close();
   } catch (err) {
     throw new Error(err);
   }
@@ -476,7 +490,7 @@ async function findRecommendations(input) {
       `${input}%`
     );
     let maxWatch = null;
-    let maxCount = 0;
+    let maxCount = -1;
     for (const watch of watches) {
       const countResult = await db.get(
         `SELECT COUNT(*) as count FROM shoppingcart WHERE WatchID = ?`,
@@ -488,7 +502,7 @@ async function findRecommendations(input) {
       }
     }
     await db.close();
-    return [maxWatch, watches[0].Type, watches];
+    return maxWatch;
   } catch (err) {
     throw new Error(err);
   }

@@ -19,6 +19,11 @@
       toggleLayout();
     });
     await fetchWatches()
+    for (let box of qsa(".box")) {
+      box.addEventListener("click", (event) => {
+        changeToWatchPage(event);
+      });
+    }
   }
 
   /**
@@ -78,6 +83,23 @@
     addWatchesToRow(mechanicalWatches, 'mechanical-watch-row');
     addWatchesToRow(digitalWatches, 'digital-watch-row');
     addWatchesToRow(pocketWatches, 'pocket-watch-row');
+  }
+
+  /**
+   * This function is used to jump into the certain watch page
+   * @param {event} event the event of clicking certain watch
+   */
+  function changeToWatchPage(event) {
+    let box = event.currentTarget;
+    sendToWatch(box.id);
+  }
+
+  /** This function is used to change the mainpage into each watch page */
+  function sendToWatch(productID) {
+    const bc = new BroadcastChannel('bc');
+    localStorage.setItem('productID', productID);
+    bc.postMessage(productID);
+    window.location.href = "watch.html";
   }
 
   /**

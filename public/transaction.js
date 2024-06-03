@@ -49,14 +49,19 @@
     }
     window.location.href = "index.html";
   }
+
   /** This function is used to get all the shopping history */
   async function getShoppingHistory() {
     try {
       let response = await fetch("/REM/gettransaction");
       response = await statusCheck(response);
       let result = await response.json();
-      for (let i = 0; i < result.length; i++) {
-        createCard(result[i]);
+      if (result.length !== 0) {
+        for (let i = 0; i < result.length; i++) {
+          createCard(result[i]);
+        }
+      } else {
+        showEmptyMessage();
       }
     } catch (err) {
       console.error(err);
@@ -140,6 +145,14 @@
     appendTransactionDetails(transactionDetails, [orderId, name, type, total]);
     transactionRecord.appendChild(transactionDetails);
     transactionList.appendChild(transactionRecord);
+  }
+
+  /** Show the message when there is no transaction history */
+  function showEmptyMessage() {
+    let message = gen("p");
+    message.classList.add("messagedisplay");
+    message.textContent = "There are nothing in the Transactions"
+    id("watch-list").appendChild(message);
   }
 
   /**
