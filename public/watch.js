@@ -20,15 +20,20 @@
   ]);
 
   /** this function is used to initilizale the button with its functions. */
-  async function init() {
-    sidebarStart();
+  function init() {
     qs("#product-details p").addEventListener("click", displayDetailSidebar);
     qs("#sidebarfordetail .close").addEventListener("click", closeTheDetailSidebar);
-    checkClickedWatch();
-
     id("add-to-cart").addEventListener('click', addToWishlist);
     arrowsToNextImage();
+    changeHeaderWhenScrolled();
+    receiveSidebarToWatch();
+    reloadPage(localStorage.getItem("productID"));
+  }
 
+  /**
+   * change the header background and text color when scrolled down.
+   */
+  function changeHeaderWhenScrolled() {
     window.onscroll = function() {
       let header = qs("header");
       if (window.scrollY > 0) {
@@ -37,26 +42,6 @@
         header.classList.remove("lock-header");
       }
     };
-    receiveSidebarToWatch();
-    await checkIsLogin();
-    qs("#log").addEventListener("click", () => {
-      logOut();
-      window.location.reload();
-    });
-    reloadPage(localStorage.getItem("productID"));
-  }
-
-  /**
-   * Log out the user.
-   */
-  async function logOut() {
-    let response = await fetch("/REM/logout");
-    await statusCheck(response);
-    let result = await response.text();
-    if (result === "Logout Successfully") {
-      id("log").setAttribute('href', "login.html");
-      qs("#log").textContent = "Login";
-    }
   }
 
   /** This function is used change into the next image */
@@ -73,57 +58,16 @@
   }
 
   /**
-   * This function checks and stores the type of the watch
-   * that was clicked from the sidebar from a page excluding the watch page.
+   * When the watch of a the sidebar is clicked,
+   * reload the page to match the images and description of that clicked watch.
+   * Store the watch ID.
    */
   function receiveSidebarToWatch() {
-    const checkProductID = setInterval(() => {
-      let productID = sessionStorage.getItem('productID');
-      if (productID) {
-        localStorage.setItem('productID', productID);
-        sessionStorage.removeItem('productID');
-        reloadPage(productID);
-        clearInterval(checkProductID);
-      }
-    }, 50);
-  }
-
-  /** This function is used to open the sidebar */
-  function sidebarStart() {
-    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
-    id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
-      openSidebar(evt);
+    const bc = new BroadcastChannel('bc');
+    bc.addEventListener("message", (evt) => {
+      localStorage.setItem('productID', evt.data);
+      reloadPage(evt.data);
     });
-
-    qs(".close").addEventListener('click', function() {
-      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
-    });
-
-    for (let i = 0; i < SIDEBARS.length; i++) {
-      let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
-        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
-        toggleSidebar(SIDEBARS[i]);
-      });
-    }
-  }
-
-  /**
-   * Checks if the user is logged in.
-   */
-  async function checkIsLogin() {
-    let response = await fetch("/REM/checkiflogin");
-    await statusCheck(response);
-    let result = await response.text();
-    if (result === "havn't Login") {
-      id("trans").removeAttribute('href');
-    } else {
-      id("trans").setAttribute('href', "transaction.html");
-      id("trans").classList.remove("hidden");
-      qs("#log").textContent = "LogOut";
-      id("log").removeAttribute('href');
-    }
   }
 
   /**
@@ -226,7 +170,6 @@
       sidebarfordetail.style.right = "-400px";
       overlay.style.display = "none";
       overlay.style.pointerEvents = 'none';
-      document.removeEventListener('click', closeSidebar);
     }
   }
 
@@ -242,21 +185,6 @@
     }
     allHRs[0].classList.add("to-white-border");
     allHRs[0].classList.remove("to-blacke-border");
-  }
-
-  /**
-   * check if a watch type is clicked in the sidebar.
-   * reload the page if so.
-   */
-  function checkClickedWatch() {
-    let options = qsa(".double-sidebar ul li");
-    for (let i = 0; i < options.length; i++) {
-      options[i].addEventListener('click', () => {
-        let productID = options[i].querySelector("p").textContent;
-        localStorage.setItem("productID", productID);
-        reloadPage(productID);
-      });
-    }
   }
 
   /**
@@ -280,7 +208,6 @@
   async function changeWatchImages(productID) {
     try {
       let data = await getData(`/watchdetails/${productID}`, false);
-
       let imagePath = data.Img1;
       let currentImage = qs("#img-container img");
       currentImage.src = imagePath;
@@ -356,92 +283,7 @@
     resetAllSidebar();
     changeWatchImages(productID);
     resetHRs();
-  }
-
-  /**
-   * open the sidebar
-   * @param {event} evt event that triggered
-   */
-  function openSidebar(evt) {
-    let type1Sidebar = id('type1sidebar');
-    let type2Sidebar = id('type2sidebar');
-    let type3Sidebar = id('type3sidebar');
-
-    id("sidebar").style.left = '0px';
-    id("overlay").style.display = "block";
-    id("overlay").style.pointerEvents = 'auto';
-    [type1Sidebar, type2Sidebar, type3Sidebar].forEach(sidebar => {
-      sidebar.style.left = '0px';
-    });
-    evt.stopPropagation();
-    document.addEventListener('click', closeSidebar);
-  }
-
-  /**
-   * This function is used to open and close the sidebar
-   * @param {object} subSidebar - the sidebar to open/close
-   */
-  function toggleSidebar(subSidebar) {
-    if (subSidebar.style.left === "0px") {
-      subSidebar.style.left = "300px";
-      subSidebar.style.display = "block";
-    } else {
-      subSidebar.style.left = "0px";
-      subSidebar.style.display = "none";
-    }
-  }
-
-  /**
-   * This function is used to close all the sidebars
-   * @param {object} subSidebar1 - First sidebar that should be hidden
-   * @param {object} subSidebar2 - Second sidebar that should be hidden
-   * @param {object} subSidebar3 - Third sidebar that should be hidden
-   */
-  function hideExistSidebars(subSidebar1, subSidebar2) {
-    [subSidebar1, subSidebar2].forEach(sidebar => {
-      if (sidebar.style.left === "300px") {
-        sidebar.style.left = "0px";
-        sidebar.style.display = "none";
-      }
-    });
-  }
-
-  /**
-   * when click the place other than sidebar, the sidebar would be closed
-   * @param {event} event - the action of click the page
-   */
-  function closeSidebar(event) {
-    let sidebar = id('sidebar');
-    let type1Sidebar = id('type1sidebar');
-    let type2Sidebar = id('type2sidebar');
-    let type3Sidebar = id('type3sidebar');
-    let overlay = id("overlay");
-    let menu = id("menu");
-
-    if (!sidebar.contains(event.target) && event.target !== menu &&
-      !type1Sidebar.contains(event.target) && !type2Sidebar.contains(event.target) &&
-      !type3Sidebar.contains(event.target)) {
-      sidebar.style.left = "-300px";
-      hideAllSidebars(type1Sidebar, type2Sidebar, type3Sidebar);
-      overlay.style.display = "none";
-      overlay.style.pointerEvents = 'none';
-
-      document.removeEventListener('click', closeSidebar);
-    }
-
-  }
-
-  /**
-   * This function is used to close all the sidebars
-   * @param {object} subSidebar1 the sidebar that pull out
-   * @param {object} subSidebar2 the sidebar that pull out
-   * @param {object} subSidebar3 the sidebar that pull out
-   */
-  function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
-    [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
-      sidebar.style.left = "-300px";
-      sidebar.style.display = "none";
-    });
+    window.scrollTo(0,0);
   }
 
   /**

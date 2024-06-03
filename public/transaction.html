@@ -3,7 +3,8 @@
   Date: May 28, 2024
   Section: CSE 154
   This is the HTML file for the web, which is a transaction page, There are some cards
-  including all the purchase info on it, let user can check their transaction history-->
+  including all the purchase info on it, let user can check their transaction history
+-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +16,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Nova+Mono&display=swap" rel="stylesheet">
   <title>Transaction</title>
   <link rel="stylesheet" href="transaction.css">
+  <link href="sidebar.css" rel="stylesheet">
   <script src="transaction.js"></script>
+  <script src="sidebar.js"></script>
 </head>
 <body>
   <div id="overlay"></div>
@@ -26,7 +29,7 @@
       </section>
     </section>
     <section id="header-center">
-      <h1><a href="mainpage.html">RE:M</a></h1>
+      <h1><a href="index.html">RE:M</a></h1>
     </section>
     <section id="header-right">
       <a href="shopping-cart.html">Shopping Cart</a>
@@ -35,7 +38,7 @@
   </header>
 
   <section id="sidebar" class="sidebar2">
-    <div id="close">✕ Close</div>
+    <div class="close">✕ Close</div>
     <ul>
       <li id="type1"><p>MECHANICAL WATCH</p></li>
       <li id="type2"><p>DIGITAL WATCH</p></li>
@@ -68,7 +71,6 @@
   </section>
   <main>
     <section id="watch-list">
-
     </section>
   </main>
 </body>

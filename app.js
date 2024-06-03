@@ -15,10 +15,9 @@ const sqlite3 = require('sqlite3');
 
 const sqlite = require('sqlite');
 
-const nodemailer = require('nodemailer');
-
 const multer = require("multer");
 const cors = require('cors');
+const nodemailer = require('nodemailer');
 
 app.use(cors());
 
@@ -27,6 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(multer().none());
+
+let currentUserID = 0;
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
@@ -38,8 +39,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-let currentUserID = 0;
-
+/** This endpoint is used to get the info of all watches. */
 app.get("/REM/getallwatches", async (req, res) => {
   let db = await getDBConnection();
   let getWatchesSql = "SELECT * FROM watches;"
@@ -119,7 +119,7 @@ app.get("/watchdetails/:ID", async function (req, res) {
     let result = await db.get(qry);
     res.status(200).json(result);
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -148,32 +148,13 @@ app.post("/REM/createAccount", async (req, res) => {
         'LastName, DayOfBirth, MonthOfBirth, YearOfBirth) ' +
         'VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
       await db.run(sql, [email, password, gender, firstName, lastName, day, month, year]);
-      res.type("text").send("Create Account Successful");
       sendMailProcess(email, firstName);
+      res.type("text").send("Create Account Successful");
     }
   } catch (err) {
     res.type("text").send("Failed To Create Account");
   }
 });
-
-function sendMailProcess(email, firstName) {
-  try {
-    transporter.sendMail({
-      from: '"Re:M" <rem375254@gmail.com>',
-      to: email,
-      subject: "Create Re:m Account Successfully",
-      html:`
-           <p>Dear ${firstName}:</p>
-           <p>You have created the account successfully,</p>
-           <p>You can use this account to explore more items and enjoy our services.</p>
-           <p>Best regards,</p>
-           <p>Re:M</p>
-           `
-    });
-  }catch(err){
-    console.error(err);
-  }
-}
 
 /**
  * This function is used to get all the watches from the database that
@@ -238,7 +219,7 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
       await db.run(update, watchID, userID);
     } else {
       let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +
-        "VALUES (?, ?, ?)";
+      "VALUES (?, ?, ?)";
       await db.run(selection, userID, watchID, 1);
     }
     res.status(200).send("Successfully added to shopping cart");
@@ -350,7 +331,7 @@ async function findCard(cardNumber, cardHolderName) {
     let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
     return await db.get(searchCardSql, [cardNumber, cardHolderName]);
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
   }
 }
 
@@ -385,7 +366,7 @@ async function addIntoTransaction() {
       await db.run(addIntoTransactionSql, [comfirmationNumber, Userid, WatchId, Quantity, Img]);
     }
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
   }
 }
 
@@ -404,7 +385,7 @@ async function emptyShoppingcart() {
     let emptyShoppingcartSql = "DELETE FROM Shoppingcart WHERE UserID = ? ";
     await db.run(emptyShoppingcartSql, [currentUserID]);
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
   }
 }
 
@@ -419,7 +400,7 @@ async function deductMoney(remainDeposit, cardNumber) {
     let deductMoneySql = "UPDATE card SET Deposit = ? WHERE CardNumber = ?";
     await db.run(deductMoneySql, [remainDeposit, cardNumber]);
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
   }
 }
 
@@ -439,7 +420,7 @@ async function deductQuantity() {
       await db.run(deductQuantitySql, [remain, WatchId]);
     }
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
   }
 }
 
@@ -457,7 +438,7 @@ async function ifEnoughStorage() {
       }
     }
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
   }
   return flag;
 }
@@ -474,7 +455,7 @@ async function getTotalPriceOfWatches() {
       totalPrice = totalPrice + watch.Price;
     }
   } catch (err) {
-    console.error(err);
+    throw new Error(err);
   }
   return totalPrice;
 }
@@ -506,6 +487,31 @@ async function findRecommendations(input) {
     }
     await db.close();
     return [maxWatch, watches[0].Type, watches];
+  } catch (err) {
+    throw new Error(err);
+  }
+}
+
+/**
+ * This fucnction is used to send a confirmation mail to the user
+ * when a new account is created successfully.
+ * @param {String} email - mail of the user
+ * @param {String} firstName - first name of the user
+ */
+function sendMailProcess(email, firstName) {
+  try {
+    transporter.sendMail({
+      from: '"Re:M" <rem375254@gmail.com>',
+      to: email,
+      subject: "Successfully Created Re:m Account",
+      html:`
+           <p>Dear ${firstName}:</p>
+           <p>You have created the account successfully,</p>
+           <p>You can use this account to explore more items and enjoy our services.</p>
+           <p>Best regards,</p>
+           <p>Re:M</p>
+           `
+    });
   } catch (err) {
     throw new Error(err);
   }

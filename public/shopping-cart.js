@@ -18,68 +18,36 @@
    * This function initializes all the functions and event listeners on page load.
    */
   async function init() {
-    activateSideBarAndScroll();
     await getAllWatches();
-    sendSidebarToWatch();
-
+    changeHeaderWhenScrolled();
     checkoutStatusChecking();
     id("checkout").addEventListener("click", () => {
-      twoDifferentSituation();
+      moveViewIfLoggedInOrNot();
     });
+    addOrChangeFromCart();
+  }
 
+  /**
+   * Add or change quanitity of items from Shoping Cart
+   * when remove button clicked or quanity changed.
+   */
+  function addOrChangeFromCart() {
     for (let remove of qsa(".remove p")) {
       remove.addEventListener("click", (event) => {
         removeItem(event);
       });
     }
-
     for (let selector of qsa(".selectorquantity")) {
       selector.addEventListener("change", (event) => {
         changeQuantity(event);
       });
     }
-
-    await checkIsLogin();
-    qs("#log").addEventListener("click", () => {
-      logOut();
-      window.location.reload();
-    });
-  }
-
-  /** This function is used to deal with if user is login or not*/
-  async function twoDifferentSituation() {
-    let response = await fetch("/REM/checkiflogin");
-    await statusCheck(response);
-    let result = await response.text();
-    if (result === "havn't Login") {
-      window.location.href = "login.html";
-    } else {
-      window.location.href = "payment.html";
-    }
   }
 
   /**
-   * This function activates the sidebar and handles scrolling behavior.
+   * change the header background and text color when scrolled down.
    */
-  function activateSideBarAndScroll() {
-    const SIDEBARS = [id('type1sidebar'), id('type2sidebar'), id('type3sidebar')];
-    id("menu").classList.add(".change");
-    id("menu").addEventListener('click', function(evt) {
-      openSidebar(evt);
-    });
-
-    id("close").addEventListener('click', function() {
-      closeSidebar(id("sidebar"), SIDEBARS[0], SIDEBARS[1], SIDEBARS[2]);
-    });
-
-    for (let i = 0; i < SIDEBARS.length; i++) {
-      let idText = "type" + String(i + 1);
-      id(idText).addEventListener("click", function() {
-        hideExistSidebars(SIDEBARS[(i + 1) % 3], SIDEBARS[(i + 2) % 3]);
-        toggleSidebar(SIDEBARS[i]);
-      });
-    }
-
+  function changeHeaderWhenScrolled() {
     window.onscroll = function() {
       let header = qs("header");
       if (window.scrollY > 0) {
@@ -90,16 +58,15 @@
     };
   }
 
-  /**
-   * This function logs out the user by sending a request to the server.
-   */
-  async function logOut() {
-    let response = await fetch("/REM/logout");
+  /** This function is used to deal with if user is logged in or not*/
+  async function moveViewIfLoggedInOrNot() {
+    let response = await fetch("/REM/checkiflogin");
     await statusCheck(response);
     let result = await response.text();
-    if (result === "Logout Successfully") {
-      id("log").setAttribute('href', "login.html");
-      qs("#log").textContent = "Login";
+    if (result === "havn't Login") {
+      window.location.href = "login.html";
+    } else {
+      window.location.href = "payment.html";
     }
   }
 
@@ -112,23 +79,6 @@
       qs("button").disabled = true;
     } else {
       qs("button").disabled = false;
-    }
-  }
-
-  /**
-   * This function checks if the user is logged in or not and updates the UI accordingly.
-   */
-  async function checkIsLogin() {
-    let response = await fetch("/REM/checkiflogin");
-    await statusCheck(response);
-    let result = await response.text();
-    if (result === "havn't Login") {
-      id("trans").removeAttribute('href');
-    } else {
-      id("trans").setAttribute('href', "transaction.html");
-      id("trans").classList.remove("hidden");
-      qs("#log").textContent = "LogOut";
-      id("log").removeAttribute('href');
     }
   }
 
@@ -181,101 +131,6 @@
     } catch (err) {
       console.error(err);
     }
-  }
-
-  /**
-   * This function changes the main page into each watch page.
-   */
-  function sendSidebarToWatch() {
-    let options = qsa(".double-sidebar ul li");
-    for (let i = 0; i < options.length; i++) {
-      options[i].addEventListener('click', () => {
-        let productID = options[i].querySelector("p").textContent;
-        sessionStorage.setItem('productID', productID);
-        window.location.href = "watch.html";
-      });
-    }
-  }
-
-  /**
-   * This function opens the sidebar.
-   * @param {Event} evt - The event triggered by clicking the menu button.
-   */
-  function openSidebar(evt) {
-    let type1Sidebar = id('type1sidebar');
-    let type2Sidebar = id('type2sidebar');
-    let type3Sidebar = id('type3sidebar');
-
-    id("sidebar").style.left = '0px';
-    id("overlay").style.display = "block";
-    id("overlay").style.pointerEvents = 'auto';
-    [type1Sidebar, type2Sidebar, type3Sidebar].forEach(sidebar => {
-      sidebar.style.left = '0px';
-    });
-    evt.stopPropagation();
-    document.addEventListener('click', closeSidebar);
-  }
-
-  /**
-   * This function toggles the visibility of the sidebar.
-   * @param {HTMLElement} subSidebar - The sidebar element to be toggled.
-   */
-  function toggleSidebar(subSidebar) {
-    if (subSidebar.style.left === "0px") {
-      subSidebar.style.left = "300px";
-      subSidebar.style.display = "block";
-    } else {
-      subSidebar.style.left = "0px";
-      subSidebar.style.display = "none";
-    }
-  }
-
-  /**
-   * This function hides all the visible sidebars.
-   * @param {HTMLElement} subSidebar1 - The first sidebar to be hidden.
-   * @param {HTMLElement} subSidebar2 - The second sidebar to be hidden.
-   */
-  function hideExistSidebars(subSidebar1, subSidebar2) {
-    [subSidebar1, subSidebar2].forEach(sidebar => {
-      if (sidebar.style.left === "300px") {
-        sidebar.style.left = "0px";
-        sidebar.style.display = "none";
-      }
-    });
-  }
-
-  /**
-   * Closes the sidebar when clicking outside of it.
-   * @param {Event} event - The event triggered by clicking outside the sidebar.
-   */
-  function closeSidebar(event) {
-    let sidebar = id('sidebar');
-    let type1Sidebar = id('type1sidebar');
-    let type2Sidebar = id('type2sidebar');
-    let type3Sidebar = id('type3sidebar');
-    let overlay = id("overlay");
-    if (!sidebar.contains(event.target) && !type1Sidebar.contains(event.target) &&
-      !type2Sidebar.contains(event.target) && !type3Sidebar.contains(event.target)) {
-      sidebar.style.left = "-300px";
-      hideAllSidebars(type1Sidebar, type2Sidebar, type3Sidebar);
-      overlay.style.display = "none";
-      overlay.style.pointerEvents = 'none';
-
-      document.removeEventListener('click', closeSidebar);
-    }
-  }
-
-  /**
-   * This function hides all sidebars.
-   * @param {HTMLElement} subSidebar1 - The first sidebar to be hidden.
-   * @param {HTMLElement} subSidebar2 - The second sidebar to be hidden.
-   * @param {HTMLElement} subSidebar3 - The third sidebar to be hidden.
-   */
-  function hideAllSidebars(subSidebar1, subSidebar2, subSidebar3) {
-    [subSidebar1, subSidebar2, subSidebar3].forEach(sidebar => {
-      sidebar.style.left = "-300px";
-      sidebar.style.display = "none";
-    });
   }
 
   /**
@@ -533,11 +388,12 @@
   }
 
   /**
-   * Helper function to get all elements that match the selector.
-   * @param {string} selector - The CSS selector.
-   * @return {NodeList} - A NodeList of elements that match the selector.
+   * This function is used to get all the elements by its name
+   * @param {string} selector - the elements wants to be find in the HTML page
+   * @return {Node} return the all the node that selector corespond to .
    */
   function qsa(selector) {
     return document.querySelectorAll(selector);
   }
+
 })();
