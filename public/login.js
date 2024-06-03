@@ -67,7 +67,7 @@
         para.textContent = result;
         id("messagedisplay").appendChild(para);
         setInterval(() => {
-          window.location.href = "mainpage.html";
+          window.location.href = "index.html";
         }, 2000);
       } else {
         id("password").value = "";

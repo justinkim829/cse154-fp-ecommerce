@@ -8,6 +8,10 @@
  */
 
 body {
+  /* Citation for background - image
+   * "Beautiful Landscape" by Alpha Coders, accessed June 3, 2024.
+   * Available at https://images.alphacoders.com/650/thumb-1920-650300.jpg.
+   */
   background-image: url("img/mainpage-picture.jpg");
   background-size: cover;
   background-position: center;

@@ -22,8 +22,8 @@
 
   /** This function is used to log out when the log out text is clicked. */
   function logOutWhenClicked() {
-    id("log").addEventListener("click", async () => {
-      await logOut();
+    id("log").addEventListener("click", () => {
+      logOut();
       window.location.reload();
     });
   }

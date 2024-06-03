@@ -314,7 +314,7 @@ footer img {
 #layout {
   margin-left: 15px;
   cursor: pointer;
-  background-color: #d7b46e;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -323,5 +323,5 @@ footer img {
 }
 
 #layout:hover {
-  background-color:rgb(115, 71, 40);
+  background-color: #0056b3;
 }

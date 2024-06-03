@@ -47,7 +47,7 @@
       id("log").setAttribute('href', "login.html");
       qs("#log").textContent = "Login";
     }
-    window.location.href = "mainpage.html";
+    window.location.href = "index.html";
   }
   /** This function is used to get all the shopping history */
   async function getShoppingHistory() {

@@ -271,7 +271,7 @@ app.post("/REM/buyproduct", async (req, res) => {
   res.type("text");
   try {
     let { cardHolderName, cardNumber } = req.body;
-    let cardExist = await findCard(cardNumber, cardHolderName);
+    let cardExist = await findCard(cardNumber);
     if (await ifEnoughStorage()) {
       if (cardExist) {
         if (cardExist.UserName === cardHolderName) {
@@ -284,10 +284,10 @@ app.post("/REM/buyproduct", async (req, res) => {
             res.send("Do not have enough money");
           }
         } else {
-          res.send("Wrong cardHolderName");
+          res.send("Wrong card holder name");
         }
       } else {
-        res.send("NO credit card find");
+        res.send("No credit card find");
       }
     } else {
       res.send("Not enough watches to supply");
@@ -325,11 +325,13 @@ app.get("/REM/logout", (req, res) => {
  * @param {string} cardHolderName - The name of the card holder.
  * @returns {Promise<Object|null>} - The card object if found, otherwise null.
  */
-async function findCard(cardNumber, cardHolderName) {
+async function findCard(cardNumber) {
   try {
     let db = await getDBConnection();
-    let searchCardSql = "Select * From card Where CardNumber = ? AND UserName = ?";
-    return await db.get(searchCardSql, [cardNumber, cardHolderName]);
+    let searchCardSql = "Select * From card Where CardNumber = ?";
+    let result = await db.get(searchCardSql, cardNumber);
+    console.log(result);
+    return result;
   } catch (err) {
     throw new Error(err);
   }
