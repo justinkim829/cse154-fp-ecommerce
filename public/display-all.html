@@ -1,0 +1,83 @@
+<!--
+  Name: Jincheng Wang, Jinseok Kim
+  Date: May 28, 2024
+  Section: CSE 154
+  This is the HTML file for the web, which is display all watches page,
+  where there are 9 boxes contain all different kinds of watches -->
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display-All</title>
+    <link href="display-all.css" rel="stylesheet">
+    <link href="sidebar.css" rel="stylesheet">
+    <script src="display-all.js"></script>
+    <script src="sidebar.js"></script>
+    <script src="logout.js"></script>
+  </head>
+  <body>
+    <div id="overlay"></div>
+    <header>
+      <section id="header-left">
+        <section id="menu">
+          <span>☰ Menu</span>
+        </section>
+        <span id="layout">Change Layout</span>
+        <select id="category">
+          <option value="" selected>None</option>
+          <option value="Mechanical" class="category-option">Mechanical</option>
+          <option value="Digital" class="category-option">Digital</option>
+          <option value="Pocket" class="category-option">Pocket</option>
+        </select>
+        <input id="filter-items" placeholder="search" id="search">
+        <button id="clear-search">Clear</button>
+      </section>
+      <section id="header-center">
+        <h1><a href="index.html">RE:M</a></h1>
+      </section>
+      <section id="header-right">
+        <a href="transaction.html" id="trans" class="hidden">Transactions</a>
+        <a href="shopping-cart.html">Shopping Cart</a>
+        <a href="login.html" id="log">Login</a>
+      </section>
+    </header>
+
+    <section id="sidebar" class="sidebar2">
+      <div class="close">✕ Close</div>
+      <ul>
+        <li id="type1"><p>MECHANICAL WATCH</p></li>
+        <li id="type2"><p>DIGITAL WATCH</p></li>
+        <li id="type3"><p>POCKET WATCH</p></li>
+      </ul>
+    </section>
+
+    <section id="type1sidebar" class="sidebar2 double-sidebar">
+      <ul>
+        <li><p>M1</p></li>
+        <li><p>M2</p></li>
+        <li><p>M3</p></li>
+      </ul>
+    </section>
+
+    <section id="type2sidebar" class="sidebar2 double-sidebar">
+      <ul>
+        <li><p>D1</p></li>
+        <li><p>D2</p></li>
+        <li><p>D3</p></li>
+      </ul>
+    </section>
+
+    <section id="type3sidebar" class="sidebar2 double-sidebar">
+      <ul>
+        <li><p>P1</p></li>
+        <li><p>P2</p></li>
+        <li><p>P3</p></li>
+      </ul>
+    </section>
+
+  <section id="displayall"></section>
+
+  </body>
+  </html>

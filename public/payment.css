@@ -1,0 +1,216 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Section: CSE 154
+ * This is the css file for the login page, use the color of gray ,white and black,
+ * Separate the contents into two parts, including a bunch of input bars and infomation
+ * display part on the right.
+ */
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Merienda", cursive;
+  width: 100%;
+  background-color: #f9f9f9;
+}
+
+header {
+  height: 11vh;
+  justify-content: space-between;
+  z-index: 3;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: lightgray;
+}
+
+header, #number-and-wishlist {
+  justify-content: space-between;
+}
+
+header h1 {
+  font-size: 40px;
+}
+
+header h1 a {
+  text-decoration: none;
+}
+
+header h1, header a, header span {
+  color: black;
+}
+
+header:hover, .lock-header {
+  transition: background-color 1s;
+  opacity: 70%;
+  background-color: black;
+
+  h1, a, span {
+    color: white;
+  }
+}
+
+header, #header-left, #header-right, #search section {
+  display: flex;
+  align-items: center;
+}
+
+header, #search section {
+  align-items: center;
+}
+
+#header-left, #header-right {
+  gap: 10px;
+}
+
+#header-left {
+  margin-left: 20px;
+}
+
+#header-right {
+  margin-right: 20px;
+}
+
+#header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#header-left > p {
+  margin-right: 10px;
+}
+
+#header-right > a {
+  margin-left: 10px;
+  text-decoration: none;
+}
+
+.change {
+  cursor: pointer;
+  display: none;
+  font-family: 'Yeon Sung', cursive;
+}
+
+#menu span {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+#whole-page {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  height: 200vh;
+}
+
+#info-display {
+  width: 30%;
+  margin-right: 5%;
+  margin-top: 2%;
+  height: 150vh;
+}
+
+.item {
+  display: flex;
+  flex-direction: row;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.receipt {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 55%;
+  height: 150vh;
+  justify-content: space-between;
+  margin-top: 2%;
+  margin-left: 5%;
+}
+
+label {
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 16px;
+}
+
+input[type="text"], select {
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-bottom: 15px;
+}
+
+#submit {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  margin-top: 20px;
+  height: 50px;
+  border: black 2px solid;
+  transition: all 0.2s ease;
+  text-align: center;
+  width: 90%;
+  margin-left: 5%;
+}
+
+#submit:hover {
+  color: black;
+  background-color: white;
+}
+
+.info {
+  background-color: white;
+  border-radius: 4%;
+  margin-bottom: 30px;
+  padding: 15px;
+}
+
+.item img {
+  max-width: 30%;
+}
+
+h1 {
+  text-align: center;
+  font-size: 60px;
+  margin-top: 10%;
+}
+
+#itemsdisplayboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+#credictcard-info {
+  margin-bottom: 5px;
+}
+
+#displaymessage {
+  height: 45px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.hide {
+  visibility: hidden;
+}
+
+.hidden {
+  display: none;
+}

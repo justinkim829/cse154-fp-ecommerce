@@ -1,0 +1,115 @@
+<!--
+  Name: Jincheng Wang, Jinseok Kim
+  Date: May 28, 2024
+  Section: CSE 154
+  This is the HTML file for the web, which is mainpage, which there is a search bar
+  help user to filter the watch they want, also there are three recommendation box
+  of some popular watches -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="index.css" rel="stylesheet">
+  <link href="sidebar.css" rel="stylesheet">
+  <script src="index.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="logout.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Vollkorn+SC:wght@400;600;700;900&display=swap"
+    rel="stylesheet">
+  <title>Main Webpage</title>
+</head>
+
+<body>
+  <div id="overlay"></div>
+  <header>
+    <section id="header-left">
+      <section id="menu">
+        <span>☰ Menu</span>
+      </section>
+      <a href="display-all.html" id="layout">Display All</a>
+    </section>
+    <section id="header-center">
+      <h1>Re:M</h1>
+    </section>
+    <section id="header-right">
+      <a href="transaction.html" id="trans" class="hidden">Transactions</a>
+      <a href="shopping-cart.html">Shopping Cart</a>
+      <a href="login.html" id="log">Login</a>
+    </section>
+  </header>
+
+  <section id="sidebar" class="sidebar2">
+    <div class="close">✕ Close</div>
+    <ul>
+      <li id="type1"><p>MECHANICAL WATCH</p></li>
+      <li id="type2"><p>DIGITAL WATCH</p></li>
+      <li id="type3"><p>POCKET WATCH</p></li>
+    </ul>
+  </section>
+
+  <section id="type1sidebar" class="sidebar2 double-sidebar">
+    <ul>
+      <li><p>M1</p></li>
+      <li><p>M2</p></li>
+      <li><p>M3</p></li>
+    </ul>
+  </section>
+
+  <section id="type2sidebar" class="sidebar2 double-sidebar">
+    <ul>
+      <li><p>D1</p></li>
+      <li><p>D2</p></li>
+      <li><p>D3</p></li>
+    </ul>
+  </section>
+
+  <section id="type3sidebar" class="sidebar2 double-sidebar">
+    <ul>
+      <li><p>P1</p></li>
+      <li><p>P2</p></li>
+      <li><p>P3</p></li>
+    </ul>
+  </section>
+
+  <section>
+    <article id="search-part">
+      <h2>EverLasting Classics</h2>
+      <input id="textarea" placeholder="Most-Popular-Watches">
+    </article>
+  </section>
+
+  <section id="display-watch">
+    <section id="container">
+      <section class="box">
+        <img src="img/M/watch1/img1.png" alt="Tambour Street Diver Chonograph">
+        <h3>Tambour Street Diver Chronograph</h3>
+      </section>
+
+      <section class="box">
+        <img src="img/D/watch1/img1.png" alt="MR-G FROGMAN" id="frogman">
+        <h3>MR-G Frogman</h3>
+      </section>
+
+      <section class="box">
+        <img src="img/P/watch3/img1.png" alt="The Elijah McCoy Mechanic">
+        <h3>The Elijah McCoy Mechanic</h3>
+      </section>
+    </section>
+  </section>
+  <footer>
+    <section id="logo">
+      <img src="img/brand-logo.jpg" alt="Brand Logo">
+      <p>Remember: ME</p>
+    </section>
+  </footer>
+
+
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!--
+  Name: Jincheng Wang, Jinseok Kim
+  Date: May 28, 2024
+  Section: CSE 154
+  This is the HTML file for the web, which is a login page, There are two input bars
+  That User can input their email account and password in order to login, There is also
+  a box, showing the adventage of log in-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <link href="login.css" rel="stylesheet">
+  <link href="sidebar.css" rel="stylesheet">
+  <script src="login.js"></script>
+  <script src="sidebar.js"></script>
+  <script src="logout.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Nova+Mono&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div id="overlay"></div>
+  <header>
+    <section id="header-left">
+      <section id="menu">
+        <span>☰ Menu</span>
+      </section>
+    </section>
+    <section id="header-center">
+      <h1><a href="index.html">RE:M</a></h1>
+    </section>
+    <section id="header-right">
+      <a href="transaction.html" id="trans" class="hidden">Transactions</a>
+      <a href="shopping-cart.html">Shopping Cart</a>
+      <a href="login.html" id="log">Login</a>
+    </section>
+
+  </header>
+
+  <section id="sidebar" class="sidebar2">
+    <div class="close">✕ Close</div>
+    <ul>
+      <li id="type1"><p>MECHANICAL WATCH</p></li>
+      <li id="type2"><p>DIGITAL WATCH</p></li>
+      <li id="type3"><p>POCKET WATCH</p></li>
+    </ul>
+  </section>
+
+  <section id="type1sidebar" class="sidebar2 double-sidebar">
+    <ul>
+      <li><p>M1</p></li>
+      <li><p>M2</p></li>
+      <li><p>M3</p></li>
+    </ul>
+  </section>
+
+  <section id="type2sidebar" class="sidebar2 double-sidebar">
+    <ul>
+      <li><p>D1</p></li>
+      <li><p>D2</p></li>
+      <li><p>D3</p></li>
+    </ul>
+  </section>
+
+  <section id="type3sidebar" class="sidebar2 double-sidebar">
+    <ul>
+      <li><p>P1</p></li>
+      <li><p>P2</p></li>
+      <li><p>P3</p></li>
+    </ul>
+  </section>
+
+  <section id="wholepage">
+    <section id="login-container">
+      <h2>Welcome Back</h2>
+      <p>Sign in with your email adress and your password</p>
+
+      <form id="input">
+        <section class="inputpart">
+          <label for="email">Email*</label>
+          <input type="text" id="email" placeholder="Email Address" required>
+        </section>
+        <section class="inputpart">
+          <label for="password">Password*</label>
+          <input type="password" id="password" placeholder="Password" required>
+        </section>
+        <button id="signin" type="submit">Sign in</button>
+      </form>
+
+      <section id="messagedisplay"></section>
+
+      <section id="signin-with-create">
+        <section id="create">
+          <p>Don't have an Re:M account?</p> <a href="newaccount.html" id="signup">Create yours now</a>
+        </section>
+      </section>
+    </section>
+
+    <section id="account-info">
+      <h3>WHAT YOU'LL FIND IN YOUR Re:M ACCOUNT</h3>
+      <section id="sentences">
+        <p>Manage your personal information</p>
+        <hr>
+        <p>Receive letters from Re:M</p>
+        <hr>
+        <p>Create your wishlist, watch the looks and share</p>
+      </section>
+    </section>
+  </section>
+
+
+</body>
+
+</html>
