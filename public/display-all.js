@@ -112,7 +112,7 @@
     row.className = 'watch-row';
     row.id = rowId;
     certainWatch.appendChild(row);
-    id('displayall').appendChild(certainWatch);
+    document.getElementById('displayall').appendChild(certainWatch);
   }
 
   /**
