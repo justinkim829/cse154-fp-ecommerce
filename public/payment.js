@@ -43,7 +43,7 @@
       });
       response = await statusCheck(response);
       let result = await response.text();
-      if (result.substring(0,17) === "Confirmation code") {
+      if (result.substring(0, 17) === "Confirmation code") {
         let displayMessage = gen("p");
         displayMessage.textContent = "Purchased Successfully";
         id("displaymessage").appendChild(displayMessage);
@@ -139,7 +139,7 @@
     nameP.textContent = product.Name;
     innerSection.appendChild(nameP);
     let QuantityOfWatch = gen('p');
-    QuantityOfWatch.textContent = " x "+product.Quantity;
+    QuantityOfWatch.textContent = " x " + product.Quantity;
     innerSection.appendChild(QuantityOfWatch);
     itemSection.appendChild(innerSection);
     document.body.appendChild(itemSection);
@@ -202,14 +202,5 @@
    */
   function qs(selector) {
     return document.querySelector(selector);
-  }
-
-  /**
-   * This function is used to get all the elements by its name
-   * @param {string} selector - the elements wants to be find in the HTML page
-   * @return {Node} return the all the node that selector corespond to .
-   */
-  function qsa(selector) {
-    return document.querySelectorAll(selector);
   }
 })();

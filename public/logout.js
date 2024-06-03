@@ -69,15 +69,6 @@
   }
 
   /**
-   * This function is used to get that element by its name
-   * @param {string} selector - the element wants to be find in the HTML page
-   * @return {Node} return the node that selector corespond to .
-   */
-  function qs(selector) {
-    return document.querySelector(selector);
-  }
-
-  /**
    * This function is used to get that element by its ID
    * @param {string} id - the ID that wants to get
    * @return {Node} return the node that ID corespond to .

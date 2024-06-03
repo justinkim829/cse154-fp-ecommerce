@@ -151,7 +151,7 @@
   function showEmptyMessage() {
     let message = gen("p");
     message.classList.add("messagedisplay");
-    message.textContent = "There are nothing in the Transactions"
+    message.textContent = "There are nothing in the Transactions";
     id("watch-list").appendChild(message);
   }
 
@@ -167,6 +167,15 @@
       throw new Error(await res.text());
     }
     return res;
+  }
+
+  /**
+   * Helper function user to generate certain node
+   * @param {object} selector - the node user wants to create
+   * @return {Node} the node that was created.
+   */
+  function gen(selector) {
+    return document.createElement(selector);
   }
 
   /**

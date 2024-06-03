@@ -9,7 +9,7 @@
 
 "use strict";
 
-(function () {
+(function() {
   const LOGIN_URL = "/REM/login";
   let timeoutId = 0;
 
@@ -24,6 +24,10 @@
     autoFillLogin();
   }
 
+  /**
+   * This function is used to store and the fullfill the Email when user has already
+   * input before
+   */
   function autoFillLogin() {
     let savedEmail = sessionStorage.getItem('userEmail');
     if (savedEmail) {
@@ -31,9 +35,10 @@
     }
   }
 
+  /** This function is used to store the email into the session storage */
   function storeEmail(event) {
     event.preventDefault();
-    let email = id("email").value
+    let email = id("email").value;
     sessionStorage.setItem('userEmail', email);
   }
 
@@ -127,24 +132,6 @@
    */
   function id(id) {
     return document.getElementById(id);
-  }
-
-  /**
-   * This function is used to get all the elements by its name
-   * @param {string} selector - the elements wants to be find in the HTML page
-   * @return {Node} return the all the node that selector corespond to .
-   */
-  function qsa(selector) {
-    return document.querySelectorAll(selector);
-  }
-
-  /**
-   * This function is used to get that element by its name
-   * @param {string} selector - the element wants to be find in the HTML page
-   * @return {Node} return the node that selector corespond to .
-   */
-  function qs(selector) {
-    return document.querySelector(selector);
   }
 
   /**

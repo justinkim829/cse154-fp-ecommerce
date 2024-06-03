@@ -67,7 +67,6 @@
         params.append("input", inputValue);
         try {
           let recommendedID = await postData('/REM/recommendation', params, true);
-          console.log(recommendedID);
           localStorage.setItem('productID', recommendedID);
           bc.postMessage(recommendedID);
           window.location.href = "watch.html";
@@ -87,8 +86,9 @@
    * @returns {String|JSON} data - the processed data
    */
   async function postData(endPoint, params, isReturnText) {
+    let data;
     try {
-      let data = await fetch(endPoint, {
+      data = await fetch(endPoint, {
         method: 'POST',
         body: params
       });

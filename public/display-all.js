@@ -14,11 +14,11 @@
 
   /** This function is used to initialize all the functions */
   async function init() {
-    changeHeaderWhenScrolled()
+    changeHeaderWhenScrolled();
     id("layout").addEventListener("click", () => {
       toggleLayout();
     });
-    await fetchWatches()
+    await fetchWatches();
     for (let box of qsa(".box")) {
       box.addEventListener("click", (event) => {
         changeToWatchPage(event);
@@ -94,7 +94,10 @@
     sendToWatch(box.id);
   }
 
-  /** This function is used to change the mainpage into each watch page */
+  /**
+   * This function is used to change the mainpage into each watch page
+   * @param {String} productID - the id of this certain product
+   */
   function sendToWatch(productID) {
     const bc = new BroadcastChannel('bc');
     localStorage.setItem('productID', productID);

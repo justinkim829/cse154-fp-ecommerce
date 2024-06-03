@@ -116,15 +116,6 @@
   }
 
   /**
-   * This function is used to get all the elements by its name
-   * @param {string} selector - the elements wants to be find in the HTML page
-   * @return {Node} return the all the node that selector corespond to .
-   */
-  function qsa(selector) {
-    return document.querySelectorAll(selector);
-  }
-
-  /**
    * This function is used to get that element by its name
    * @param {string} selector - the element wants to be find in the HTML page
    * @return {Node} return the node that selector corespond to .

@@ -214,6 +214,10 @@ img {
   background-color: #0056b3;
 }
 
+.category-option, #filter-items, #clear-search {
+  font-family: "Merienda", cursive;
+}
+
 .changetorow {
   display: flex;
   flex-direction: column;

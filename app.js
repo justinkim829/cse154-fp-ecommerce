@@ -43,11 +43,11 @@ const transporter = nodemailer.createTransport({
 app.get("/REM/getallwatches", async (req, res) => {
   let db = await getDBConnection();
   let getWatchesSql = "SELECT * FROM watches;"
-  try{
+  try {
     let watchArray = await db.all(getWatchesSql);
     db.close();
     res.type("json").send(watchArray);
-  }catch {
+  } catch (err) {
     res.status(500).send("An error occurred");
   }
 });
