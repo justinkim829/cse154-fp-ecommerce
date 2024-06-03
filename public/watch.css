@@ -42,10 +42,6 @@ header h1 a {
   text-decoration: none;
 }
 
-#layout {
-  text-decoration: none;
-}
-
 header h1, header a, header span {
   color: white;
 }
@@ -320,6 +316,7 @@ footer img {
   border-radius: 5px;
   padding: 10px 20px;
   font-size: 16px;
+  text-decoration: none;
 }
 
 #layout:hover {
