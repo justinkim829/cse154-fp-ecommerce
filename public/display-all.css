@@ -1,3 +1,12 @@
+/*
+ * Name: Jincheng Wang,Jinseok Kim
+ * Date: May 28, 2024
+ * Section: CSE 154
+ * This is the css file for the display all watches page, use the color of gray
+ * ,white and black, with 3 boxes perline and there are 3 lines for dfferent kind of
+ * watches.
+ */
+
 body {
   background-size: cover;
   background-position: center;
@@ -264,8 +273,6 @@ img {
 }
 
 /* ------------------------------------- change style*/
-
-
 #layout {
   margin-left: 15px;
   cursor: pointer;
@@ -285,7 +292,7 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100%; /* Ensure row width is 100% */
+  width: 100%;
 }
 
 .changewatchlength {
@@ -300,7 +307,7 @@ img {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  width: 90%; /* Leave space on sides */
+  width: 90%;
   margin: 10px 5%;
   background-color: black;
   border: 1px solid black;
@@ -349,7 +356,7 @@ img {
 
 .list-view .box {
   width: 90%;
-  margin: 10px 5%; /* Ensure box leaves space on sides */
+  margin: 10px 5%;
 }
 
 .list-view .box img {

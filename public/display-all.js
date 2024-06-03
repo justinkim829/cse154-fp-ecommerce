@@ -42,29 +42,31 @@
     }
   }
 
+  /** This function is used to toggle between two differenr layouts */
   function toggleLayout() {
-    let displayAll = id("displayall");
-    let mechanical = id("mechanicalwatch");
-    let digital = id("digitalwatch");
-    let pocket = id("pocketwatch");
-    mechanical.classList.toggle("changewatchlength");
-    digital.classList.toggle("changewatchlength");
-    pocket.classList.toggle("changewatchlength");
+    id("mechanicalwatch").classList.toggle("changewatchlength");
+    id("digitalwatch").classList.toggle("changewatchlength");
+    id("pocketwatch").classList.toggle("changewatchlength");
     for (let row of qsa(".watch-row")) {
       row.classList.toggle("changetorow");
     }
     for (let box of qsa(".box")) {
       box.classList.toggle("changebox");
     }
-    displayAll.classList.toggle("grid-view");
-    displayAll.classList.toggle("list-view");
+    id("displayall").classList.toggle("grid-view");
+    id("displayall").classList.toggle("list-view");
   }
 
+  /**
+   * This function is used to jump into the certain watch page
+   * @param {event} event the event of clicking certain watch
+   */
   function changeToWatchPage(event) {
     let box = event.currentTarget;
     sendToWatch(box.id);
   }
 
+  /** This function is used to get all the watches info */
   async function fetchWatches() {
     try {
       let response = await fetch("/REM/getallwatches");
@@ -76,6 +78,10 @@
     }
   }
 
+  /**
+   * This function is used to display all the watches info into the board
+   * @param {object} watches an array that contain all the watches
+   */
   function displayWatches(watches) {
     let mechanicalWatches = watches.filter(watch => watch.category === 'mechanical');
     let digitalWatches = watches.filter(watch => watch.category === 'digital');
@@ -90,23 +96,30 @@
     addWatchesToRow(pocketWatches, 'pocket-watch-row');
   }
 
-
+  /**
+   * This function is used to create different cards for the kind of watches
+   * @param {number} id the id of the watch
+   * @param {String} title the title of the watch
+   * @param {number} rowId the id of that certain row
+   */
   function addWatchSection(id, title, rowId) {
-    let section = document.createElement('section');
-    section.id = `${id}watch`;
-
-    let h3 = document.createElement('h3');
+    let certainWatch = gen('section');
+    certainWatch.id = `${id}watch`;
+    let h3 = gen('h3');
     h3.textContent = title;
-    section.appendChild(h3);
-
-    let row = document.createElement('div');
+    certainWatch.appendChild(h3);
+    let row = gen('div');
     row.className = 'watch-row';
     row.id = rowId;
-    section.appendChild(row);
-
-    document.getElementById('displayall').appendChild(section);
+    certainWatch.appendChild(row);
+    id('displayall').appendChild(certainWatch);
   }
 
+  /**
+   * This function is used to add the same kind of watches into the same row
+   * @param {object} watches an array of watches that contain all the info
+   * @param {number} rowId the id of that certain row
+   */
   function addWatchesToRow(watches, rowId) {
     let row = document.getElementById(rowId);
     watches.forEach(watch => {
@@ -127,7 +140,6 @@
       details.appendChild(price);
       details.appendChild(category);
       details.classList.toggle("hidden");
-
       box.appendChild(img);
       box.appendChild(h3);
       row.appendChild(box);
@@ -140,7 +152,6 @@
     sessionStorage.setItem('productID', productID);
     window.location.href = "watch.html";
   }
-
 
   /** This function is used to log out form the account */
   async function logOut() {
