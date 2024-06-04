@@ -261,8 +261,9 @@ app.post("/REM/removefromshoppingcart", async (req, res) => {
     let db = await getDBConnection();
     let productID = req.body.productID;
     let userID = req.body.userID;
-    userID = userID ? userID : "0";
-    await db.run("DELETE FROM Shoppingcart WHERE userID = ? AND WatchID = ?", userID, productID);
+    let watchID = await db.get("SELECT ID FROM watches WHERE Type = ?", productID);
+    watchID = watchID.ID;
+    await db.run("DELETE FROM Shoppingcart WHERE userID = ? AND WatchID = ?", userID, watchID);
     await db.close();
     res.status(200);
     res.send("Successfully deleted from shopping cart");
