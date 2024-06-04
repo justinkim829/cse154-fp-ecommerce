@@ -95,7 +95,10 @@
         }, 2000);
       }
     } catch (err) {
-
+      id("errdisplay").classList.remove("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.add("hidden");
+      }, 2000);
     }
   }
 

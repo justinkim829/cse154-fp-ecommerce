@@ -83,8 +83,7 @@
   position: fixed;
   left: 40%;
   top: 50%;
-  transform: translateX(-50%);
-  transform: translateY(-50%);
+  transform: translate(-50%, -50%);
   width: 20%;
   background-color: black;
   font-size: 30px;

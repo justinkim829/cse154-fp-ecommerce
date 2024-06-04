@@ -305,7 +305,7 @@
   async function getData(endPoint, isReturnText) {
     let data;
     try {
-      let data = await fetch(endPoint);
+      data = await fetch(endPoint);
       await statusCheck(data);
       if (isReturnText) {
         data = await data.text();
