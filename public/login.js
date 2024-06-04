@@ -9,7 +9,7 @@
 
 "use strict";
 
-(function () {
+(function() {
   const LOGIN_URL = "/REM/login";
   let timeoutId = 0;
 

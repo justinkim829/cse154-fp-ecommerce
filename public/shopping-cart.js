@@ -193,10 +193,7 @@
       changeSummary(result);
       return result;
     } catch (err) {
-      id("errdisplay").classList.add("hidden");
-      setTimeout(() => {
-        id("errdisplay").classList.remove("hidden");
-      }, 2000);
+      errHandle();
     }
   }
 
@@ -357,6 +354,14 @@
     qs("#subtotal p").textContent = "$ " + Math.floor(subtotal);
     qs("#tax p").textContent = "$ " + Math.floor(tax);
     qs("#total p").textContent = "$ " + Math.floor(total);
+  }
+
+  /** This function is used to handle the error */
+  function errHandle(){
+    id("errdisplay").classList.add("hidden");
+    setTimeout(() => {
+      id("errdisplay").classList.remove("hidden");
+    }, 2000);
   }
 
   /**

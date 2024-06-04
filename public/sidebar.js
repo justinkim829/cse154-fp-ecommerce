@@ -21,14 +21,14 @@
   }
 
   /** This function is used to handle the situation when server is crashed */
-  function errMessageDisplay(){
+  function errMessageDisplay() {
     let container = gen("section");
     container.id = "errdisplay";
     let errMessage = gen("p");
     errMessage.textContent = "MEOW";
     container.appendChild(errMessage);
     container.classList.add("hidden");
-    container.classList.add("location")
+    container.classList.add("location");
     document.body.appendChild(container);
   }
 

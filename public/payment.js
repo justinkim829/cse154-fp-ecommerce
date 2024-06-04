@@ -9,7 +9,7 @@
 
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener("load", init);
 

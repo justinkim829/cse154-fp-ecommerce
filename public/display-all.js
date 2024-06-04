@@ -132,7 +132,7 @@
       } else {
         element.style.background = 'rgb(0, 0, 72)';
       }
-  }
+}
     requestAnimationFrame(animationStep);
   }
 

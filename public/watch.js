@@ -125,7 +125,7 @@
           message.textContent = response;
         }
       } catch (err) {
-        errhandle();
+        errHandle();
       }
       setTimeout(() => {
         id("add-message").removeChild(message);
@@ -135,7 +135,7 @@
   }
 
   /** This function is used to handle the error */
-  function errhandle(){
+  function errHandle() {
     id("errdisplay").classList.add("hidden");
     setTimeout(() => {
       id("errdisplay").classList.remove("hidden");
@@ -228,7 +228,7 @@
 
       changeRecommendations(productID);
     } catch (err) {
-      errhandle();
+      errHandle();
     }
   }
 
@@ -309,7 +309,7 @@
       }
       return data;
     } catch (err) {
-      errhandle();
+      errHandle();
     }
   }
 
@@ -337,7 +337,7 @@
       }
       return data;
     } catch (err) {
-      errhandle();
+      errHandle();
     }
   }
 
