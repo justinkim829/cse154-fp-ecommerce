@@ -132,7 +132,7 @@
       } else {
         element.style.background = 'rgb(0, 0, 72)';
       }
-}
+    }
     requestAnimationFrame(animationStep);
   }
 
@@ -141,20 +141,17 @@
    * and show the watch that fits the user input.
    */
   function filterSearchBar() {
-    let input = id("filter-items")
+    let input = id("filter-items");
     input.addEventListener('keypress', async (evt) => {
       if (evt.key === "Enter") {
-        removeSelectedBoxes()
+        removeSelectedBoxes();
         let inputValue = input.value.trim().toLowerCase();
-        console.log(inputValue);
         let params = new FormData();
         params.append("input", inputValue);
         try {
           let recommendedID = await postData('/REM/recommendation', params, true);
-          console.log(2)
           let watchBox = id(recommendedID);
           let parentID = watchBox.parentElement.id;
-          console.log(parentID.slice(0, parentID.indexOf("-")));
           scrollToRecommendation(parentID.slice(0, parentID.indexOf("-")));
           animateBackground(watchBox, 600);
         } catch (err) {
@@ -164,6 +161,7 @@
       }
     });
   }
+
   /**
    * change the header background and text color when scrolled down.
    */

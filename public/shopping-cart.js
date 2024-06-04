@@ -357,7 +357,7 @@
   }
 
   /** This function is used to handle the error */
-  function errHandle(){
+  function errHandle() {
     id("errdisplay").classList.add("hidden");
     setTimeout(() => {
       id("errdisplay").classList.remove("hidden");
