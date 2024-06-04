@@ -42,7 +42,7 @@ const transporter = nodemailer.createTransport({
 /** This endpoint is used to get the info of all watches. */
 app.get("/REM/getallwatches", async (req, res) => {
   let db = await getDBConnection();
-  let getWatchesSql = "SELECT * FROM watches;"
+  let getWatchesSql = "SELECT * FROM watches;";
   try {
     let watchArray = await db.all(getWatchesSql);
     db.close();
@@ -55,7 +55,7 @@ app.get("/REM/getallwatches", async (req, res) => {
 /** This end point is used to get the current user name */
 app.get("/REM/getusername", async (req, res) => {
   let db = await getDBConnection();
-  let getUserSql = "SELECT name FROM USER WHERE ID = ?;"
+  let getUserSql = "SELECT name FROM USER WHERE ID = ?;";
   try {
     let name = db.get(getUserSql, [currentUserID]);
     db.close();
@@ -114,7 +114,7 @@ app.post("/REM/login", async (req, res) => {
 /**
  * This function is used to get certian watch that user wants to
  */
-app.get("/watchdetails/:ID", async function (req, res) {
+app.get("/watchdetails/:ID", async function(req, res) {
   try {
     let watchID = req.params.ID;
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
@@ -173,7 +173,7 @@ app.get("/REM/getwatchesinfo", async (req, res) => {
     await db.close();
     res.type("json").send(arrayOfWatches);
   } catch (err) {
-    res.type("json").send({ "errMessage": err });
+    res.type("json").send({"errMessage": err});
   }
 });
 
