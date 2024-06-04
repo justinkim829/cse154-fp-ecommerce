@@ -222,7 +222,8 @@ app.post("/REM/addtoshoppingcart", async (req, res) => {
     let selectExisting = "SELECT * FROM Shoppingcart WHERE WatchID = ? AND UserID = ?";
     let doesWatchExist = await db.all(selectExisting, watchID, userID);
     if (doesWatchExist.length) {
-      let update = "UPDATE Shoppingcart SET Quantity = Quantity + 1 WHERE WatchID = ? AND UserID = ?";
+      let update = "UPDATE Shoppingcart SET Quantity = Quantity + 1 " +
+                   "WHERE WatchID = ? AND UserID = ?";
       await db.run(update, watchID, userID);
     } else {
       let selection = "INSERT INTO Shoppingcart (UserID, WatchID, Quantity) " +
@@ -261,7 +262,7 @@ app.post('/REM/recommendation', async (req, res) => {
     const input = req.body.input;
     const maxWatch = await findRecommendations(input);
     if (maxWatch === null) {
-      return res.status(404).send('No matching watches found');
+      res.status(404).send('No matching watches found');
     } else {
       res.status(200);
       res.send(maxWatch.Type);
@@ -276,7 +277,7 @@ app.post('/REM/recommendation', async (req, res) => {
 app.post("/REM/buyproduct", async (req, res) => {
   res.type("text");
   try {
-    let { cardHolderName, cardNumber } = req.body;
+    let {cardHolderName, cardNumber} = req.body;
     let cardExist = await findCard(cardNumber);
     if (await ifEnoughStorage()) {
       if (cardExist) {
@@ -520,13 +521,13 @@ function sendMailProcess(email, firstName) {
       from: '"Re:M" <rem375254@gmail.com>',
       to: email,
       subject: "Successfully Created Re:m Account",
-      html:`
-           <p>Dear ${firstName}:</p>
-           <p>You have created the account successfully,</p>
-           <p>You can use this account to explore more items and enjoy our services.</p>
-           <p>Best regards,</p>
-           <p>Re:M</p>
-           `
+      html: `
+            <p>Dear ${firstName}:</p>
+            <p>You have created the account successfully,</p>
+            <p>You can use this account to explore more items and enjoy our services.</p>
+            <p>Best regards,</p>
+            <p>Re:M</p>
+            `
     });
   } catch (err) {
     throw new Error(err);

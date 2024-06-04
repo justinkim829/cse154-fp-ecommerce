@@ -8,7 +8,7 @@
 
 "use strict";
 
-(function () {
+(function() {
 
   window.addEventListener("load", init);
 
@@ -36,13 +36,14 @@
     });
   }
 
-    /**
-     * Show the items of the selected category when the category is choosed
-     * Remove background of all boxes
-     * Then show the boxes that match through an animation.
-     */
+  /**
+   * Show the items of the selected category when the category is choosed
+   * Remove background of all boxes
+   * Then show the boxes that match through an animation.
+   * @param {event} evt -  evt that occurred
+   */
   function selectCategory(evt) {
-    removeSelectedBoxes()
+    removeSelectedBoxes();
     let category = evt.currentTarget.value;
     let containers = qsa("#displayall > section");
     containers.forEach(container => {
@@ -72,7 +73,7 @@
         top: 680,
         behavior: "smooth"
       });
-    } else if (category == "pocket") {
+    } else if (category === "pocket") {
       window.scrollTo({
         top: document.body.scrollHeight,
         behavior: "smooth"
@@ -111,12 +112,21 @@
   function animateBackground(element, duration) {
     let startTime = null;
 
+    /**
+     * Calculate change for each step and apply animation
+     * @param {object} timestamp - current time
+     */
     function animationStep(timestamp) {
-      if (!startTime) startTime = timestamp;
+      if (!startTime) {
+        startTime = timestamp;
+      }
       let progress = (timestamp - startTime) / duration;
-      if (progress > 1) progress = 1;
+      if (progress > 1) {
+        progress = 1;
+      }
       let colorStop = progress * 100;
-      element.style.background = `linear-gradient(to top left, black 0%, rgb(0, 0, 72) ${colorStop}%)`;
+      element.style.background = `linear-gradient` +
+                                 `(to top left, black 0%, rgb(0, 0, 72) ${colorStop}%)`;
       if (progress < 1) {
         requestAnimationFrame(animationStep);
       } else {
