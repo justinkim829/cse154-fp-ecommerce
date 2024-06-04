@@ -76,6 +76,7 @@ app.get("/REM/checkiflogin", (req, res) => {
   }
 });
 
+/** Get the current userID */
 app.get("/REM/currentuserid", (req, res) => {
   res.type("text").send(currentUserID.toString());
 });
