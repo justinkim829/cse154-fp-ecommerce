@@ -105,10 +105,7 @@
         changeSummary(result);
       }
     } catch (err) {
-      id("errdisplay").classList.add("hidden");
-      setTimeout(() => {
-        id("errdisplay").classList.remove("hidden");
-      }, 2000);
+      errHandle();
     }
   }
 
@@ -132,10 +129,7 @@
       changeSummary(result);
       checkoutStatusChecking();
     } catch (err) {
-      id("errdisplay").classList.add("hidden");
-      setTimeout(() => {
-        id("errdisplay").classList.remove("hidden");
-      }, 2000);
+      errHandle();
     }
   }
 
@@ -156,10 +150,7 @@
       }
       changeSummary(result);
     } catch (err) {
-      id("errdisplay").classList.add("hidden");
-      setTimeout(() => {
-        id("errdisplay").classList.remove("hidden");
-      }, 2000);
+      errHandle();
     }
   }
 
@@ -358,9 +349,9 @@
 
   /** This function is used to handle the error */
   function errHandle() {
-    id("errdisplay").classList.add("hidden");
+    id("errdisplay").classList.remove("hidden");
     setTimeout(() => {
-      id("errdisplay").classList.remove("hidden");
+      id("errdisplay").classList.add("hidden");
     }, 2000);
   }
 

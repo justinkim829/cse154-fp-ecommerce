@@ -94,8 +94,8 @@ app.post("/REM/login", async (req, res) => {
     await db.close();
     if (user) {
       if (currentUserID === 0) {
-        currentUserID = user.ID;
         if (password === user.Password) {
+          currentUserID = user.ID;
           res.type("text").send("Login successful!");
         } else {
           res.type("text").send("Invalid password");
@@ -120,6 +120,22 @@ app.get("/watchdetails/:ID", async function(req, res) {
     let qry = `Select * FROM watches WHERE Type = "${watchID}"`;
     let db = await getDBConnection();
     let result = await db.get(qry);
+    await db.close();
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+/** Checks whether a specific watch type exists in the shopping cart for a given user */
+app.get("/REM/checkifwatchadded/:ID", async function(req, res) {
+  try {
+    let watchID = req.params.ID;
+    let qry = `SELECT * FROM Shoppingcart ` +
+    `JOIN watches ON Shoppingcart.WatchID = watches.ID ` +
+    `WHERE Shoppingcart.UserID = ? AND watches.Type = ?`;
+    let db = await getDBConnection();
+    let result = await db.get(qry, [currentUserID, watchID]);
     await db.close();
     res.status(200).json(result);
   } catch (err) {

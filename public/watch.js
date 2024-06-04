@@ -20,14 +20,13 @@
   ]);
 
   /** this function is used to initilizale the button with its functions. */
-  function init() {
+  async function init() {
     qs("#product-details p").addEventListener("click", displayDetailSidebar);
     qs("#sidebarfordetail .close").addEventListener("click", closeTheDetailSidebar);
     id("add-to-cart").addEventListener('click', addToWishlist);
     arrowsToNextImage();
     changeHeaderWhenScrolled();
-    receiveSidebarToWatch();
-    reloadPage(localStorage.getItem("productID"));
+    await receiveSidebarToWatch();
   }
 
   /**
@@ -62,11 +61,16 @@
    * reload the page to match the images and description of that clicked watch.
    * Store the watch ID.
    */
-  function receiveSidebarToWatch() {
-    const bc = new BroadcastChannel('bc');
-    bc.addEventListener("message", (evt) => {
-      reloadPage(evt.data);
-    });
+  async function receiveSidebarToWatch() {
+    reloadPage(localStorage.getItem("productID"));
+    let watch = await getData(`/REM/checkifwatchadded/${localStorage.getItem("productID")}`, false);
+    if (watch.length === 0) {
+      qs("#add-to-wishlist p").textContent = "♡";
+      qs("#add-to-cart button").textContent = "Add To Cart";
+    } else {
+      qs("#add-to-wishlist p").textContent = "♥︎";
+      qs("#add-to-cart button").textContent = "Remove From Cart";
+    }
   }
 
   /**
@@ -136,9 +140,9 @@
 
   /** This function is used to handle the error */
   function errHandle() {
-    id("errdisplay").classList.add("hidden");
+    id("errdisplay").classList.remove("hidden");
     setTimeout(() => {
-      id("errdisplay").classList.remove("hidden");
+      id("errdisplay").classList.add("hidden");
     }, 2000);
   }
 
@@ -246,13 +250,13 @@
     for (let i = productNum + 1; i <= productNum + watchNums; i++) {
       let nextWatchNum = (i % watchNums) === 0 ? watchNums : i % watchNums;
       if (nextWatchNum !== productNum) {
-        let sameCatPath = `img/${productType}/watch${nextWatchNum}/img1.png`;
+        let sameCatPath = `img/${productType.toLowerCase()}/watch${nextWatchNum}/img1.png`;
         recommendations.push([sameCatPath, productType + nextWatchNum]);
       }
     }
     for (let key of CATEGORIES_MAP.keys()) {
       if (key !== productType) {
-        let diffCatPath = `img/${key}/watch${productNum}/img1.png`;
+        let diffCatPath = `img/${key.toLowerCase()}/watch${productNum}/img1.png`;
         recommendations.push([diffCatPath, key + productNum]);
       }
     }
@@ -299,6 +303,7 @@
    * @returns {Promise<Object|string>} The fetched data after error handling.
    */
   async function getData(endPoint, isReturnText) {
+    let data;
     try {
       let data = await fetch(endPoint);
       await statusCheck(data);
@@ -309,7 +314,7 @@
       }
       return data;
     } catch (err) {
-      errHandle();
+      throw new Error(await data.text());
     }
   }
 
@@ -324,8 +329,9 @@
    * @throws Will log an error message to the console if the request fails.
    */
   async function postData(endPoint, params, isReturnText) {
+    let data;
     try {
-      let data = await fetch(endPoint, {
+      data = await fetch(endPoint, {
         method: 'POST',
         body: params
       });
@@ -337,7 +343,7 @@
       }
       return data;
     } catch (err) {
-      errHandle();
+      throw new Error(await data.text());
     }
   }
 

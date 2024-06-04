@@ -54,15 +54,15 @@
         handleFailSituation(result);
       }
     } catch (err) {
-      errhandle();
+      errHandle();
     }
   }
 
   /** This function is used to handle the error */
-  function errhandle() {
-    id("errdisplay").classList.add("hidden");
+  function errHandle() {
+    id("errdisplay").classList.remove("hidden");
     setTimeout(() => {
-      id("errdisplay").classList.remove("hidden");
+      id("errdisplay").classList.add("hidden");
     }, 2000);
   }
 
@@ -126,10 +126,7 @@
       changeSummary(result);
 
     } catch (err) {
-      id("errdisplay").classList.add("hidden");
-      setTimeout(() => {
-        id("errdisplay").classList.remove("hidden");
-      }, 2000);
+      errHandle();
     }
   }
 

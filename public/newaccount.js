@@ -47,9 +47,9 @@
       statusChecking(result);
 
     } catch (err) {
-      id("errdisplay").classList.add("hidden");
+      id("errdisplay").classList.remove("hidden");
       setTimeout(() => {
-        id("errdisplay").classList.remove("hidden");
+        id("errdisplay").classList.add("hidden");
       }, 2000);
     }
   }

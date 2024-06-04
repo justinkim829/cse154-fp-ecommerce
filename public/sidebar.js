@@ -138,16 +138,12 @@
    * Move to the watch page.
    */
   function sendSidebarToWatch() {
-    const bc = new BroadcastChannel('bc');
     let options = qsa(".double-sidebar ul li");
     for (let i = 0; i < options.length; i++) {
       options[i].addEventListener('click', () => {
         let productID = options[i].querySelector("p").textContent;
         localStorage.setItem('productID', productID);
-        bc.postMessage(productID);
-        if (!window.location.href.includes("watch.html")) {
-          window.location.href = "watch.html";
-        }
+        window.location.href = "watch.html";
       });
     }
   }

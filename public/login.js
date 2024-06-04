@@ -59,9 +59,9 @@
       let result = await postRequest(formData);
       processLogIn(result);
     } catch (err) {
-      id("errdisplay").classList.add("hidden");
+      id("errdisplay").classList.remove("hidden");
       setTimeout(() => {
-        id("errdisplay").classList.remove("hidden");
+        id("errdisplay").classList.add("hidden");
       }, 2000);
     }
   }
@@ -95,16 +95,8 @@
         }, 2000);
       }
     } catch (err) {
-      errhandle();
-    }
-  }
 
-  /** This function is used to handle the error */
-  function errhandle() {
-    id("errdisplay").classList.add("hidden");
-    setTimeout(() => {
-      id("errdisplay").classList.remove("hidden");
-    }, 2000);
+    }
   }
 
   /**
@@ -121,9 +113,9 @@
       let result = await response.text();
       return result;
     } catch (err) {
-      id("errdisplay").classList.add("hidden");
+      id("errdisplay").classList.remove("hidden");
       setTimeout(() => {
-        id("errdisplay").classList.remove("hidden");
+        id("errdisplay").classList.add("hidden");
       }, 2000);
     }
   }

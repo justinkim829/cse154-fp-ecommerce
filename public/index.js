@@ -42,12 +42,10 @@
     let recommended = qsa(".box");
     let productIDs = ["M1", "D1", "P3"];
 
-    const bc = new BroadcastChannel('bc');
     for (let i = 0; i < recommended.length; i++) {
       recommended[i].addEventListener('click', () => {
         let productID = productIDs[i];
         localStorage.setItem('productID', productID);
-        bc.postMessage(productID);
         window.location.href = "watch.html";
       });
     }
@@ -58,7 +56,6 @@
    * and move to the watch page that fits the user input.
    */
   function filterSearchBar() {
-    const bc = new BroadcastChannel('bc');
     let input = qs("#search-part input");
     input.addEventListener('keypress', async (evt) => {
       if (evt.key === "Enter") {
@@ -68,7 +65,6 @@
         try {
           let recommendedID = await postData('/REM/recommendation', params, true);
           localStorage.setItem('productID', recommendedID);
-          bc.postMessage(recommendedID);
           window.location.href = "watch.html";
         } catch (err) {
           id("textarea").value = "";

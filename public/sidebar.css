@@ -74,3 +74,25 @@
 .close:hover {
   cursor: pointer;
 }
+
+.hidden {
+  display: none;
+}
+
+.location {
+  position: fixed;
+  left: 40%;
+  top: 50%;
+  transform: translateX(-50%);
+  transform: translateY(-50%);
+  width: 20%;
+  background-color: black;
+  font-size: 30px;
+  color: white;
+  text-align: center;
+  border: 2px white solid;
+}
+
+body {
+  position: relative;
+}
