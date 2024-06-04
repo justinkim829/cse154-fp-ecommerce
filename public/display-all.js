@@ -15,6 +15,7 @@
   /** This function is used to initialize all the functions */
   async function init() {
     changeHeaderWhenScrolled();
+    selectCategoryWhenChanged();
     id("layout").addEventListener("click", () => {
       toggleLayout();
     });
@@ -24,8 +25,135 @@
         changeToWatchPage(event);
       });
     }
+    filterSearchBar();
+    clearSearch();
   }
 
+  /** Check and show watches that match categories when changed */
+  function selectCategoryWhenChanged() {
+    id("category").addEventListener("change", (evt) => {
+      selectCategory(evt);
+    });
+  }
+
+    /**
+     * Show the items of the selected category when the category is choosed
+     * Remove background of all boxes
+     * Then show the boxes that match through an animation.
+     */
+  function selectCategory(evt) {
+    removeSelectedBoxes()
+    let category = evt.currentTarget.value;
+    let containers = qsa("#displayall > section");
+    containers.forEach(container => {
+      if (container.id.includes(category)) {
+        scrollToRecommendation(category);
+        let matchedBoxes = container.querySelectorAll(".box");
+        matchedBoxes.forEach(box => {
+          animateBackground(box, 600);
+        });
+      }
+    });
+  }
+
+  /**
+   * Change viewpoint to where the category of the recommended watch
+   * is located
+   * @param {String} category - category for the watch
+   */
+  function scrollToRecommendation(category) {
+    if (category === "mechanical") {
+      window.scrollTo({
+        top: 1,
+        behavior: "smooth"
+      });
+    } else if (category === "digital") {
+      window.scrollTo({
+        top: 680,
+        behavior: "smooth"
+      });
+    } else if (category == "pocket") {
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+  }
+
+  /** Clear all selected watches when clear button clicked. */
+  function clearSearch() {
+    id("clear-search").addEventListener("click", () => {
+      removeSelectedBoxes();
+      id("filter-items").value = "";
+      id("category").selectedIndex = 0;
+    });
+  }
+
+  /**
+   * Set background color of all boxes to black (default).
+   * Directly changed the style instead of adding classlists because
+   * in the animatation function, the style takes in a parameter that changes over time.
+   * This value cannot be added to css because it is not a constant.
+   */
+  function removeSelectedBoxes() {
+    let allBoxes = qsa("#displayall > section .box");
+    allBoxes.forEach(box => {
+      box.style.background = "black";
+    });
+  }
+
+  /**
+   * This function is used to highlight the background of the recommended watch
+   * giving it an animation effect
+   * @param {Element} element - container to apply background transition
+   * @param {Integer} duration - duration of the animation
+   */
+  function animateBackground(element, duration) {
+    let startTime = null;
+
+    function animationStep(timestamp) {
+      if (!startTime) startTime = timestamp;
+      let progress = (timestamp - startTime) / duration;
+      if (progress > 1) progress = 1;
+      let colorStop = progress * 100;
+      element.style.background = `linear-gradient(to top left, black 0%, rgb(0, 0, 72) ${colorStop}%)`;
+      if (progress < 1) {
+        requestAnimationFrame(animationStep);
+      } else {
+        element.style.background = 'rgb(0, 0, 72)';
+      }
+  }
+    requestAnimationFrame(animationStep);
+  }
+
+  /**
+   * This function is used to filter through the watches
+   * and show the watch that fits the user input.
+   */
+  function filterSearchBar() {
+    let input = id("filter-items")
+    input.addEventListener('keypress', async (evt) => {
+      if (evt.key === "Enter") {
+        removeSelectedBoxes()
+        let inputValue = input.value.trim().toLowerCase();
+        console.log(inputValue);
+        let params = new FormData();
+        params.append("input", inputValue);
+        try {
+          let recommendedID = await postData('/REM/recommendation', params, true);
+          console.log(2)
+          let watchBox = id(recommendedID);
+          let parentID = watchBox.parentElement.id;
+          console.log(parentID.slice(0, parentID.indexOf("-")));
+          scrollToRecommendation(parentID.slice(0, parentID.indexOf("-")));
+          animateBackground(watchBox, 600);
+        } catch (err) {
+          id("filter-items").value = "";
+          id("filter-items").placeholder = "No Matches Found. Try Again.";
+        }
+      }
+    });
+  }
   /**
    * change the header background and text color when scrolled down.
    */
@@ -63,7 +191,10 @@
       let result = await response.json();
       displayWatches(result);
     } catch (error) {
-      console.error(error);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 
@@ -154,6 +285,32 @@
       row.appendChild(box);
       box.appendChild(details);
     });
+  }
+
+  /**
+   * Fetches data from post endpoints.
+   * @param {String} endPoint - the endpoint of the post
+   * @param {FormData} params - the body of the post request
+   * @param {String} isReturnText - the return text
+   * @returns {String|JSON} data - the processed data
+   */
+  async function postData(endPoint, params, isReturnText) {
+    let data;
+    try {
+      data = await fetch(endPoint, {
+        method: 'POST',
+        body: params
+      });
+      await statusCheck(data);
+      if (isReturnText) {
+        data = await data.text();
+      } else {
+        data = await data.json();
+      }
+      return data;
+    } catch (err) {
+      throw new Error(await data.text());
+    }
   }
 
   /**

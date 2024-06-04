@@ -105,7 +105,10 @@
         changeSummary(result);
       }
     } catch (err) {
-      console.error(err);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 
@@ -129,7 +132,10 @@
       changeSummary(result);
       checkoutStatusChecking();
     } catch (err) {
-      console.error(err);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 
@@ -150,7 +156,10 @@
       }
       changeSummary(result);
     } catch (err) {
-      console.error(err);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 
@@ -184,7 +193,10 @@
       changeSummary(result);
       return result;
     } catch (err) {
-      console.error(err);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 
@@ -336,7 +348,7 @@
     let numberOfWatch = 0;
     for (let i = 0; i < result.length; i++) {
       numberOfWatch = numberOfWatch + result[i].Quantity;
-      subtotal = subtotal + (result[i].Price) * (result[i].Quantity);
+      subtotal = subtotal + parseInt((result[i].Price)) * (result[i].Quantity);
     }
     qs("#order-summary p").textContent = numberOfWatch + " item";
     let tax = subtotal * 0.1025;

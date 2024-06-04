@@ -42,7 +42,7 @@ header h1, header a, header span {
 
 header:hover, .lock-header {
   transition: background-color 1s;
-  opacity: 70%;
+  opacity: 80%;
   background-color: white;
 }
 
@@ -240,7 +240,7 @@ footer img {
 #layout {
   margin-left: 15px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: black;
   color: white;
   border: none;
   border-radius: 5px;
@@ -250,5 +250,5 @@ footer img {
 }
 
 #layout:hover {
-  background-color: #0056b3;
+background-color: rgb(60, 60, 60);
 }

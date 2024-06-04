@@ -166,3 +166,8 @@ main {
   margin-left: 10%;
   margin-top: 3%;
 }
+
+.messagedisplay {
+  text-align: center;
+  font-size: 40px;
+}

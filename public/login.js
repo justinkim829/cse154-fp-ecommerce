@@ -9,7 +9,7 @@
 
 "use strict";
 
-(function() {
+(function () {
   const LOGIN_URL = "/REM/login";
   let timeoutId = 0;
 
@@ -59,7 +59,10 @@
       let result = await postRequest(formData);
       processLogIn(result);
     } catch (err) {
-      console.error(err);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 
@@ -92,8 +95,16 @@
         }, 2000);
       }
     } catch (err) {
-      console.error(err);
+      errhandle();
     }
+  }
+
+  /** This function is used to handle the error */
+  function errhandle() {
+    id("errdisplay").classList.add("hidden");
+    setTimeout(() => {
+      id("errdisplay").classList.remove("hidden");
+    }, 2000);
   }
 
   /**
@@ -110,7 +121,10 @@
       let result = await response.text();
       return result;
     } catch (err) {
-      console.error(err);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 

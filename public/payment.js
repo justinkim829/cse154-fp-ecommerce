@@ -9,7 +9,7 @@
 
 "use strict";
 
-(function() {
+(function () {
 
   window.addEventListener("load", init);
 
@@ -54,8 +54,16 @@
         handleFailSituation(result);
       }
     } catch (err) {
-      console.error(err);
+      errhandle();
     }
+  }
+
+  /** This function is used to handle the error */
+  function errhandle() {
+    id("errdisplay").classList.add("hidden");
+    setTimeout(() => {
+      id("errdisplay").classList.remove("hidden");
+    }, 2000);
   }
 
   /** This function is used to check if the account is log in or not */
@@ -118,7 +126,10 @@
       changeSummary(result);
 
     } catch (err) {
-      console.error(err);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 

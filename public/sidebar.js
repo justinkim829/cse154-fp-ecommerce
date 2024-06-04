@@ -17,6 +17,19 @@
   function init() {
     sidebarStart();
     sendSidebarToWatch();
+    errMessageDisplay();
+  }
+
+  /** This function is used to handle the situation when server is crashed */
+  function errMessageDisplay(){
+    let container = gen("section");
+    container.id = "errdisplay";
+    let errMessage = gen("p");
+    errMessage.textContent = "MEOW";
+    container.appendChild(errMessage);
+    container.classList.add("hidden");
+    container.classList.add("location")
+    document.body.appendChild(container);
   }
 
   /** This function is to initialize all the functionalities of the sidebar */
@@ -146,6 +159,15 @@
    */
   function qs(selector) {
     return document.querySelector(selector);
+  }
+
+  /**
+   * Helper function to create a new HTML element.
+   * @param {string} selector - The type of element to create.
+   * @return {HTMLElement} - The created element.
+   */
+  function gen(selector) {
+    return document.createElement(selector);
   }
 
   /**

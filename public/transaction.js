@@ -64,7 +64,10 @@
         showEmptyMessage();
       }
     } catch (err) {
-      console.error(err);
+      id("errdisplay").classList.add("hidden");
+      setTimeout(() => {
+        id("errdisplay").classList.remove("hidden");
+      }, 2000);
     }
   }
 

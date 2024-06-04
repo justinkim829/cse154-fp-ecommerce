@@ -54,8 +54,8 @@
   }
 
   /**
-   * This function is used to make sure when there is nothing input into the search bar,
-   * When we hit return on the search bar, we would go to certian watch page
+   * This function is used to filter through the watches
+   * and move to the watch page that fits the user input.
    */
   function filterSearchBar() {
     const bc = new BroadcastChannel('bc');
