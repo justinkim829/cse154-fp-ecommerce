@@ -1,5 +1,5 @@
 /*
- * Name: Jincheng Wang,Jinseok Kim
+ * Name: Jinseok Kim, Jincheng Wang
  * Date: May 28, 2024
  * Section: CSE 154
  * This endpoint is used to handle different situations, including buying a prduct,
