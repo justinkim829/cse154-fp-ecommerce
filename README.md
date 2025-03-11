@@ -1,7 +1,7 @@
 **CSE 154(Web Programming) Final Project**
 
 Ecommerce website created for watches.
-Client-side developed using HTML, CSS, and JS.
+Client-side developed only using HTML, CSS, and JS.
 Server-side developed with NodeJS.
 Data managed using SQLite.
 
